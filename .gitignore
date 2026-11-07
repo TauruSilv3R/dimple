@@ -1,0 +1,115 @@
+# ==============================================================================
+# DIMPLE MEDIA WORKSTATION - GITIGNORE
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Byte-compiled / optimized / DLL files
+# ------------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+
+# ------------------------------------------------------------------------------
+# Virtual Environments & Packaging
+# ------------------------------------------------------------------------------
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+build/
+dist/
+*.egg-info/
+*.egg
+MANIFEST
+
+# ------------------------------------------------------------------------------
+# Dimple Application Runtime & User Media Storage
+# (Prevents multi-gigabyte video files, local states and keys from being committed)
+# ------------------------------------------------------------------------------
+downloads/
+*.mp4
+*.mkv
+*.webm
+*.avi
+*.mov
+*.flv
+*.m4v
+*.mp3
+*.wav
+*.m4a
+*.flac
+*.opus
+*.aac
+
+# Keep asset and screenshot images tracked
+!assets/
+!assets/**
+!static/
+!static/**
+
+# Local thumbnail cache & dynamic runtime state databases
+.thumbnails/
+jobs.json
+config.json
+license.json
+
+# Partial download fragments
+*.part
+*.ytdl
+*.temp
+*.tmp
+
+# Sensitive tokens, browser session cookies, and environment configs
+cookies.txt
+*.cookies
+cookies*.txt
+.env
+.env.*
+!.env.example
+
+# ------------------------------------------------------------------------------
+# PyInstaller & Installer Outputs
+# ------------------------------------------------------------------------------
+*.manifest
+*.spec
+Output/
+Release/
+
+# ------------------------------------------------------------------------------
+# Qt / PySide WebEngine Cache
+# ------------------------------------------------------------------------------
+QtWebEngine/
+cache/
+Cache/
+GPUCache/
+
+# ------------------------------------------------------------------------------
+# Logs & Diagnostics
+# ------------------------------------------------------------------------------
+*.log
+
+# ------------------------------------------------------------------------------
+# IDEs & Editor Configuration
+# ------------------------------------------------------------------------------
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# ------------------------------------------------------------------------------
+# Operating System Artifacts
+# ------------------------------------------------------------------------------
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+

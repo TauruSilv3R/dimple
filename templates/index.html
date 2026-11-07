@@ -1,0 +1,3576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dimple — Media Downloader Pro</title>
+  
+  <!-- App Favicons -->
+  <link rel="icon" type="image/png" href="/static/favicon.png">
+  <link rel="alternate icon" href="/static/favicon.ico">
+  <link rel="apple-touch-icon" href="/static/logo.png">
+
+  <!-- 100% Offline Local Tailwind Engine -->
+  <script src="/static/tailwind.min.js"></script>
+  
+  <!-- Material Symbols Fallback (Online) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <!-- 100% Offline Local Fonts & Icons -->
+  <style>
+    html, body {
+      background-color: #0e1013 !important;
+      color: #ffffff !important;
+    }
+    @font-face {
+      font-family: 'Open Sans';
+      font-style: normal;
+      font-weight: 300 800;
+      src: url('/static/open-sans.woff2') format('woff2');
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Material Symbols Outlined';
+      font-style: normal;
+      font-weight: 100 700;
+      src: url('/static/material-symbols-outlined.woff2') format('woff2');
+      font-display: block;
+    }
+    @font-face {
+      font-family: 'Material Symbols Outlined';
+      font-style: normal;
+      font-weight: 400;
+      src: url('/static/material-symbols-outlined.woff2') format('woff2');
+      font-display: block;
+    }
+    @font-face {
+      font-family: 'Material Symbols Outlined';
+      font-style: normal;
+      font-weight: normal;
+      src: url('/static/material-symbols-outlined.woff2') format('woff2');
+      font-display: block;
+    }
+    @font-face {
+      font-family: 'JetBrains Mono';
+      font-style: normal;
+      font-weight: 400 700;
+      src: url('/static/jetbrains-mono.woff2') format('woff2');
+      font-display: swap;
+    }
+  </style>
+  
+  <style>
+    /* ==========================================================================
+       GLOBAL TYPOGRAPHY: ARIAL BLACK
+       ========================================================================== */
+    html, body, button, input, select, textarea, p, h1, h2, h3, h4, h5, h6, label, a, kbd, code, option {
+      font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif !important;
+    }
+
+    *:not(.material-symbols-outlined) {
+      font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif !important;
+    }
+
+    :root {
+      --color-bright-snow: #ffffff;
+      --color-platinum: #f0f2f5;
+      --color-alabaster: #dee2e6;
+      --color-pale-slate: #ced4da;
+      --color-pale-slate-2: #adb5bd;
+      --color-slate-grey: #6c757d;
+      --color-iron-grey: #495057;
+      --color-gunmetal: #1f2329;
+      --color-carbon-black: #121518;
+
+      /* Dark Obsidian Charcoal Theme (Matching Downloads & Media Library Tabs) */
+      --bg-app: #0e1013;
+      --bg-sidebar: #14171b;
+      --bg-surface: #181c20;
+      --bg-surface-elevated: #1e2228;
+      --bg-surface-hover: #262b33;
+      --bg-input: #121417;
+      
+      --border-hairline: #22262c;
+      --border-subtle: #2b3036;
+      --border-active: #ff6400;
+      --border-focus: #ff7a00;
+
+      --text-primary: #ffffff;
+      --text-secondary: #e9ecef;
+      --text-muted: #8b949e;
+      --text-dim: #646b77;
+
+      --accent-crimson: #ff6400;
+      --accent-maroon: #e05500;
+      --accent-neon: #ff7a00;
+      
+      --tab-active-bg: linear-gradient(135deg, #ff7a00, #ff5500);
+      --tab-active-border: #ff7a00;
+      --tab-active-text: #ffffff;
+
+      --btn-primary-bg: linear-gradient(135deg, #ff7a00, #ff5500);
+      --btn-primary-text: #ffffff;
+      --btn-primary-hover: linear-gradient(135deg, #ff881a, #ff6010);
+      
+      --glow-crimson: 0 4px 14px rgba(255, 107, 0, 0.35);
+      --shadow-surface: 0 4px 20px rgba(0, 0, 0, 0.5);
+      --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    body {
+      background-color: var(--bg-app);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .font-mono-nums {
+      font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif !important;
+      font-feature-settings: 'tnum' on, 'zero' on;
+    }
+
+    /* Minimalist Dark Keyboard Shortcut Badges */
+    kbd {
+      font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif !important;
+      background-color: #212529 !important;
+      color: #f8f9fa !important;
+      border: 1px solid #495057 !important;
+      border-radius: 4px !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+      padding: 2px 6px !important;
+      font-size: 10px !important;
+      font-weight: bold !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      line-height: 1.2 !important;
+    }
+
+    /* Media Library Exact Orange & Charcoal Theme */
+    .lib-filter-pill {
+      background-color: #1f2229;
+      color: #949ba4;
+      border: 1px solid #272a33;
+    }
+    .lib-filter-pill.active {
+      background-color: #ff6400 !important;
+      color: #ffffff !important;
+      border-color: #ff6400 !important;
+      box-shadow: 0 2px 10px rgba(255, 100, 0, 0.35);
+    }
+    .lib-filter-pill:hover:not(.active) {
+      color: #ffffff;
+      border-color: #ff6400;
+    }
+
+    .custom-scroll::-webkit-scrollbar {
+      width: 5px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #272a33;
+      border-radius: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #ff6400;
+    }
+
+    /* Google Material Symbols Helper */
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined' !important;
+      font-weight: normal !important;
+      font-style: normal !important;
+      font-variant: normal !important;
+      text-transform: none !important;
+      letter-spacing: normal !important;
+      font-size: 20px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga' 1 !important;
+      font-feature-settings: 'liga' 1 !important;
+      -webkit-font-smoothing: antialiased;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      user-select: none;
+      vertical-align: middle;
+      overflow: hidden;
+      speak: never;
+    }
+
+    /* Interactive Buttons */
+    .btn-crimson-solid {
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-text) !important;
+      font-weight: 700;
+      border: 1px solid rgba(255, 122, 0, 0.4);
+      box-shadow: 0 4px 14px rgba(255, 107, 0, 0.35);
+      transition: all 0.16s ease;
+    }
+    .btn-crimson-solid:hover {
+      background: var(--btn-primary-hover);
+      color: var(--btn-primary-text) !important;
+      box-shadow: 0 6px 18px rgba(255, 107, 0, 0.45);
+      transform: translateY(-1px);
+    }
+    .btn-crimson-solid:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(255, 107, 0, 0.3);
+    }
+
+    .btn-ghost-crimson {
+      background: var(--bg-surface-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+      transition: all 0.16s ease;
+    }
+    .btn-ghost-crimson:hover {
+      background: rgba(255, 107, 0, 0.12);
+      border-color: #ff7a00;
+      color: #ffffff;
+    }
+
+    /* Command Bar */
+    .command-bar {
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      transition: all 0.2s ease;
+    }
+    .command-bar:focus-within {
+      border-color: var(--border-active);
+      box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.2);
+    }
+
+    /* Sidebar Navigation Items (Matching Radiant Orange Pill Theme) */
+    .nav-item-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #8b949e;
+      border: 1px solid transparent;
+      background: transparent;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+    .nav-item-btn:hover:not(.active) {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 107, 0, 0.2);
+    }
+    .nav-item-btn.active {
+      background: linear-gradient(135deg, #ff7a00, #ff5500) !important;
+      border-color: #ff7a00 !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 14px rgba(255, 107, 0, 0.35) !important;
+      font-weight: 700 !important;
+    }
+    .nav-item-btn.active .material-symbols-outlined {
+      color: #ffffff !important;
+    }
+    .nav-item-btn.active .nav-label {
+      color: #ffffff !important;
+      font-weight: 700 !important;
+    }
+    .nav-item-btn.active .nav-badge {
+      background: rgba(0, 0, 0, 0.28) !important;
+      color: #ffffff !important;
+      border-color: transparent !important;
+    }
+    .nav-item-btn:not(.active) .nav-badge {
+      background: #181c20 !important;
+      border: 1px solid #2b3036 !important;
+      color: #ff7a00 !important;
+    }
+
+    /* Collapsed Sidebar State */
+    .sidebar-collapsed {
+      width: 68px !important;
+    }
+    .sidebar-collapsed .brand-copy,
+    .sidebar-collapsed .nav-label,
+    .sidebar-collapsed .nav-badge,
+    .sidebar-collapsed .footer-meta,
+    .sidebar-collapsed .sidebar-legal-links,
+    .sidebar-collapsed #sidebarCollapseBtn {
+      display: none !important;
+    }
+    .sidebar-collapsed .sidebar-header {
+      padding: 0 !important;
+      justify-content: center !important;
+    }
+    .sidebar-collapsed .brand-wrap {
+      width: 100% !important;
+      justify-content: center !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .sidebar-collapsed nav {
+      padding: 12px 0 !important;
+      align-items: center !important;
+    }
+    .sidebar-collapsed .nav-item-btn {
+      width: 44px !important;
+      height: 44px !important;
+      padding: 0 !important;
+      margin: 0 auto !important;
+      justify-content: center !important;
+      border-radius: 12px !important;
+    }
+    .sidebar-collapsed .nav-item-btn .material-symbols-outlined {
+      font-size: 20px !important;
+      margin: 0 !important;
+    }
+    .sidebar-collapsed .sidebar-footer {
+      padding: 12px 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    .sidebar-collapsed .sidebar-footer-box {
+      border: none !important;
+      background: transparent !important;
+      padding: 0 !important;
+      width: 32px !important;
+      height: 32px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      margin: 0 auto !important;
+      box-shadow: none !important;
+    }
+
+    /* Scrollbars (Modern Charcoal with Vibrant Orange Glow on Hover) */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-app);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #272a33;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ff6400;
+    }
+    }
+  </style>
+</head>
+<body class="h-screen flex overflow-hidden select-none" style="background-color: var(--bg-app); color: var(--text-primary);">
+
+  <!-- ==========================================================================
+       SIDEBAR NAVIGATION (Home, Downloads, Media Library, Settings)
+       ========================================================================== -->
+  <aside id="sidebar" class="w-64 flex flex-col justify-between shrink-0 transition-all duration-200 z-20" style="background-color: var(--bg-sidebar); border-right: 1px solid var(--border-hairline);">
+    <div>
+      <!-- Brand Header -->
+      <div class="h-16 flex items-center justify-between px-4 border-b sidebar-header" style="border-color: var(--border-hairline);">
+        <div class="flex items-center gap-3 overflow-hidden cursor-pointer brand-wrap" onclick="toggleSidebar()" title="Dimple Media Downloader">
+          <!-- Logo Emblem -->
+          <div class="w-9 h-9 rounded-xl p-1 flex items-center justify-center shrink-0 border shadow-md" style="background: #181c20; border-color: #272a33;">
+            <img src="/static/logo.png" alt="Dimple Logo" class="w-full h-full object-contain rounded-lg">
+          </div>
+          <div class="brand-copy">
+            <h1 class="text-sm font-bold tracking-tight leading-none flex items-center gap-1.5" style="color: #ffffff;">
+              <span>Dimple</span>
+              <span class="w-1.5 h-1.5 rounded-full shadow-[0_0_6px_rgba(255,107,0,0.8)]" style="background: #ff6b00;"></span>
+            </h1>
+            <p class="text-[11px] mt-1 font-medium tracking-normal" style="color: #8b949e;">Media Downloader</p>
+          </div>
+        </div>
+        <button id="sidebarCollapseBtn" onclick="toggleSidebar()" class="p-1.5 rounded-lg hover:bg-white/5 transition" style="color: #8b949e;" title="Collapse Sidebar">
+          <span class="material-symbols-outlined text-base">menu</span>
+        </button>
+      </div>
+
+      <!-- Navigation Tabs (Home, Downloads, Media Library, Settings) -->
+      <nav class="p-3 flex flex-col gap-1.5">
+        <!-- Tab 1: Home -->
+        <button onclick="switchTab('downloader')" id="tab-btn-downloader" class="nav-item-btn active" title="Home">
+          <span class="material-symbols-outlined text-lg shrink-0">home</span>
+          <span class="nav-label flex-1 text-left font-semibold">Home</span>
+        </button>
+
+        <!-- Tab 2: Downloads (Active Queue) -->
+        <button onclick="switchTab('transfers')" id="tab-btn-transfers" class="nav-item-btn" title="Downloads">
+          <span class="material-symbols-outlined text-lg shrink-0">download</span>
+          <span class="nav-label flex-1 text-left">Downloads</span>
+          <span id="transfersCountBadge" class="hidden nav-badge font-mono-nums text-[10px] px-2 py-0.5 rounded-full font-bold shrink-0">0</span>
+        </button>
+
+        <!-- Tab 3: Media Library -->
+        <button onclick="switchTab('downloads')" id="tab-btn-downloads" class="nav-item-btn" title="Media Library">
+          <span class="material-symbols-outlined text-lg shrink-0">video_library</span>
+          <span class="nav-label flex-1 text-left">Media Library</span>
+          <span id="downloadsCountBadge" class="nav-badge font-mono-nums text-[10px] px-2 py-0.5 rounded-full font-semibold shrink-0">0</span>
+        </button>
+
+        <!-- Tab 4: Settings -->
+        <button onclick="switchTab('settings')" id="tab-btn-settings" class="nav-item-btn" title="Settings">
+          <span class="material-symbols-outlined text-lg shrink-0">settings</span>
+          <span class="nav-label flex-1 text-left">Settings</span>
+        </button>
+      </nav>
+    </div>
+
+    <!-- Sidebar Bottom Section -->
+    <div class="p-3 border-t sidebar-footer flex flex-col gap-2" style="border-color: var(--border-hairline);">
+      <!-- Privacy Policy & Terms Links -->
+      <div class="px-2 pt-1 flex items-center justify-center gap-2 text-[11px] font-medium sidebar-legal-links" style="color: var(--text-dim);">
+        <button onclick="openLegalModal('privacy')" class="hover:underline hover:text-[#ff7a00] transition cursor-pointer" style="color: #8b949e;">Privacy Policy</button>
+        <span class="opacity-40">•</span>
+        <button onclick="openLegalModal('terms')" class="hover:underline hover:text-[#ff7a00] transition cursor-pointer" style="color: #8b949e;">Terms & Conditions</button>
+      </div>
+
+      <!-- Engine Ready Indicator (Permanent - Does not change) -->
+      <div class="p-2.5 rounded-xl border flex items-center gap-2.5 sidebar-footer-box shadow-md" style="background: #181c20; border-color: #272a33;" title="Engine Ready">
+        <div class="w-2.5 h-2.5 rounded-full shrink-0 bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.7)]"></div>
+        <div class="footer-meta overflow-hidden">
+          <p class="text-[11px] font-semibold truncate leading-tight" style="color: #ffffff;">Engine Ready</p>
+          <p class="text-[10px] truncate mt-0.5" style="color: #8b949e;">Direct high-speed streams</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==========================================================================
+       MAIN VIEWPORT (NO HEADER - CONTENT STARTS DIRECTLY AT TOP)
+       ========================================================================== -->
+  <main class="flex-1 flex flex-col h-screen overflow-y-auto p-4 sm:p-5 lg:p-6">
+
+    <!-- ======================================================================
+         VIEW 1: HOME (Two-Pane Studio Cockpit)
+         ====================================================================== -->
+    <section id="view-downloader" class="tab-view flex flex-col flex-1 h-[calc(100vh-48px)] min-h-[640px]">
+      
+      <!-- Two-Pane Studio Grid: Both Columns Expand Equally Vertically -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch flex-1 h-full min-h-0">
+        
+        <!-- LEFT PANE: Studio Input & Controls (Matching Exactly media_1794029984480_ecb397c3.jpg) (lg:col-span-6) -->
+        <div class="lg:col-span-6 flex flex-col gap-3.5 h-full min-h-0">
+          
+          <!-- CARD 1: Paste or Enter Media URL -->
+          <div class="p-4 sm:p-5 rounded-2xl border flex flex-col gap-3.5 shadow-lg" style="background: var(--bg-surface); border-color: var(--border-hairline);">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-base" style="color: #f8f9fa;">link</span>
+                <span class="text-xs sm:text-sm font-bold tracking-tight" style="color: #f8f9fa;">Paste or Enter Media URL</span>
+              </div>
+              <span class="text-[11px] font-medium flex items-center gap-1.5" style="color: #adb5bd;">
+                <span class="w-2 h-2 rounded-full" style="background: #ff6b00;"></span>
+                Auto-detects format
+              </span>
+            </div>
+
+            <!-- Command Bar Input Row -->
+            <div class="relative command-bar rounded-xl flex items-center justify-between py-1.5 px-3 gap-2 border" style="background: var(--bg-input); border-color: var(--border-subtle);">
+              <div class="flex items-center gap-2.5 flex-1 min-w-0">
+                <span class="material-symbols-outlined text-sm shrink-0" style="color: #ced4da;">link</span>
+                <input 
+                  type="text" 
+                  id="urlInput"
+                  placeholder="Paste any link (YouTube, Instagram, TikTok, X, Vimeo, Reddit...)" 
+                  class="w-full bg-transparent py-1 text-xs font-semibold focus:outline-none placeholder:text-neutral-500"
+                  style="color: var(--text-primary);"
+                  autocomplete="off"
+                  spellcheck="false"
+                >
+              </div>
+
+              <div class="flex items-center gap-1.5 shrink-0">
+                <span id="autoAnalyzingSpinner" class="hidden text-xs font-medium flex items-center gap-1.5 px-2" style="color: var(--accent-neon);">
+                  <span class="material-symbols-outlined text-sm animate-spin">progress_activity</span>
+                  <span class="text-[11px]">Analyzing...</span>
+                </span>
+
+                <button 
+                  type="button" 
+                  id="clearBtn"
+                  onclick="clearInput()" 
+                  class="hidden p-1.5 rounded-lg text-xs hover:text-white transition cursor-pointer"
+                  style="color: var(--text-dim);"
+                  title="Clear input (Esc)"
+                >
+                  <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+
+                <!-- Dedicated High-Visibility Orange Paste Button -->
+                <button 
+                  type="button" 
+                  id="pasteBtn"
+                  onclick="pasteClipboard(event)" 
+                  class="px-3.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all duration-150 cursor-pointer shadow-md select-none shrink-0"
+                  style="border: 2px solid #ff6b00; background: #261d18; color: #f8f9fa;"
+                  onmouseover="this.style.background='#36241b'; this.style.borderColor='#ff8533';"
+                  onmouseout="this.style.background='#261d18'; this.style.borderColor='#ff6b00';"
+                  title="Paste from clipboard (Ctrl+V)"
+                >
+                  <span class="material-symbols-outlined text-sm" style="color: #f8f9fa;">content_paste</span>
+                  <span>Paste</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 2: Save Destination -->
+          <div class="p-4 sm:p-5 rounded-2xl border flex flex-col gap-3 shadow-lg" style="background: var(--bg-surface); border-color: var(--border-hairline);">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-base" style="color: #f8f9fa;">hourglass_empty</span>
+              <span class="text-xs sm:text-sm font-bold tracking-tight" style="color: #f8f9fa;">Save Destination</span>
+            </div>
+
+            <!-- Destination Container -->
+            <div class="rounded-xl flex items-center justify-between px-3.5 py-2.5 gap-3 border transition group cursor-pointer hover:border-neutral-700" 
+                 style="background: var(--bg-input); border-color: var(--border-subtle);"
+                 onclick="browseNativeFolder('downloader')"
+                 title="Click to change destination folder"
+            >
+              <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                <!-- Filled Vibrant Orange Folder Icon -->
+                <span class="material-symbols-outlined text-base shrink-0" style="color: var(--accent-crimson); font-variation-settings: 'FILL' 1;">folder</span>
+                <span id="downloaderPathDisplay" class="text-xs font-semibold truncate select-all" style="color: #f8f9fa;">{{ download_dir }}</span>
+              </div>
+
+              <!-- Folder Outline Browse Button -->
+              <button 
+                type="button" 
+                onclick="event.stopPropagation(); browseNativeFolder('downloader');" 
+                class="p-1 rounded-md text-neutral-400 hover:text-white transition cursor-pointer shrink-0" 
+                title="Change Folder"
+              >
+                <span class="material-symbols-outlined text-base">folder_open</span>
+              </button>
+            </div>
+
+            <!-- Hidden input to preserve backward-compatible form value for settings loaders -->
+            <input type="hidden" id="downloaderPathInput" value="{{ download_dir }}">
+          </div>
+
+          <!-- CARD 3: Supported Websites -->
+          <div class="p-4 sm:p-5 rounded-2xl border flex flex-col gap-3.5 shadow-lg" style="background: var(--bg-surface); border-color: var(--border-hairline);">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-base" style="color: #f8f9fa;">public</span>
+              <span class="text-xs sm:text-sm font-bold tracking-tight" style="color: #f8f9fa;">Supported Websites</span>
+            </div>
+
+            <!-- Horizontal Row of Colorful Platform Badges -->
+            <div class="flex items-center gap-2.5 overflow-x-auto py-1 pr-1 no-scrollbar">
+              
+              <!-- YouTube -->
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow cursor-pointer transition hover:scale-105" style="background: #FF0000;" title="YouTube (Videos, Shorts, Playlists, MP3)">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 fill-white"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              </div>
+
+              <!-- Instagram -->
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow cursor-pointer transition hover:scale-105" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);" title="Instagram (Reels, Posts, Stories)">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 fill-white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </div>
+
+              <!-- TikTok -->
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow cursor-pointer transition hover:scale-105 border border-neutral-800" style="background: #010101;" title="TikTok (Watermark-free HD, Audio)">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 fill-white"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 2.89 3.5 2.71 1.43-.07 2.68-.99 3.09-2.36.19-.55.22-1.14.22-1.72.03-4.87.01-9.74.02-14.61z"/></svg>
+              </div>
+
+              <!-- X (Twitter) -->
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow cursor-pointer transition hover:scale-105 border border-neutral-800" style="background: #000000;" title="X / Twitter (HD Videos, GIFs, Spaces)">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 fill-white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </div>
+
+              <!-- Reddit -->
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow cursor-pointer transition hover:scale-105" style="background: #FF4500;" title="Reddit (Merged audio & video)">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 fill-white"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.702zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.197-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+              </div>
+
+              <!-- Vimeo -->
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow cursor-pointer transition hover:scale-105" style="background: #1AB7EA;" title="Vimeo (4K, High bitrate)">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 fill-white"><path d="M22.396 7.164c-.093 2.026-1.507 4.8-4.245 8.32C15.323 19.161 12.935 21 10.99 21c-1.214 0-2.24-1.12-3.08-3.36-.56-2.052-1.118-4.105-1.68-6.158-.622-2.24-1.29-3.36-2.004-3.36-.156 0-.7.328-1.634.98L1.4 7.632C2.71 6.48 4.18 5.345 5.81 4.225c1.464-1.008 2.607-1.528 3.432-1.56 1.944-.093 3.142 1.23 3.593 3.967.483 2.93.82 4.75 1.01 5.46.623 2.374 1.306 3.56 2.053 3.56.592 0 1.338-.826 2.24-2.478.9-1.652 1.385-2.88 1.455-3.685.125-1.292-.373-1.938-1.493-1.938-.528 0-1.072.12-1.633.36 1.09-3.56 3.174-5.26 6.25-5.1 2.27.124 3.328 1.556 3.176 4.293z"/></svg>
+              </div>
+
+              <!-- Facebook -->
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow cursor-pointer transition hover:scale-105" style="background: #1877F2;" title="Facebook (Reels, Public Videos)">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 fill-white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              </div>
+
+              <!-- SoundCloud -->
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow cursor-pointer transition hover:scale-105 border border-neutral-800" style="background: #26150a;" title="SoundCloud (HQ Audio)">
+                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="#FF5500"><path d="M1.175 12.225c-.051 0-.094.044-.102.102l-.248 2.392c-.007.066.036.11.102.11.058 0 .094-.044.102-.11l.248-2.392c.007-.058-.036-.102-.102-.102zm1.092-.888c-.066 0-.117.051-.124.117l-.372 3.282c-.007.073.044.124.117.124.066 0 .117-.051.124-.124l.372-3.282c.007-.066-.044-.117-.117-.117zm1.18-.846c-.08 0-.138.058-.145.138l-.408 4.128c-.007.08.051.138.138.138.08 0 .138-.058.145-.138l.408-4.128c.007-.08-.051-.138-.138-.138zm1.202-.38c-.087 0-.153.066-.16.153l-.422 4.493c-.007.087.058.153.153.153.087 0 .153-.066.16-.153l.422-4.493c.007-.087-.058-.153-.153-.153zm1.217-.072c-.095 0-.167.073-.175.168l-.372 4.632c-.007.095.066.168.168.168.095 0 .167-.073.175-.168l.372-4.632c.007-.095-.066-.168-.168-.168zm1.224.218c-.102 0-.182.08-.189.182l-.27 4.398c-.007.102.073.182.182.182.102 0 .182-.08.189-.182l.27-4.398c.007-.102-.073-.182-.182-.182zm1.231-.692c-.11 0-.196.087-.204.197l-.146 5.094c-.007.11.08.197.197.197.11 0 .196-.087.204-.197l.146-5.094c.007-.11-.08-.197-.197-.197zm1.238-.853c-.117 0-.211.095-.218.211l-.015 5.944c0 .117.087.211.211.211.117 0 .211-.095.218-.211l.015-5.944c0-.117-.087-.211-.211-.211zm1.61-1.631c-.13 0-.233.102-.24.233l-.131 7.575c0 .13.095.233.233.233.13 0 .233-.102.24-.233l.131-7.575c0-.13-.095-.233-.233-.233zm1.654-.867c-.146 0-.262.117-.269.262l-.08 8.442c0 .146.109.262.262.262.146 0 .262-.117.269-.262l.08-8.442c0-.146-.109-.262-.262-.262zm3.321-1.392a4.42 4.42 0 0 0-2.083.517.276.276 0 0 0-.131.24v9.846c0 .16.131.291.291.291h7.828c2.192 0 3.969-1.777 3.969-3.969 0-2.09-1.616-3.801-3.678-3.955a4.444 4.444 0 0 0-4.196-2.97z"/></svg>
+              </div>
+
+              <!-- Twitch -->
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow cursor-pointer transition hover:scale-105" style="background: #9146FF;" title="Twitch (Clips, VODs)">
+                <svg viewBox="0 0 24 24" class="w-4 h-4 fill-white"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>
+              </div>
+
+              <!-- + More... -->
+              <button 
+                type="button" 
+                onclick="openSupportedWebsitesModal()" 
+                class="text-xs font-semibold hover:text-white transition cursor-pointer select-none whitespace-nowrap pl-1" 
+                style="color: #adb5bd;"
+                title="View all 1,700+ supported sites"
+              >
+                + More...
+              </button>
+            </div>
+          </div>
+
+          <!-- Error Banner (Preserved for graceful error messaging) -->
+          <div id="errorBox" class="hidden rounded-xl p-3.5 text-xs border flex items-start justify-between gap-3 shadow-md" style="background: rgba(239, 68, 68, 0.12); border-color: rgba(239, 68, 68, 0.4); color: var(--text-primary);">
+            <div class="flex items-start gap-2">
+              <span class="material-symbols-outlined mt-0.5 text-base text-rose-500">error</span>
+              <div>
+                <p class="font-bold text-rose-400">Could not fetch media</p>
+                <p id="errorMessage" class="mt-0.5" style="color: var(--text-secondary);"></p>
+              </div>
+            </div>
+            <button onclick="hideError()" style="color: var(--text-muted);" class="hover:text-white cursor-pointer"><span class="material-symbols-outlined text-sm">close</span></button>
+          </div>
+
+        </div>
+
+        <!-- RIGHT PANE: Standby State OR Video Details (Stretches Full Height to Match Left Pane) (lg:col-span-6) -->
+        <div class="lg:col-span-6 flex flex-col gap-4 h-full min-h-0">
+          
+          <!-- Standby State (Shown when no video analyzed yet - Stretches Full Height) -->
+          <div id="downloaderRightStandby" class="p-6 sm:p-8 rounded-2xl border flex-1 flex flex-col items-center justify-between text-center gap-6 h-full shadow-2xl" style="background: var(--bg-surface); border-color: var(--border-hairline);">
+            
+            <!-- Top Status Tag -->
+            <div class="w-full flex items-center justify-between shrink-0">
+              <span class="text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5" style="color: var(--text-muted);">
+                <span class="w-2 h-2 rounded-full" style="background: var(--accent-neon);"></span>
+                Download Cockpit
+              </span>
+              <span class="text-[10px] px-2.5 py-0.5 rounded-full border font-mono-nums font-bold" style="background: var(--bg-surface-elevated); border-color: var(--border-hairline); color: var(--accent-neon);">High-Speed Streams</span>
+            </div>
+
+            <!-- Center Content -->
+            <div class="flex flex-col items-center justify-center my-auto max-w-md">
+              <div class="w-20 h-20 rounded-2xl flex items-center justify-center border shadow-2xl mb-4" style="background: var(--bg-surface-elevated); border-color: var(--border-subtle);">
+                <img src="/static/logo.png" alt="Dimple" class="w-12 h-12 object-contain">
+              </div>
+              <h3 class="text-base sm:text-lg font-bold tracking-tight uppercase" style="color: var(--text-primary);">Ready to Download</h3>
+              <p class="text-xs mt-2 leading-relaxed" style="color: var(--text-muted);">
+                Paste any media URL on the left pane to analyze formats, resolutions, audio tracks, and start multi-threaded high-speed streams.
+              </p>
+              
+              <div class="grid grid-cols-3 gap-3 w-full max-w-sm mt-5 text-center text-[11px] font-mono-nums">
+                <div class="p-3 rounded-lg border shadow-sm" style="background: var(--bg-surface-elevated); border-color: var(--border-hairline);">
+                  <span class="block font-bold text-xs" style="color: var(--accent-neon);">4K / 60fps</span>
+                  <span class="text-[10px]" style="color: var(--text-muted);">Ultra HD</span>
+                </div>
+                <div class="p-3 rounded-lg border shadow-sm" style="background: var(--bg-surface-elevated); border-color: var(--border-hairline);">
+                  <span class="block font-bold text-xs" style="color: var(--accent-neon);">320 kbps</span>
+                  <span class="text-[10px]" style="color: var(--text-muted);">Hi-Res Audio</span>
+                </div>
+                <div class="p-3 rounded-lg border shadow-sm" style="background: var(--bg-surface-elevated); border-color: var(--border-hairline);">
+                  <span class="block font-bold text-xs" style="color: var(--accent-neon);">1,700+</span>
+                  <span class="text-[10px]" style="color: var(--text-muted);">Websites</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Telemetry Banner -->
+            <div class="w-full p-3 rounded-lg border flex items-center justify-between text-xs shrink-0" style="background: var(--bg-surface-elevated); border-color: var(--border-hairline);">
+              <div class="flex items-center gap-2" style="color: var(--text-secondary);">
+                <span class="material-symbols-outlined text-sm" style="color: var(--accent-neon);">bolt</span>
+                <span class="text-[11px] font-bold">Automatic format & codec detection</span>
+              </div>
+              <span class="text-[10px] font-mono-nums font-bold px-2 py-0.5 rounded border" style="background: var(--bg-surface); border-color: var(--border-hairline); color: var(--text-muted);">v1.0 Pro</span>
+            </div>
+
+          </div>
+
+          <!-- Analyzed Video Details Deck (Shown when video analyzed - Stretches Full Height) -->
+          <div id="detailsCard" class="hidden p-5 rounded-2xl border flex-1 flex flex-col justify-between gap-4 h-full shadow-2xl min-h-0 overflow-y-auto" style="background: var(--bg-surface); border-color: var(--border-subtle);">
+            
+            <!-- TOP: Video Preview & Metadata -->
+            <div class="flex flex-col gap-3 p-3 rounded-xl border" style="background: var(--bg-surface-elevated); border-color: var(--border-hairline);">
+              <div class="relative w-full aspect-video rounded-lg overflow-hidden border bg-black shrink-0 group" style="border-color: var(--border-hairline);">
+                <img id="thumbImg" src="" alt="Thumbnail" class="w-full h-full object-cover">
+                <span id="durationBadge" class="absolute bottom-2 right-2 bg-black/85 font-mono-nums text-[10px] px-2 py-0.5 rounded font-semibold text-white shadow-md"></span>
+              </div>
+              <div class="flex flex-col gap-1">
+                <h3 id="videoTitle" class="text-xs md:text-sm font-bold leading-snug tracking-tight line-clamp-2" style="color: var(--text-primary);"></h3>
+                <div class="flex flex-wrap items-center gap-2 text-[11px] mt-0.5" style="color: var(--text-muted);">
+                  <span id="channelName" class="font-semibold flex items-center gap-1" style="color: var(--accent-neon);">
+                    <span class="material-symbols-outlined text-xs">account_circle</span>
+                    <span id="channelNameText"></span>
+                  </span>
+                  <span>•</span>
+                  <span id="viewCount" class="font-mono-nums"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- MIDDLE: Format Selection Buttons -->
+            <div class="flex flex-col gap-2.5">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider" style="color: var(--text-secondary);">Select Quality</span>
+                <span id="selectedQualitySummary" class="text-xs font-semibold px-2.5 py-0.5 rounded-full font-mono-nums" style="background: rgba(255, 107, 0, 0.15); color: #ff7a00; border: 1px solid rgba(255, 107, 0, 0.3);">Auto HD+</span>
+              </div>
+              <!-- Quality Options Grid -->
+              <div id="qualityOptions" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <!-- BOTTOM: Start Download CTA Button -->
+            <button 
+              id="downloadBtn" 
+              onclick="startDownload()" 
+              class="btn-crimson-solid w-full font-bold py-3 px-6 rounded-md text-xs flex items-center justify-center gap-2 tracking-wide cursor-pointer shadow-lg mt-1"
+            >
+              <span class="material-symbols-outlined text-sm">download</span>
+              <span id="downloadBtnText">Start Download (Best Available)</span>
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ======================================================================
+         VIEW 2: DOWNLOADS (Exact Match to media_1794031633338_39a23437.png)
+         ====================================================================== -->
+    <section id="view-transfers" class="tab-view hidden flex-1 flex flex-col h-[calc(100vh-48px)] min-h-[640px]">
+      
+      <!-- Outer Card Frame (Carbon Black rounded-2xl container) -->
+      <div class="rounded-2xl border p-5 sm:p-6 flex-1 flex flex-col min-h-0 shadow-2xl" 
+           style="background: #121518; border-color: #282d34;">
+        
+        <!-- Top Navigation & Action Header -->
+        <div class="flex items-center justify-between gap-4 mb-5 shrink-0 flex-wrap">
+          
+          <!-- Segmented Tab Switcher (Active / Completed) -->
+          <div class="p-1 rounded-2xl flex items-center gap-1.5 border" 
+               style="background: #181c20; border-color: #2b3036;">
+            
+            <!-- Active Tab Pill -->
+            <button 
+              type="button" 
+              id="downloadsTabBtnActive" 
+              onclick="switchDownloadsSubTab('active')"
+              class="px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all duration-200 cursor-pointer shadow-md select-none"
+              style="background: linear-gradient(135deg, #ff7a00, #ff5500); color: #ffffff; box-shadow: 0 4px 14px rgba(255, 107, 0, 0.35);"
+            >
+              <span class="material-symbols-outlined text-sm font-bold">swap_vert</span>
+              <span>Active</span>
+              <span id="transfersActiveCountBadge" class="rounded-full px-2 py-0.5 text-[11px] font-black" style="background: rgba(0, 0, 0, 0.28); color: #ffffff;">0</span>
+            </button>
+
+            <!-- Completed Tab Pill -->
+            <button 
+              type="button" 
+              id="downloadsTabBtnCompleted" 
+              onclick="switchDownloadsSubTab('completed')"
+              class="px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 transition-all duration-200 cursor-pointer select-none"
+              style="background: transparent; color: #ced4da;"
+              onmouseover="if(currentDownloadsSubTab!=='completed') this.style.color='#ffffff';"
+              onmouseout="if(currentDownloadsSubTab!=='completed') this.style.color='#ced4da';"
+            >
+              <span class="material-symbols-outlined text-sm" style="color: #8b949e;">check_circle</span>
+              <span>Completed</span>
+              <span id="transfersCompletedCountBadge" class="rounded-full px-2 py-0.5 text-[11px] font-bold" style="background: #24292f; color: #8b949e;">0</span>
+            </button>
+          </div>
+
+          <!-- Right Action Controls (Select All, Resume All, Pause All, Delete Selected) -->
+          <div class="flex items-center gap-3 shrink-0">
+            <!-- Select All Checkbox -->
+            <label class="flex items-center gap-2 text-xs font-bold cursor-pointer select-none text-[#adb5bd] hover:text-white transition">
+              <input 
+                type="checkbox" 
+                id="downloadsSelectAllCheckbox" 
+                onchange="toggleSelectAllDownloads(this.checked)"
+                class="w-4 h-4 rounded border border-[#3b424c] bg-transparent text-[#ff6b00] focus:ring-0 cursor-pointer"
+              >
+              <span>Select All</span>
+            </label>
+
+            <!-- Vertical Divider -->
+            <div class="w-[1px] h-4 bg-[#30363d] mx-1"></div>
+
+            <!-- Resume All Button -->
+            <button 
+              type="button" 
+              onclick="resumeAllDownloads()" 
+              class="p-2 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800 transition cursor-pointer" 
+              title="Resume All"
+            >
+              <span class="material-symbols-outlined text-base">play_arrow</span>
+            </button>
+
+            <!-- Pause All Button -->
+            <button 
+              type="button" 
+              onclick="pauseAllDownloads()" 
+              class="p-2 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800 transition cursor-pointer" 
+              title="Pause All"
+            >
+              <span class="material-symbols-outlined text-base">pause</span>
+            </button>
+
+            <!-- Delete / Clear Selected Button -->
+            <button 
+              type="button" 
+              onclick="batchDeleteOrClearDownloads()" 
+              class="p-2 rounded-lg text-neutral-400 hover:text-rose-400 hover:bg-neutral-800 transition cursor-pointer" 
+              title="Clear / Delete Selected"
+            >
+              <span class="material-symbols-outlined text-base">delete</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Downloads List Container (Scrollable Queue) -->
+        <div id="transfersListContainer" class="flex-1 flex flex-col gap-3.5 overflow-y-auto pr-1 min-h-0">
+          <!-- Populated dynamically via renderTransfersUI -->
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ======================================================================
+         VIEW 3: MEDIA LIBRARY (Exact Design from Reference Image)
+         ====================================================================== -->
+    <section id="view-downloads" class="tab-view hidden flex flex-col gap-3 flex-1 h-[calc(100vh-48px)] min-h-[620px]">
+      
+      <!-- Top Global Bar: Grid/List Toggle Pill, Wide Search Pill, Sort Button Pill -->
+      <div class="flex items-center justify-between gap-4 pb-1 shrink-0 select-none">
+        <!-- Left: Grid / List Toggle Pill -->
+        <div class="flex items-center p-1 rounded-2xl bg-[#16181d] border border-[#272a33] shrink-0">
+          <button id="viewModeGridBtn" onclick="setLibraryViewMode('grid')" class="w-9 h-8 rounded-xl flex items-center justify-center transition text-[#949ba4] hover:text-white" title="Grid View">
+            <span class="material-symbols-outlined text-lg">grid_view</span>
+          </button>
+          <button id="viewModeListBtn" onclick="setLibraryViewMode('list')" class="w-9 h-8 rounded-xl flex items-center justify-center transition bg-[#ff6400] text-white shadow-sm" title="List View">
+            <span class="material-symbols-outlined text-lg">format_list_bulleted</span>
+          </button>
+        </div>
+
+        <!-- Center: Rounded-Full Search Pill -->
+        <div class="relative flex items-center bg-[#16181d] border border-[#272a33] focus-within:border-[#ff6400] rounded-full px-4 py-2 w-80 sm:w-96 max-w-lg transition shadow-inner">
+          <span class="material-symbols-outlined text-base text-[#949ba4] mr-2.5 shrink-0">search</span>
+          <input 
+            type="text" 
+            id="librarySearchInput" 
+            placeholder="Search library..." 
+            oninput="handleLibrarySearch()"
+            class="w-full bg-transparent text-xs text-white placeholder-[#646b77] focus:outline-none"
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button id="libClearSearchBtn" onclick="clearLibrarySearch()" class="hidden text-xs text-[#949ba4] hover:text-white shrink-0 ml-1">
+            <span class="material-symbols-outlined text-sm">close</span>
+          </button>
+        </div>
+
+        <!-- Right: Sort Button Pill & Contextual Dropdown -->
+        <div class="relative shrink-0">
+          <button id="libSortBtn" onclick="toggleSortDropdown(event)" class="w-10 h-10 rounded-xl bg-[#16181d] border border-[#272a33] hover:border-[#ff6400] text-white flex items-center justify-center transition cursor-pointer" title="Sort media files">
+            <span class="material-symbols-outlined text-lg">swap_vert</span>
+          </button>
+
+          <!-- Floating Sort Dropdown Menu -->
+          <div id="libSortDropdown" class="hidden absolute right-0 top-12 z-40 bg-[#16181d] border border-[#272a33] rounded-xl shadow-2xl p-1.5 w-44 flex flex-col gap-0.5 text-xs font-bold select-none">
+            <button onclick="setSortOrder('date-desc')" class="sort-option-btn w-full text-left px-3 py-2 rounded-lg hover:bg-[#ff6400] hover:text-white text-white bg-[#ff6400]/20 flex items-center justify-between transition" data-sort="date-desc">
+              <span>Newest First</span>
+              <span class="material-symbols-outlined text-xs sort-check">check</span>
+            </button>
+            <button onclick="setSortOrder('date-asc')" class="sort-option-btn w-full text-left px-3 py-2 rounded-lg hover:bg-[#ff6400] hover:text-white text-[#949ba4] flex items-center justify-between transition" data-sort="date-asc">
+              <span>Oldest First</span>
+              <span class="material-symbols-outlined text-xs sort-check hidden">check</span>
+            </button>
+            <button onclick="setSortOrder('name-asc')" class="sort-option-btn w-full text-left px-3 py-2 rounded-lg hover:bg-[#ff6400] hover:text-white text-[#949ba4] flex items-center justify-between transition" data-sort="name-asc">
+              <span>Name (A → Z)</span>
+              <span class="material-symbols-outlined text-xs sort-check hidden">check</span>
+            </button>
+            <button onclick="setSortOrder('name-desc')" class="sort-option-btn w-full text-left px-3 py-2 rounded-lg hover:bg-[#ff6400] hover:text-white text-[#949ba4] flex items-center justify-between transition" data-sort="name-desc">
+              <span>Name (Z → A)</span>
+              <span class="material-symbols-outlined text-xs sort-check hidden">check</span>
+            </button>
+            <button onclick="setSortOrder('size-desc')" class="sort-option-btn w-full text-left px-3 py-2 rounded-lg hover:bg-[#ff6400] hover:text-white text-[#949ba4] flex items-center justify-between transition" data-sort="size-desc">
+              <span>Size (Largest)</span>
+              <span class="material-symbols-outlined text-xs sort-check hidden">check</span>
+            </button>
+            <button onclick="setSortOrder('size-asc')" class="sort-option-btn w-full text-left px-3 py-2 rounded-lg hover:bg-[#ff6400] hover:text-white text-[#949ba4] flex items-center justify-between transition" data-sort="size-asc">
+              <span>Size (Smallest)</span>
+              <span class="material-symbols-outlined text-xs sort-check hidden">check</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Split Workspace: Left Panel (Your Library) & Right Panel (Dedicated Player Theater) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch flex-1 min-h-0 h-full">
+        
+        <!-- LEFT COLUMN: "Your Library" (lg:col-span-5) -->
+        <div class="lg:col-span-5 bg-[#16181d] border border-[#272a33] rounded-2xl p-4 sm:p-5 flex flex-col justify-between overflow-hidden shadow-2xl min-w-0 h-full">
+          
+          <!-- Header: Pill + "Your Library" + "All Videos" + "All Audio" -->
+          <div class="flex items-center justify-between pb-3 shrink-0 select-none">
+            <div class="flex items-center gap-2.5">
+              <span class="w-1.5 h-5 rounded-full bg-[#ff6400] shrink-0"></span>
+              <h3 class="text-base font-bold text-white tracking-tight">Your Library</h3>
+            </div>
+            <div class="flex items-center gap-2">
+              <button id="libFilterVideosBtn" onclick="toggleLibraryMediaType('video')" class="lib-filter-pill active text-xs px-3.5 py-1 rounded-full font-bold transition">All Videos</button>
+              <button id="libFilterAudioBtn" onclick="toggleLibraryMediaType('audio')" class="lib-filter-pill text-xs px-3.5 py-1 rounded-full font-bold transition">All Audio</button>
+            </div>
+          </div>
+
+          <!-- List / Grid Container (8 items per page) -->
+          <div id="downloadsListContainer" class="flex-1 overflow-y-auto my-2 pr-1 space-y-2 custom-scroll min-h-0">
+            <!-- Dynamically populated with items -->
+          </div>
+
+          <!-- Bottom Pagination Controls -->
+          <div class="flex items-center justify-between pt-3 border-t border-[#272a33] text-xs shrink-0 select-none">
+            <span id="libItemCountLabel" class="text-xs text-[#949ba4] font-mono-nums font-bold">Showing 1-8 of 8 items</span>
+            <div class="flex items-center gap-2">
+              <button onclick="changePage(-1)" id="prevPageBtn" class="text-xs text-[#949ba4] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition font-bold" title="Previous Page">&lt; Prev</button>
+              <div id="paginationNumbersContainer" class="flex items-center gap-1 font-mono-nums">
+                <!-- Page pills rendered here -->
+              </div>
+              <button onclick="changePage(1)" id="nextPageBtn" class="text-xs text-[#949ba4] hover:text-white disabled:opacity-30 disabled:pointer-events-none transition font-bold" title="Next Page">Next &gt;</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Dedicated Preview Player Theater (lg:col-span-7) -->
+        <div class="lg:col-span-7 bg-[#16181d] border border-[#272a33] rounded-2xl p-4 sm:p-5 flex flex-col justify-between overflow-hidden shadow-2xl min-w-0 h-full">
+          
+          <!-- Top Bar: Orange Pill + Video Title -->
+          <div class="flex items-center justify-between pb-3 shrink-0 select-none">
+            <div class="flex items-center gap-2.5 overflow-hidden min-w-0 pr-3">
+              <span class="w-1.5 h-5 rounded-full bg-[#ff6400] shrink-0"></span>
+              <p id="playerActiveTitle" class="text-xs sm:text-sm font-bold truncate text-white" title="">Ready for Playback</p>
+            </div>
+          </div>
+
+          <!-- Video Viewport: 16:9 Cinema Aspect Ratio -->
+          <div id="playerVideoContainer" class="relative w-full aspect-video rounded-2xl overflow-hidden bg-black flex items-center justify-center my-auto border border-[#272a33] group">
+            <video id="libraryVideoPlayer" playsinline preload="metadata" class="w-full h-full object-contain cursor-pointer" onclick="togglePlayPause()" ondblclick="togglePlayerFullscreen()"></video>
+            
+            <!-- Video Overlay Play/Pause button on hover -->
+            <div id="playerCenterOverlayBtn" onclick="togglePlayPause()" class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+              <div class="w-14 h-14 rounded-full bg-black/60 backdrop-blur border border-white/20 flex items-center justify-center text-white shadow-2xl">
+                <span id="playerOverlayPlayIcon" class="material-symbols-outlined text-3xl">play_arrow</span>
+              </div>
+            </div>
+
+            <!-- HUD Feedback Toast -->
+            <div id="playerHudFeedback" class="hidden absolute pointer-events-none px-3.5 py-1.5 rounded-lg bg-black/85 backdrop-blur border border-white/20 text-white font-mono-nums text-xs font-bold flex items-center gap-2 transition-opacity shadow-2xl z-30">
+              <span id="playerHudIcon" class="material-symbols-outlined text-base text-[#ff6400]">play_arrow</span>
+              <span id="playerHudText">Playing</span>
+            </div>
+          </div>
+
+          <!-- Player Controls Suite -->
+          <div class="flex flex-col gap-2 pt-3 shrink-0">
+            
+            <!-- Scrubber / Progress Bar -->
+            <div id="playerScrubberContainer" class="relative w-full h-4 flex items-center cursor-pointer group select-none" onmousedown="startScrubbing(event)" onmousemove="updateScrubberHover(event)" onmouseleave="hideScrubberTooltip()">
+              <div class="w-full h-1 bg-[#272a33] rounded-full overflow-hidden">
+                <div id="playerScrubberFill" class="h-full bg-[#ff6400] rounded-full" style="width: 0%;"></div>
+              </div>
+              <div id="playerScrubberThumb" class="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-3.5 h-3.5 bg-[#ff6400] rounded-full shadow-[0_0_8px_rgba(255,100,0,0.8)] transition-transform group-hover:scale-125 pointer-events-none" style="left: 0%;"></div>
+              <div id="playerScrubberTooltip" class="hidden absolute -top-7 -translate-x-1/2 px-2 py-0.5 rounded bg-black/90 border border-white/20 text-white text-[10px] font-mono-nums pointer-events-none z-30">00:00</div>
+            </div>
+
+            <!-- Time Display & Volume / PiP / Fullscreen Row -->
+            <div class="flex items-center justify-between text-xs py-1 select-none">
+              <div class="text-xs text-[#949ba4] font-mono-nums">
+                <span id="playerCurrentTime" class="text-white font-bold">00:00</span> / <span id="playerDuration" class="font-bold">00:00</span>
+              </div>
+              <div class="flex items-center gap-3">
+                <button onclick="togglePlayerMute()" class="text-[#949ba4] hover:text-white transition cursor-pointer" title="Mute / Unmute (M)">
+                  <span id="playerVolumeIcon" class="material-symbols-outlined text-base">volume_up</span>
+                </button>
+                <input type="range" id="playerVolumeSlider" min="0" max="1" step="0.02" value="1" oninput="setPlayerVolume(this.value)" class="w-20 h-1 accent-[#ff6400] cursor-pointer">
+                <button onclick="togglePlayerPiP()" id="playerPiPBtn" class="text-[#949ba4] hover:text-[#ff6400] transition cursor-pointer" title="Picture in Picture (P)">
+                  <span id="playerPiPIcon" class="material-symbols-outlined text-base">picture_in_picture_alt</span>
+                </button>
+                <button onclick="togglePlayerFullscreen()" class="text-[#949ba4] hover:text-white transition cursor-pointer" title="Fullscreen (F)">
+                  <span class="material-symbols-outlined text-base">fullscreen</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Bottom Playback Dock / Island -->
+            <div class="flex items-center justify-center gap-3 pt-2.5 border-t border-[#272a33] shrink-0 select-none">
+              <button onclick="playAdjacentItem(-1)" class="text-[#949ba4] hover:text-white transition p-1.5 rounded-lg hover:bg-[#1c1f26] cursor-pointer" title="Previous Media ([)">
+                <span class="material-symbols-outlined text-2xl">skip_previous</span>
+              </button>
+              <button onclick="seekRelative(-10)" class="text-[#949ba4] hover:text-white transition p-1.5 rounded-lg hover:bg-[#1c1f26] cursor-pointer" title="Rewind 10s (J)">
+                <span class="material-symbols-outlined text-2xl">replay_10</span>
+              </button>
+              
+              <!-- Center Prominent Play/Pause Button -->
+              <button onclick="togglePlayPause()" id="playerCenterPlayBtn" class="w-10 h-10 rounded-full flex items-center justify-center text-white hover:text-[#ff6400] transition cursor-pointer" title="Play / Pause (Space)">
+                <span id="playerCenterPlayIcon" class="material-symbols-outlined text-3xl">play_arrow</span>
+              </button>
+
+              <button onclick="seekRelative(10)" class="text-[#949ba4] hover:text-white transition p-1.5 rounded-lg hover:bg-[#1c1f26] cursor-pointer" title="Forward 10s (L)">
+                <span class="material-symbols-outlined text-2xl">forward_10</span>
+              </button>
+              <button onclick="playAdjacentItem(1)" class="text-[#949ba4] hover:text-white transition p-1.5 rounded-lg hover:bg-[#1c1f26] cursor-pointer" title="Next Media (])">
+                <span class="material-symbols-outlined text-2xl">skip_next</span>
+              </button>
+
+              <div class="w-px h-5 bg-[#272a33] mx-2"></div>
+
+              <!-- Speed Selector Pill -->
+              <div class="relative">
+                <button onclick="toggleSpeedDropdown(event)" id="playerSpeedBtn" class="bg-[#1c1f26] border border-[#272a33] hover:border-[#ff6400] px-2.5 py-1 rounded-lg text-xs font-bold text-white flex items-center gap-1 cursor-pointer transition">
+                  <span id="playerSpeedLabel">1x</span>
+                  <span class="material-symbols-outlined text-xs">keyboard_arrow_down</span>
+                </button>
+                <div id="playerSpeedMenu" class="hidden absolute bottom-9 right-0 z-40 bg-[#16181d] border border-[#272a33] rounded-xl shadow-2xl p-1 w-24 flex flex-col gap-0.5 text-xs font-bold select-none">
+                  <button onclick="setPlayerSpeed(0.5)" class="speed-opt-btn px-2.5 py-1.5 text-left rounded-lg text-[#949ba4] hover:bg-[#ff6400] hover:text-white transition">0.5x</button>
+                  <button onclick="setPlayerSpeed(0.75)" class="speed-opt-btn px-2.5 py-1.5 text-left rounded-lg text-[#949ba4] hover:bg-[#ff6400] hover:text-white transition">0.75x</button>
+                  <button onclick="setPlayerSpeed(1)" class="speed-opt-btn px-2.5 py-1.5 text-left rounded-lg text-white bg-[#ff6400] transition">1x</button>
+                  <button onclick="setPlayerSpeed(1.25)" class="speed-opt-btn px-2.5 py-1.5 text-left rounded-lg text-[#949ba4] hover:bg-[#ff6400] hover:text-white transition">1.25x</button>
+                  <button onclick="setPlayerSpeed(1.5)" class="speed-opt-btn px-2.5 py-1.5 text-left rounded-lg text-[#949ba4] hover:bg-[#ff6400] hover:text-white transition">1.5x</button>
+                  <button onclick="setPlayerSpeed(2)" class="speed-opt-btn px-2.5 py-1.5 text-left rounded-lg text-[#949ba4] hover:bg-[#ff6400] hover:text-white transition">2x</button>
+                </div>
+              </div>
+
+              <div class="w-px h-5 bg-[#272a33] mx-2"></div>
+
+              <!-- Keyboard Shortcuts Icon Button -->
+              <button onclick="toggleShortcutsGuide()" class="bg-[#1c1f26] border border-[#272a33] hover:border-[#ff6400] p-1.5 rounded-lg text-[#949ba4] hover:text-white cursor-pointer transition" title="Shortcuts">
+                <span class="material-symbols-outlined text-base">keyboard</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ======================================================================
+         VIEW 4: SETTINGS (Open Flat Sections, No Nested Containers)
+         ====================================================================== -->
+    <section id="view-settings" class="tab-view hidden flex flex-col gap-6 max-w-4xl">
+
+      <!-- Section 1: Product License & Activation (Open View) -->
+      <div class="pb-6 border-b flex flex-col gap-3" style="border-color: var(--border-hairline);">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span class="material-symbols-outlined text-lg" style="color: var(--accent-neon);">verified_user</span>
+            <div>
+              <h3 class="text-sm font-bold" style="color: var(--text-primary);">Product License</h3>
+            </div>
+          </div>
+          <span id="settingsLicenseBadge" class="font-mono-nums text-[10px] px-2.5 py-0.5 rounded-full border font-bold shadow-sm" style="background: var(--tab-active-bg); border-color: var(--accent-crimson); color: #ffffff;">Lifetime Pro</span>
+        </div>
+
+        <div class="flex items-center justify-between gap-3 pt-2">
+          <div>
+            <span class="text-[10px] uppercase font-bold tracking-wider block" style="color: var(--text-muted);">Product Key</span>
+            <p id="settingsLicenseKeyDisplay" class="font-mono-nums text-xs font-bold mt-0.5" style="color: var(--text-primary);">DIMPLE-****-****-****</p>
+          </div>
+          <button type="button" onclick="showLicenseModal(false)" class="btn-ghost-crimson text-xs px-3 py-1.5 rounded-md font-semibold">
+            Change Key
+          </button>
+        </div>
+      </div>
+
+      <!-- Section 2: Default Storage Location (Open View) -->
+      <div class="pb-6 border-b flex flex-col gap-3" style="border-color: var(--border-hairline);">
+        <div class="flex items-center gap-2.5">
+          <span class="material-symbols-outlined text-lg" style="color: var(--accent-crimson);">folder</span>
+          <div>
+            <h3 class="text-sm font-bold" style="color: var(--text-primary);">Default Storage Location</h3>
+          </div>
+        </div>
+
+        <!-- Quick Presets -->
+        <div class="flex items-center gap-1.5 flex-wrap pt-1">
+          <span class="text-[10px] uppercase font-bold tracking-wider mr-1" style="color: var(--text-muted);">Presets:</span>
+          <div id="settingsPresetsList" class="flex items-center gap-1.5 flex-wrap"></div>
+        </div>
+
+        <!-- Path Input & Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-1">
+          <div class="relative flex-1">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-xs" style="color: var(--accent-crimson);">folder</span>
+            <input 
+              type="text" 
+              id="settingsDownloadDirInput" 
+              class="w-full rounded-md pl-8 pr-3 py-2 text-xs font-mono-nums focus:outline-none border"
+              style="background-color: var(--bg-input); border-color: var(--border-hairline); color: var(--text-primary);"
+            >
+          </div>
+          <button 
+            type="button" 
+            id="settingsBrowseBtn"
+            onclick="browseNativeFolder('settings')" 
+            class="btn-ghost-crimson px-3 py-2 text-xs font-medium rounded-md flex items-center justify-center gap-1.5 shrink-0"
+          >
+            <span class="material-symbols-outlined text-xs" style="color: var(--accent-neon);">drive_file_move</span>
+            <span>Browse...</span>
+          </button>
+          <button onclick="openActiveFolder()" class="btn-ghost-crimson text-xs font-medium px-3 py-2 rounded-md shrink-0">Open Folder</button>
+          <button onclick="saveSettingsDirectory()" class="btn-crimson-solid text-xs font-semibold px-4 py-2 rounded-md shrink-0">Save Location</button>
+        </div>
+        <span id="pathSaveNotice" class="text-[11px] hidden flex items-center gap-1.5 font-semibold" style="color: var(--accent-neon);">
+          <span class="material-symbols-outlined text-xs">check</span> Saved successfully
+        </span>
+      </div>
+
+      <!-- Section 3: Browser Cookies & Session (Open View) -->
+      <div class="pb-6 border-b flex flex-col gap-3" style="border-color: var(--border-hairline);">
+        <div class="flex items-center gap-2.5">
+          <span class="material-symbols-outlined text-lg" style="color: var(--accent-crimson);">cookie</span>
+          <div>
+            <h3 class="text-sm font-bold" style="color: var(--text-primary);">Browser Cookies & Session</h3>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between gap-3 pt-1">
+          <span class="text-xs" style="color: var(--text-secondary);">Cookie Source:</span>
+          <select id="settingsCookiesBrowser" onchange="saveSettingsCookies()" class="text-xs py-1.5 px-3 rounded-md border font-medium focus:outline-none cursor-pointer" style="background-color: var(--bg-input); border-color: var(--border-hairline); color: var(--text-primary);">
+            <option value="none">None (Direct Engine)</option>
+            <option value="edge">Microsoft Edge</option>
+            <option value="chrome">Google Chrome</option>
+            <option value="firefox">Mozilla Firefox</option>
+            <option value="brave">Brave Browser</option>
+          </select>
+        </div>
+        <div class="flex items-center gap-2 text-xs" style="color: var(--text-muted);">
+          <span>Engine Status:</span>
+          <span class="text-emerald-600 font-bold flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            Direct Node.js Engine Active
+          </span>
+        </div>
+      </div>
+
+      <!-- Section 4: System Diagnostics & Legal Links (Open View) -->
+      <div class="flex flex-col gap-3">
+        <div class="flex items-center gap-2.5">
+          <span class="material-symbols-outlined text-lg" style="color: var(--accent-neon);">memory</span>
+          <div>
+            <h3 class="text-sm font-bold" style="color: var(--text-primary);">System Diagnostics</h3>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 text-xs font-mono-nums pt-1">
+          <div class="p-3 rounded-md border flex flex-col gap-1" style="background: var(--bg-surface-elevated); border-color: var(--border-hairline);">
+            <span class="text-[10px] uppercase font-bold" style="color: var(--text-muted);">Core Engine</span>
+            <span id="settingsYtdlpVer" class="font-bold text-xs" style="color: var(--text-primary);">yt-dlp</span>
+          </div>
+          <div class="p-3 rounded-md border flex flex-col gap-1" style="background: var(--bg-surface-elevated); border-color: var(--border-hairline);">
+            <span class="text-[10px] uppercase font-bold" style="color: var(--text-muted);">FFmpeg Converter</span>
+            <span id="settingsFfmpeg" class="font-bold text-xs" style="color: var(--text-primary);">Bundled FFmpeg</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 pt-3 text-xs font-semibold">
+          <button onclick="openLegalModal('privacy')" class="hover:underline cursor-pointer" style="color: var(--accent-neon);">Privacy Policy</button>
+          <span class="opacity-30">•</span>
+          <button onclick="openLegalModal('terms')" class="hover:underline cursor-pointer" style="color: var(--accent-neon);">Terms & Conditions</button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       FLOATING 3-DOTS CONTEXT MENU & SHORTCUTS MODAL
+       ========================================================================== -->
+  <!-- Floating 3-Dots Context Menu -->
+  <div id="libContextMenu" class="hidden fixed z-50 bg-[#16181d] border border-[#272a33] rounded-xl shadow-2xl p-1.5 text-xs font-bold w-52 select-none">
+    <button onclick="contextActionPlay()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-[#ff6400] hover:text-white text-white flex items-center gap-2.5 transition cursor-pointer">
+      <span class="material-symbols-outlined text-base">play_arrow</span>
+      <span>Play in Theater</span>
+    </button>
+    <button onclick="contextActionOpenFile()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-[#ff6400] hover:text-white text-white flex items-center gap-2.5 transition cursor-pointer">
+      <span class="material-symbols-outlined text-base">open_in_new</span>
+      <span>Open in Windows Player</span>
+    </button>
+    <button onclick="contextActionReveal()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-[#ff6400] hover:text-white text-white flex items-center gap-2.5 transition cursor-pointer">
+      <span class="material-symbols-outlined text-base">folder_open</span>
+      <span>Reveal in File Explorer</span>
+    </button>
+    <button onclick="contextActionCopyPath()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-[#ff6400] hover:text-white text-white flex items-center gap-2.5 transition cursor-pointer">
+      <span class="material-symbols-outlined text-base">content_copy</span>
+      <span>Copy File Path</span>
+    </button>
+    <div class="h-px bg-[#272a33] my-1"></div>
+    <button onclick="contextActionDelete()" class="w-full text-left px-3 py-2 rounded-lg hover:bg-rose-600 hover:text-white text-rose-400 flex items-center gap-2.5 transition cursor-pointer">
+      <span class="material-symbols-outlined text-base">delete</span>
+      <span>Delete File</span>
+    </button>
+  </div>
+
+  <!-- Player Keyboard Shortcuts Modal -->
+  <div id="libShortcutsModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#16181d] border border-[#272a33] rounded-2xl p-6 max-w-lg w-full shadow-2xl flex flex-col gap-4 select-none">
+      <div class="flex items-center justify-between pb-3 border-b border-[#272a33]">
+        <div class="flex items-center gap-2.5">
+          <span class="w-1.5 h-5 rounded-full bg-[#ff6400]"></span>
+          <h3 class="text-sm font-bold text-white uppercase tracking-wider">Player Keyboard Shortcuts</h3>
+        </div>
+        <button onclick="toggleShortcutsGuide()" class="text-[#949ba4] hover:text-white p-1 rounded-lg cursor-pointer">
+          <span class="material-symbols-outlined text-base">close</span>
+        </button>
+      </div>
+      <div class="grid grid-cols-2 gap-2.5 text-xs font-mono-nums">
+        <div class="flex items-center justify-between bg-[#111216] p-2.5 rounded-lg border border-[#272a33]"><kbd class="bg-[#1c1f26] border border-[#343a40] px-2 py-0.5 rounded text-[10px] font-bold text-white">SPACE / K</kbd> <span class="text-[#949ba4] font-bold">Play / Pause</span></div>
+        <div class="flex items-center justify-between bg-[#111216] p-2.5 rounded-lg border border-[#272a33]"><kbd class="bg-[#1c1f26] border border-[#343a40] px-2 py-0.5 rounded text-[10px] font-bold text-white">F</kbd> <span class="text-[#949ba4] font-bold">Fullscreen</span></div>
+        <div class="flex items-center justify-between bg-[#111216] p-2.5 rounded-lg border border-[#272a33]"><kbd class="bg-[#1c1f26] border border-[#343a40] px-2 py-0.5 rounded text-[10px] font-bold text-white">M</kbd> <span class="text-[#949ba4] font-bold">Mute</span></div>
+        <div class="flex items-center justify-between bg-[#111216] p-2.5 rounded-lg border border-[#272a33]"><kbd class="bg-[#1c1f26] border border-[#343a40] px-2 py-0.5 rounded text-[10px] font-bold text-white">J / L</kbd> <span class="text-[#949ba4] font-bold">-10s / +10s</span></div>
+        <div class="flex items-center justify-between bg-[#111216] p-2.5 rounded-lg border border-[#272a33]"><kbd class="bg-[#1c1f26] border border-[#343a40] px-2 py-0.5 rounded text-[10px] font-bold text-white">← / →</kbd> <span class="text-[#949ba4] font-bold">-5s / +5s</span></div>
+        <div class="flex items-center justify-between bg-[#111216] p-2.5 rounded-lg border border-[#272a33]"><kbd class="bg-[#1c1f26] border border-[#343a40] px-2 py-0.5 rounded text-[10px] font-bold text-white">↑ / ↓</kbd> <span class="text-[#949ba4] font-bold">Volume ±5%</span></div>
+        <div class="flex items-center justify-between bg-[#111216] p-2.5 rounded-lg border border-[#272a33]"><kbd class="bg-[#1c1f26] border border-[#343a40] px-2 py-0.5 rounded text-[10px] font-bold text-white">[ / ]</kbd> <span class="text-[#949ba4] font-bold">Prev / Next</span></div>
+        <div class="flex items-center justify-between bg-[#111216] p-2.5 rounded-lg border border-[#272a33]"><kbd class="bg-[#1c1f26] border border-[#343a40] px-2 py-0.5 rounded text-[10px] font-bold text-white">&lt; / &gt;</kbd> <span class="text-[#949ba4] font-bold">Speed -/+</span></div>
+        <div class="flex items-center justify-between bg-[#111216] p-2.5 rounded-lg border border-[#272a33]"><kbd class="bg-[#1c1f26] border border-[#343a40] px-2 py-0.5 rounded text-[10px] font-bold text-white">P</kbd> <span class="text-[#949ba4] font-bold">Picture-in-Picture</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       LICENSE ACTIVATION MODAL (Offline Mathematical Key Verification)
+       ========================================================================== -->
+  <div id="licenseModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+    <div class="rounded-lg max-w-md w-full p-6 flex flex-col gap-5 border shadow-2xl" style="border-color: var(--border-active); background: var(--bg-surface);">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-lg flex items-center justify-center border shrink-0" style="background: var(--bg-surface-elevated); border-color: var(--border-hairline);">
+          <img src="/static/logo.png" alt="Dimple" class="w-8 h-8 object-contain">
+        </div>
+        <div>
+          <h3 class="text-sm font-bold tracking-tight" style="color: var(--text-primary);">Dimple Pro Activation</h3>
+          <p class="text-[11px] mt-0.5" style="color: var(--text-muted);">Enter your product license key to unlock</p>
+        </div>
+      </div>
+
+      <!-- Key Input Area -->
+      <div class="flex flex-col gap-2">
+        <label class="text-[11px] font-semibold" style="color: var(--text-secondary);">License Key</label>
+        <div class="relative">
+          <input 
+            type="text" 
+            id="licenseKeyInput" 
+            placeholder="DIMPLE-XXXX-XXXX-XXXX-XXXX" 
+            class="w-full py-2.5 pl-3 pr-20 rounded-md text-xs font-mono-nums font-bold tracking-wider uppercase border focus:outline-none"
+            style="background-color: var(--bg-input); border-color: var(--border-hairline); color: var(--text-primary);"
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button 
+            type="button" 
+            onclick="pasteLicenseKey()"
+            class="btn-ghost-crimson absolute right-1.5 top-1/2 -translate-y-1/2 text-[10px] font-semibold px-2 py-1 rounded"
+          >
+            Paste
+          </button>
+        </div>
+        <p id="licenseModalError" class="text-[11px] hidden text-rose-500 font-medium"></p>
+        <p id="licenseModalSuccess" class="text-[11px] hidden text-emerald-400 font-medium"></p>
+      </div>
+
+      <!-- Keygen Helper Info -->
+      <div class="p-3 rounded-md border text-[11px] flex flex-col gap-1" style="background: var(--bg-surface-elevated); border-color: var(--border-hairline); color: var(--text-muted);">
+        <div class="flex items-center gap-1.5 font-bold" style="color: var(--text-primary);">
+          <span class="material-symbols-outlined text-xs" style="color: var(--accent-neon);">vpn_key</span>
+          <span>Personal Offline Keygen Available</span>
+        </div>
+        <p>Run <code class="font-mono-nums text-[10px] px-1.5 py-0.5 rounded bg-neutral-100 border border-neutral-300 font-semibold" style="color: var(--accent-crimson);">Dimple_Keygen.exe</code> in your installation folder to generate authentic Pro keys.</p>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex items-center justify-end gap-2 pt-2 border-t" style="border-color: var(--border-hairline);">
+        <button 
+          type="button" 
+          id="licenseModalCancelBtn"
+          onclick="closeLicenseModal()" 
+          class="btn-ghost-crimson text-xs font-medium px-3 py-2 rounded-md"
+        >
+          Cancel
+        </button>
+        <button 
+          type="button" 
+          id="licenseModalActivateBtn"
+          onclick="submitLicenseActivation()" 
+          class="btn-crimson-solid text-xs font-bold px-4 py-2 rounded-md flex items-center gap-1.5"
+        >
+          <span class="material-symbols-outlined text-xs">verified</span>
+          <span>Activate License</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       LEGAL MODAL POPUP (Privacy Policy & Terms of Conditions)
+       ========================================================================== -->
+  <div id="legalModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm transition-opacity duration-200">
+    <div class="rounded-lg max-w-2xl w-full max-h-[85vh] flex flex-col border shadow-2xl overflow-hidden" style="border-color: var(--border-subtle); background: var(--bg-surface);">
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b flex items-center justify-between shrink-0" style="border-color: var(--border-hairline);">
+        <div class="flex items-center gap-2.5">
+          <span id="legalModalIcon" class="material-symbols-outlined text-lg" style="color: var(--accent-neon);">policy</span>
+          <h3 id="legalModalTitle" class="text-sm font-bold tracking-tight" style="color: var(--text-primary);">Privacy Policy</h3>
+        </div>
+        <button onclick="closeLegalModal()" class="btn-ghost-crimson w-8 h-8 rounded-md flex items-center justify-center text-xs transition cursor-pointer" title="Close (Esc)">
+          <span class="material-symbols-outlined text-base">close</span>
+        </button>
+      </div>
+
+      <!-- Scrollable Modal Body -->
+      <div id="legalModalBody" class="px-6 py-5 overflow-y-auto text-xs leading-relaxed flex flex-col gap-4 font-normal" style="color: var(--text-secondary);">
+        <!-- Injected dynamically -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-3.5 border-t flex items-center justify-end shrink-0" style="border-color: var(--border-hairline); background: var(--bg-surface-elevated);">
+        <button onclick="closeLegalModal()" class="btn-crimson-solid text-xs font-semibold px-4 py-2 rounded-md transition cursor-pointer">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       ALL 1,700+ SUPPORTED WEBSITES MODAL (+ More...)
+       ========================================================================== -->
+  <div id="supportedWebsitesModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md transition-opacity duration-200">
+    <div class="rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col border shadow-2xl overflow-hidden" style="border-color: var(--border-subtle); background: var(--bg-surface);">
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b flex items-center justify-between shrink-0" style="border-color: var(--border-hairline);">
+        <div class="flex items-center gap-2.5">
+          <span class="material-symbols-outlined text-lg" style="color: var(--accent-crimson);">public</span>
+          <div>
+            <h3 class="text-sm font-bold tracking-tight" style="color: var(--text-primary);">Supported Websites & Platforms</h3>
+            <p class="text-[11px]" style="color: var(--text-muted);">Direct high-speed stream downloads across 1,700+ services.</p>
+          </div>
+        </div>
+        <button onclick="closeSupportedWebsitesModal()" class="p-1.5 rounded-lg text-neutral-400 hover:text-white transition cursor-pointer" title="Close">
+          <span class="material-symbols-outlined text-base">close</span>
+        </button>
+      </div>
+
+      <!-- Search Filter Bar -->
+      <div class="px-6 py-3 border-b shrink-0" style="border-color: var(--border-hairline); background: var(--bg-surface-elevated);">
+        <div class="relative">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-xs" style="color: var(--text-dim);">search</span>
+          <input 
+            type="text" 
+            id="platformSearchInput" 
+            placeholder="Search platforms (e.g. YouTube, TikTok, Instagram, Reddit, Vimeo, SoundCloud)..." 
+            oninput="filterSupportedWebsites()"
+            class="w-full py-2 pl-9 pr-3 text-xs rounded-xl border focus:outline-none placeholder:text-neutral-500 font-semibold"
+            style="background-color: var(--bg-input); border-color: var(--border-subtle); color: var(--text-primary);"
+          >
+        </div>
+      </div>
+
+      <!-- Scrollable Platforms Grid/List -->
+      <div id="supportedWebsitesList" class="px-6 py-4 flex-1 overflow-y-auto flex flex-col gap-2 min-h-[320px]">
+        <!-- Injected dynamically -->
+      </div>
+
+      <!-- Footer -->
+      <div class="px-6 py-3.5 border-t flex items-center justify-between shrink-0" style="border-color: var(--border-hairline); background: var(--bg-surface-elevated);">
+        <span class="text-[11px] font-semibold" style="color: var(--accent-neon);">1,700+ sites active & ready</span>
+        <button onclick="closeSupportedWebsitesModal()" class="btn-crimson-solid text-xs font-semibold px-4 py-2 rounded-lg transition cursor-pointer">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Node -->
+  <div id="dimpleToast" class="fixed bottom-5 right-5 z-50 flex items-center gap-2 px-4 py-2.5 rounded-lg border text-xs font-semibold shadow-2xl transition-all duration-300 transform translate-y-10 opacity-0 pointer-events-none" style="background: var(--bg-surface-elevated); border-color: var(--accent-crimson); color: var(--text-primary);">
+    <span class="material-symbols-outlined text-sm" style="color: var(--accent-neon);">check_circle</span>
+    <span id="dimpleToastText">Notification</span>
+  </div>
+
+  <!-- ==========================================================================
+       APPLICATION LOGIC & EVENT CONTROLLER
+       ========================================================================== -->
+  <script>
+    const _urlParams = new URLSearchParams(window.location.search);
+    const DIMPLE_TOKEN = {{ desktop_token | default('') | tojson }} || _urlParams.get('token') || '';
+    if (DIMPLE_TOKEN) {
+      const _origFetch = window.fetch;
+      window.fetch = function(url, options = {}) {
+        options = options || {};
+        options.headers = options.headers || {};
+        if (options.headers instanceof Headers) {
+          if (!options.headers.has('X-Dimple-Token')) {
+            options.headers.set('X-Dimple-Token', DIMPLE_TOKEN);
+          }
+        } else if (Array.isArray(options.headers)) {
+          options.headers.push(['X-Dimple-Token', DIMPLE_TOKEN]);
+        } else {
+          options.headers['X-Dimple-Token'] = DIMPLE_TOKEN;
+        }
+        return _origFetch.call(this, url, options);
+      };
+    }
+
+    let currentVideoData = null;
+    let selectedQuality = 'best';
+    let selectedQualityLabel = 'Best Available';
+    let activeDestination = {{ download_dir | tojson }};
+    let systemPresets = [];
+    let currentTab = 'downloader';
+    let libraryTypeFilter = 'all';
+    let librarySearchQuery = '';
+    let libraryFiles = [];
+    let libraryViewMode = localStorage.getItem('dimple-library-view') || 'list';
+    let librarySortOrder = 'date-desc';
+    let libraryCurrentPage = 1;
+    const libraryPageSize = 8;
+    let activePlayingFile = null;
+    let activeContextFile = null;
+    let isScrubbing = false;
+    let autoAnalyzeTimer = null;
+    let librarySearchTimer = null;
+    let appLicenseData = null;
+
+    // Supported Websites Catalog
+    const supportedWebsitesCatalog = [
+      { name: 'YouTube', category: 'Video', icon: 'smart_display', color: '#FF0000', features: '4K 60fps, Shorts, Playlists, MP3 Audio' },
+      { name: 'Instagram', category: 'Social', icon: 'photo_camera', color: '#E1306C', features: 'Reels, Posts, Stories, Carousels' },
+      { name: 'TikTok', category: 'Social', icon: 'music_note', color: '#00F2FE', features: 'Watermark-free HD, Audio tracks' },
+      { name: 'X / Twitter', category: 'Social', icon: 'tag', color: '#FFFFFF', features: 'HD Videos, GIFs, Clip streams' },
+      { name: 'Reddit', category: 'Social', icon: 'forum', color: '#FF4500', features: 'Merged audio & video, Gallery clips' },
+      { name: 'Vimeo', category: 'Video', icon: 'videocam', color: '#1AB7EA', features: '4K, 1080p, Staff picks, High bitrate' },
+      { name: 'Twitch', category: 'Live', icon: 'live_tv', color: '#9146FF', features: 'Clips, Highlights, Broadcast VODs' },
+      { name: 'Facebook', category: 'Social', icon: 'thumb_up', color: '#1877F2', features: 'Reels, Public videos, Watch streams' },
+      { name: 'SoundCloud', category: 'Audio', icon: 'graphic_eq', color: '#FF5500', features: 'HQ MP3 320kbps, Playlists, Tracks' },
+      { name: 'Bilibili', category: 'Video', icon: 'movie', color: '#00A1D6', features: '1080p, Anime clips, High-frame streams' },
+      { name: 'Pinterest', category: 'Social', icon: 'push_pin', color: '#BD081C', features: 'Video pins, Idea pins, Story videos' },
+      { name: 'Dailymotion', category: 'Video', icon: 'play_circle', color: '#0066DC', features: 'HD 1080p, News streams, Shows' },
+      { name: 'Rumble', category: 'Live', icon: 'stream', color: '#85C742', features: 'Live broadcasts, Full-length videos' },
+      { name: 'Kick', category: 'Live', icon: 'cast', color: '#53FC18', features: 'Stream clips, Channels, Highlights' },
+      { name: 'Bluesky', category: 'Social', icon: 'cloud', color: '#0085FF', features: 'Social media video clips' },
+      { name: 'Threads', category: 'Social', icon: 'alternate_email', color: '#FFFFFF', features: 'Video clips, Reels, Threads' },
+      { name: 'Bandcamp', category: 'Audio', icon: 'album', color: '#1DA0C3', features: 'Lossless audio, Full track downloads' },
+      { name: 'Mixcloud', category: 'Audio', icon: 'radio', color: '#5000FF', features: 'DJ mixes, Radioshows, Podcasts' },
+      { name: 'LinkedIn', category: 'Social', icon: 'business_center', color: '#0A66C2', features: 'Feed videos, Educational content' },
+      { name: 'Streamable', category: 'Video', icon: 'slow_motion_video', color: '#0F73EE', features: 'Short clips, Sports replay highlights' },
+      { name: 'Loom', category: 'Video', icon: 'record_voice_over', color: '#625DF5', features: 'Screen share recordings, Presentations' },
+      { name: 'TED Talks', category: 'Video', icon: 'school', color: '#E62B1E', features: 'Keynotes, Ideas, Multi-language' },
+      { name: 'Imgur', category: 'Social', icon: 'image', color: '#1BB76E', features: 'MP4 loops, GIFs, Viral moments' },
+      { name: 'VK', category: 'Social', icon: 'groups', color: '#4680C2', features: 'Videos, Music clips, Public stories' },
+      { name: 'Weibo', category: 'Social', icon: 'public', color: '#E6162D', features: 'Short videos, Trending clips' },
+      { name: 'Archive.org', category: 'Video', icon: 'history_edu', color: '#AAAAAA', features: 'Public domain archives, Classical media' }
+    ];
+
+    // Data Loaders
+    loadSystemPresets();
+    loadSettings();
+    initMediaLibraryPlayer();
+    loadDownloadsList();
+    renderSupportedWebsites();
+    checkLicenseStatus();
+    startGlobalJobsPolling();
+
+    // Toast Notifications
+    function showToast(message) {
+      const toast = document.getElementById('dimpleToast');
+      const text = document.getElementById('dimpleToastText');
+      if (!toast || !text) return;
+      text.textContent = message;
+      toast.classList.remove('translate-y-10', 'opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('translate-y-10', 'opacity-0', 'pointer-events-none');
+      }, 3000);
+    }
+
+    // Tab Switching
+    function switchTab(tabId) {
+      currentTab = tabId;
+      document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.nav-item-btn').forEach(el => {
+        el.classList.remove('active');
+        el.removeAttribute('style');
+      });
+
+      const activeView = document.getElementById(`view-${tabId}`);
+      if (activeView) activeView.classList.remove('hidden');
+
+      const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+      }
+
+      if (tabId === 'downloads') {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar && !sidebar.classList.contains('sidebar-collapsed')) {
+          sidebar.classList.add('sidebar-collapsed');
+        }
+        loadDownloadsList();
+      } else if (tabId === 'downloader') {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar && sidebar.classList.contains('sidebar-collapsed')) {
+          sidebar.classList.remove('sidebar-collapsed');
+        }
+      } else if (tabId === 'transfers') {
+        fetchAndRenderJobs();
+      }
+    }
+
+    // Sidebar Collapsing
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('sidebar-collapsed');
+    }
+
+    // System Presets
+    async function loadSystemPresets() {
+      try {
+        const res = await fetch('/api/system-presets');
+        const data = await res.json();
+        if (data.success) {
+          systemPresets = data.presets || [];
+          if (data.default_dir) {
+            activeDestination = data.default_dir;
+            updateDestLabels(activeDestination);
+          }
+          renderPresetChips();
+        }
+      } catch (e) {
+        console.error('Failed to load presets:', e);
+      }
+    }
+
+    function selectPresetById(presetId) {
+      const p = systemPresets.find(x => x.id === presetId);
+      if (p && p.path) {
+        saveDownloaderPath(p.path);
+        const downInput = document.getElementById('downloaderPathInput');
+        if (downInput) downInput.value = p.path;
+        const setInput = document.getElementById('settingsDownloadDirInput');
+        if (setInput) setInput.value = p.path;
+        renderPresetChips();
+      }
+    }
+
+    function normalizePath(p) {
+      if (!p) return '';
+      return p.replace(/\\/g, '/').replace(/\/+$/, '').toLowerCase();
+    }
+
+    function renderPresetChips() {
+      const downContainer = document.getElementById('quickPresetChips');
+      const setContainer = document.getElementById('settingsPresetsList');
+      if (!downContainer && !setContainer) return;
+
+      const currentNorm = normalizePath(activeDestination);
+
+      const html = systemPresets.map(p => {
+        const isSelected = Boolean(activeDestination && (normalizePath(p.path) === currentNorm));
+        return `
+          <button 
+            type="button" 
+            onclick="selectPresetById('${p.id}')" 
+            class="px-2.5 py-1 rounded text-xs font-medium border transition flex items-center gap-1.5 font-mono-nums cursor-pointer"
+            style="${
+              isSelected 
+                ? 'background: linear-gradient(135deg, #ff7a00, #ff5500); border-color: #ff7a00; color: #ffffff; font-weight: 700; box-shadow: 0 2px 8px rgba(255, 107, 0, 0.35);' 
+                : 'background: #181c20; border-color: #2b3036; color: #8b949e;'
+            }"
+            title="${p.path}"
+          >
+            <span class="material-symbols-outlined text-xs" style="color: ${isSelected ? '#ffffff' : '#8b949e'};">${p.icon || 'folder'}</span>
+            <span>${p.name}</span>
+          </button>
+        `;
+      }).join('');
+
+      if (downContainer) downContainer.innerHTML = html;
+      if (setContainer) setContainer.innerHTML = html;
+    }
+
+    async function saveDownloaderPath(path) {
+      const cleanPath = (path || '').trim();
+      if (!cleanPath) return;
+      activeDestination = cleanPath;
+      updateDestLabels(cleanPath);
+      renderPresetChips();
+
+      try {
+        const res = await fetch('/api/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ download_dir: cleanPath })
+        });
+        const d = await res.json();
+        if (d.success) {
+          showToast('Destination path updated: ' + cleanPath);
+          loadDownloadsList();
+        }
+      } catch(e) {
+        console.error('Failed to save path:', e);
+      }
+    }
+
+    function updateDestLabels(path) {
+      const downDisplay = document.getElementById('downloaderPathDisplay');
+      if (downDisplay) {
+        downDisplay.textContent = path;
+        downDisplay.title = path;
+      }
+      const downInput = document.getElementById('downloaderPathInput');
+      if (downInput && downInput.value !== path) downInput.value = path;
+      const setInput = document.getElementById('settingsDownloadDirInput');
+      if (setInput && setInput.value !== path) setInput.value = path;
+      const transDest = document.getElementById('transfersSaveDest');
+      if (transDest) {
+        transDest.textContent = path;
+        transDest.title = path;
+      }
+    }
+
+    async function browseNativeFolder(context) {
+      const initial = (context === 'settings' 
+        ? document.getElementById('settingsDownloadDirInput')?.value 
+        : document.getElementById('downloaderPathInput')?.value) || activeDestination || '';
+
+      const btn = context === 'settings' 
+        ? document.getElementById('settingsBrowseBtn') 
+        : document.getElementById('browseFolderBtn');
+
+      if (btn) btn.innerHTML = '<span class="material-symbols-outlined text-xs animate-spin" style="color: var(--accent-neon);">progress_activity</span> <span>Browsing...</span>';
+
+      try {
+        const res = await fetch('/api/browse-folder', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ initial_dir: initial })
+        });
+        const data = await res.json();
+        if (data.success && data.path) {
+          saveDownloaderPath(data.path);
+        }
+      } catch (err) {
+        console.error('Browse folder failed:', err);
+      } finally {
+        if (btn) {
+          btn.innerHTML = '<span class="material-symbols-outlined text-xs" style="color: var(--accent-neon);">drive_file_move</span> <span>Browse...</span>';
+        }
+      }
+    }
+
+    // Supported Websites Directory
+    function renderSupportedWebsites(filterQuery = '') {
+      const container = document.getElementById('supportedWebsitesList');
+      if (!container) return;
+
+      const q = filterQuery.toLowerCase().trim();
+      const filtered = supportedWebsitesCatalog.filter(s => 
+        !q || s.name.toLowerCase().includes(q) || s.category.toLowerCase().includes(q) || s.features.toLowerCase().includes(q)
+      );
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="p-6 text-center text-xs text-neutral-400">
+            <p>No platforms matching "${filterQuery}"</p>
+            <p class="text-[11px] mt-1 text-neutral-500">Dimple supports over 1,700 sites via yt-dlp core.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(site => `
+        <div class="p-2.5 rounded-md border transition flex items-center justify-between gap-3 text-xs" style="background: var(--bg-surface-elevated); border-color: var(--border-hairline);">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-7 h-7 rounded flex items-center justify-center shrink-0 border" style="background: var(--bg-surface); border-color: var(--border-hairline); color: var(--accent-neon);">
+              <span class="material-symbols-outlined text-sm">${site.icon}</span>
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="font-bold truncate text-xs" style="color: var(--text-primary);">${site.name}</span>
+                <span class="text-[9px] px-1.5 py-0.2 rounded border font-mono-nums" style="background: var(--bg-surface); border-color: var(--border-hairline); color: var(--text-muted);">${site.category}</span>
+              </div>
+              <p class="text-[10px] truncate mt-0.5" style="color: var(--text-muted);">${site.features}</p>
+            </div>
+          </div>
+          <span class="text-[10px] font-mono-nums font-semibold shrink-0 flex items-center gap-1" style="color: #adb5bd;">
+            <span class="w-1.5 h-1.5 rounded-full" style="background: #dee2e6;"></span>
+            Supported
+          </span>
+        </div>
+      `).join('');
+    }
+
+    function filterSupportedWebsites() {
+      const query = document.getElementById('platformSearchInput')?.value || '';
+      renderSupportedWebsites(query);
+    }
+
+    function openSupportedWebsitesModal() {
+      const modal = document.getElementById('supportedWebsitesModal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        renderSupportedWebsites('');
+        setTimeout(() => document.getElementById('platformSearchInput')?.focus(), 50);
+      }
+    }
+
+    function closeSupportedWebsitesModal() {
+      const modal = document.getElementById('supportedWebsitesModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function isValidUrl(str) {
+      if (!str || typeof str !== 'string') return false;
+      const s = str.trim();
+      if (!s.startsWith('http://') && !s.startsWith('https://')) {
+        return /^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/i.test(s);
+      }
+      return /^(https?:\/\/)([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/[^\s]*)?$/i.test(s);
+    }
+
+    // Unified Clipboard Reader: Win32 Native First, with Browser Fallback
+    async function getClipboardText() {
+      // 1. Direct native Win32 clipboard access via Flask endpoint (instant, 100% reliable, zero permission prompts)
+      try {
+        const tokenQuery = (typeof DIMPLE_TOKEN !== 'undefined' && DIMPLE_TOKEN) ? `?token=${encodeURIComponent(DIMPLE_TOKEN)}` : '';
+        const res = await fetch('/api/clipboard' + tokenQuery, {
+          headers: { 'X-Dimple-Token': typeof DIMPLE_TOKEN !== 'undefined' ? DIMPLE_TOKEN : '' }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.success && data.text && data.text.trim().length > 0) {
+            return data.text.trim();
+          }
+        }
+      } catch (err) {
+        console.warn('Backend clipboard fetch error:', err);
+      }
+
+      // 2. Strict timeout browser fallback (so it never blocks or hangs in QtWebEngine)
+      if (navigator.clipboard && navigator.clipboard.readText) {
+        try {
+          const clipPromise = navigator.clipboard.readText();
+          const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 150));
+          const text = await Promise.race([clipPromise, timeoutPromise]);
+          if (text && text.trim().length > 0) {
+            return text.trim();
+          }
+        } catch (e) {
+          // ignore timeout or permission errors
+        }
+      }
+
+      return '';
+    }
+
+    // Clipboard & Auto-Analyze
+    async function pasteClipboard(e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      const input = document.getElementById('urlInput');
+      if (!input) return;
+
+      const text = await getClipboardText();
+      if (text && text.trim().length > 0) {
+        let finalUrl = text.trim();
+        if (!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://') && isValidUrl(finalUrl)) {
+          finalUrl = 'https://' + finalUrl;
+        }
+        input.value = finalUrl;
+        updateInputButtons(finalUrl);
+        if (isValidUrl(finalUrl)) {
+          autoAnalyze(finalUrl);
+        } else {
+          showToast('Pasted: ' + (finalUrl.length > 35 ? finalUrl.substring(0, 35) + '...' : finalUrl));
+        }
+      } else {
+        input.focus();
+        showToast('Clipboard is empty or contains non-text data');
+      }
+    }
+
+    function clearInput() {
+      document.getElementById('urlInput').value = '';
+      updateInputButtons('');
+      hideError();
+      document.getElementById('detailsCard').classList.add('hidden');
+      document.getElementById('downloaderRightStandby')?.classList.remove('hidden');
+      currentVideoData = null;
+    }
+
+    function updateInputButtons(val) {
+      const clearBtn = document.getElementById('clearBtn');
+      const pasteBtn = document.getElementById('pasteBtn');
+      if (val && val.length > 0) {
+        clearBtn.classList.remove('hidden');
+        pasteBtn.classList.add('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+        pasteBtn.classList.remove('hidden');
+      }
+    }
+
+    const urlInputEl = document.getElementById('urlInput');
+    const pasteBtnEl = document.getElementById('pasteBtn');
+    if (pasteBtnEl) {
+      pasteBtnEl.addEventListener('click', (e) => {
+        pasteClipboard(e);
+      });
+    }
+    urlInputEl.addEventListener('input', (e) => {
+      const val = e.target.value.trim();
+      updateInputButtons(val);
+
+      if (autoAnalyzeTimer) clearTimeout(autoAnalyzeTimer);
+      if (isValidUrl(val)) {
+        autoAnalyzeTimer = setTimeout(() => autoAnalyze(val), 600);
+      }
+    });
+
+    urlInputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = urlInputEl.value.trim();
+        if (isValidUrl(val)) {
+          autoAnalyze(val);
+        }
+      } else if (e.key === 'Escape') {
+        clearInput();
+      }
+    });
+
+    async function autoAnalyze(url) {
+      hideError();
+      const spinner = document.getElementById('autoAnalyzingSpinner');
+      spinner.classList.remove('hidden');
+
+      try {
+        const res = await fetch('/api/info', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: url })
+        });
+        const data = await res.json();
+        if (!data.success) {
+          throw new Error(data.error || 'Failed to analyze video');
+        }
+
+        currentVideoData = data.data;
+        renderDetails(currentVideoData);
+      } catch (err) {
+        showError(err.message || 'Could not fetch video info.');
+        document.getElementById('detailsCard').classList.add('hidden');
+        document.getElementById('downloaderRightStandby')?.classList.remove('hidden');
+      } finally {
+        spinner.classList.add('hidden');
+        updateInputButtons(document.getElementById('urlInput').value);
+      }
+    }
+
+    function renderDetails(data) {
+      document.getElementById('thumbImg').src = data.thumbnail || '';
+      document.getElementById('durationBadge').textContent = data.duration || '';
+      document.getElementById('videoTitle').textContent = data.title || '';
+      document.getElementById('channelNameText').textContent = data.channel || 'Media Channel';
+      document.getElementById('viewCount').textContent = data.views ? `${data.views} views` : '';
+
+      const optsContainer = document.getElementById('qualityOptions');
+      optsContainer.innerHTML = '';
+      selectedQuality = data.qualities[0]?.id || 'best';
+      selectedQualityLabel = data.qualities[0]?.label || 'Best Available';
+      updateQualitySummary();
+
+      data.qualities.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `quality-option-btn p-2.5 rounded-md border text-left text-xs transition flex flex-col justify-between gap-1.5`;
+        
+        if (idx === 0) {
+          btn.style.background = 'rgba(255, 107, 0, 0.14)';
+          btn.style.borderColor = '#ff7a00';
+          btn.style.color = '#ffffff';
+          btn.style.fontWeight = '700';
+          btn.style.boxShadow = '0 0 14px rgba(255, 107, 0, 0.35)';
+        } else {
+          btn.style.background = '#121417';
+          btn.style.borderColor = '#22262c';
+          btn.style.color = '#8b949e';
+        }
+
+        btn.innerHTML = `
+          <div class="flex items-center justify-between w-full">
+            <span class="font-mono-nums font-semibold">${q.label}</span>
+            <span class="text-[9px] px-1.5 py-0.2 rounded font-mono-nums font-bold" style="background: var(--bg-surface-elevated); color: ${q.badge === 'MP3' ? '#ff7a00' : '#ff5500'}; border: 1px solid var(--border-hairline);">${q.badge}</span>
+          </div>
+        `;
+
+        btn.onclick = () => {
+          document.querySelectorAll('.quality-option-btn').forEach(b => {
+            b.style.background = '#121417';
+            b.style.borderColor = '#22262c';
+            b.style.color = '#8b949e';
+            b.style.fontWeight = 'normal';
+            b.style.boxShadow = 'none';
+          });
+          btn.style.background = 'rgba(255, 107, 0, 0.14)';
+          btn.style.borderColor = '#ff7a00';
+          btn.style.color = '#ffffff';
+          btn.style.fontWeight = '700';
+          btn.style.boxShadow = '0 0 14px rgba(255, 107, 0, 0.35)';
+          selectedQuality = q.id;
+          selectedQualityLabel = q.label;
+          updateQualitySummary();
+        };
+        optsContainer.appendChild(btn);
+      });
+
+      document.getElementById('downloaderRightStandby')?.classList.add('hidden');
+      document.getElementById('detailsCard').classList.remove('hidden');
+    }
+
+    function updateQualitySummary() {
+      const sum = document.getElementById('selectedQualitySummary');
+      if (sum) sum.textContent = selectedQualityLabel;
+      const dlBtnText = document.getElementById('downloadBtnText');
+      if (dlBtnText) dlBtnText.textContent = `Start Download (${selectedQualityLabel})`;
+    }
+
+    function showError(msg) {
+      const errBox = document.getElementById('errorBox');
+      const errText = document.getElementById('errorMessage');
+      errText.textContent = msg;
+      errBox.classList.remove('hidden');
+      document.getElementById('detailsCard').classList.add('hidden');
+      document.getElementById('downloaderRightStandby')?.classList.remove('hidden');
+    }
+
+    function hideError() {
+      document.getElementById('errorBox').classList.add('hidden');
+    }
+
+    async function startDownload() {
+      const url = document.getElementById('urlInput').value.trim();
+      if (!url) return;
+
+      const btn = document.getElementById('downloadBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">progress_activity</span> <span>Dispatching Job...</span>';
+
+      const targetPath = document.getElementById('downloaderPathInput')?.value?.trim() || activeDestination;
+
+      try {
+        const res = await fetch('/api/download', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            url: url,
+            quality: selectedQuality,
+            quality_label: selectedQualityLabel,
+            title: currentVideoData?.title || '',
+            thumbnail: currentVideoData?.thumbnail || '',
+            duration: currentVideoData?.duration || '',
+            channel: currentVideoData?.channel || '',
+            dir: targetPath
+          })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          switchTab('transfers');
+          clearInput();
+          showToast('Download started: ' + (currentVideoData?.title || 'Media stream'));
+        } else {
+          showError(data.error || 'Failed to start download');
+        }
+      } catch (err) {
+        showError(err.message || 'Network error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span class="material-symbols-outlined text-sm">download</span> <span id="downloadBtnText">Start Download (${selectedQualityLabel})</span>`;
+      }
+    }
+
+    // ======================================================================
+    // DOWNLOADS (TRANSFERS) CONTROLLER (Exact Match to media_1794031633338_39a23437.png)
+    // ======================================================================
+    let currentDownloadsSubTab = 'active';
+    let selectedDownloadJobIds = new Set();
+    let cachedJobsList = [];
+
+    function startGlobalJobsPolling() {
+      fetchAndRenderJobs();
+      setInterval(fetchAndRenderJobs, 1000);
+    }
+
+    async function fetchAndRenderJobs() {
+      try {
+        const res = await fetch('/api/jobs');
+        const data = await res.json();
+        if (data && data.success) {
+          renderTransfersUI(data.jobs || []);
+        }
+      } catch (e) {
+        console.error('Job polling error:', e);
+      }
+    }
+
+    function switchDownloadsSubTab(tab) {
+      currentDownloadsSubTab = tab;
+      const btnActive = document.getElementById('downloadsTabBtnActive');
+      const btnCompleted = document.getElementById('downloadsTabBtnCompleted');
+      
+      if (tab === 'active') {
+        if (btnActive) {
+          btnActive.style.background = 'linear-gradient(135deg, #ff7a00, #ff5500)';
+          btnActive.style.color = '#ffffff';
+          btnActive.style.boxShadow = '0 4px 14px rgba(255, 107, 0, 0.35)';
+        }
+        if (btnCompleted) {
+          btnCompleted.style.background = 'transparent';
+          btnCompleted.style.color = '#ced4da';
+          btnCompleted.style.boxShadow = 'none';
+        }
+      } else {
+        if (btnCompleted) {
+          btnCompleted.style.background = 'linear-gradient(135deg, #ff7a00, #ff5500)';
+          btnCompleted.style.color = '#ffffff';
+          btnCompleted.style.boxShadow = '0 4px 14px rgba(255, 107, 0, 0.35)';
+        }
+        if (btnActive) {
+          btnActive.style.background = 'transparent';
+          btnActive.style.color = '#ced4da';
+          btnActive.style.boxShadow = 'none';
+        }
+      }
+      renderTransfersUI(cachedJobsList);
+    }
+
+    function toggleSelectAllDownloads(checked) {
+      const isCompleted = currentDownloadsSubTab === 'completed';
+      const visibleJobs = cachedJobsList.filter(j => isCompleted ? (j.status === 'completed') : (j.status !== 'completed'));
+      if (checked) {
+        visibleJobs.forEach(j => selectedDownloadJobIds.add(j.id));
+      } else {
+        visibleJobs.forEach(j => selectedDownloadJobIds.delete(j.id));
+      }
+      renderTransfersUI(cachedJobsList);
+    }
+
+    function toggleJobSelect(jobId, checked) {
+      if (checked) {
+        selectedDownloadJobIds.add(jobId);
+      } else {
+        selectedDownloadJobIds.delete(jobId);
+      }
+      const isCompleted = currentDownloadsSubTab === 'completed';
+      const visibleJobs = cachedJobsList.filter(j => isCompleted ? (j.status === 'completed') : (j.status !== 'completed'));
+      const selectAllEl = document.getElementById('downloadsSelectAllCheckbox');
+      if (selectAllEl && visibleJobs.length > 0) {
+        selectAllEl.checked = visibleJobs.every(j => selectedDownloadJobIds.has(j.id));
+      }
+    }
+
+    async function togglePauseJob(jobId) {
+      try {
+        await fetch('/api/pause/' + jobId, { method: 'POST' });
+        fetchAndRenderJobs();
+      } catch (e) {
+        console.error('Pause/resume job error:', e);
+      }
+    }
+
+    async function cancelOrRemoveJob(jobId) {
+      try {
+        await fetch('/api/cancel/' + jobId, { method: 'POST' });
+        await fetch('/api/remove-job/' + jobId, { method: 'DELETE' });
+        selectedDownloadJobIds.delete(jobId);
+        fetchAndRenderJobs();
+      } catch (e) {
+        console.error('Cancel/remove error:', e);
+      }
+    }
+
+    async function removeJobById(jobId) {
+      try {
+        await fetch('/api/remove-job/' + jobId, { method: 'DELETE' });
+        selectedDownloadJobIds.delete(jobId);
+        fetchAndRenderJobs();
+      } catch (e) {
+        console.error('Remove job error:', e);
+      }
+    }
+
+    async function pauseAllDownloads() {
+      try {
+        await fetch('/api/pause-all', { method: 'POST' });
+        showToast('All active downloads paused');
+        fetchAndRenderJobs();
+      } catch (e) {
+        console.error('Pause all error:', e);
+      }
+    }
+
+    async function resumeAllDownloads() {
+      try {
+        await fetch('/api/resume-all', { method: 'POST' });
+        showToast('Resuming downloads...');
+        fetchAndRenderJobs();
+      } catch (e) {
+        console.error('Resume all error:', e);
+      }
+    }
+
+    async function batchDeleteOrClearDownloads() {
+      if (selectedDownloadJobIds.size > 0) {
+        try {
+          await fetch('/api/batch-delete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ job_ids: Array.from(selectedDownloadJobIds) })
+          });
+          selectedDownloadJobIds.clear();
+          showToast('Selected downloads removed');
+          fetchAndRenderJobs();
+        } catch (e) {
+          console.error('Batch delete error:', e);
+        }
+      } else {
+        try {
+          await fetch('/api/clear-completed', { method: 'POST' });
+          showToast('Cleared finished downloads');
+          fetchAndRenderJobs();
+        } catch (e) {
+          console.error('Clear completed error:', e);
+        }
+      }
+    }
+
+    async function playCompletedJobInPlayer(encodedPath) {
+      const filepath = decodeURIComponent(encodedPath || '');
+      if (!filepath) {
+        showToast('Media file path not found');
+        return;
+      }
+      switchTab('downloads');
+      const filename = filepath.split(/[\\/]/).pop();
+      const ext = filename.split('.').pop().toLowerCase();
+      const isVideo = ['mp4', 'mkv', 'webm', 'avi', 'mov', 'flv', 'm4v', 'ts', 'wmv'].includes(ext);
+      const encodedFp = encodeURIComponent(filepath);
+      const tokenParam = (typeof DIMPLE_TOKEN !== 'undefined' && DIMPLE_TOKEN) ? `&token=${encodeURIComponent(DIMPLE_TOKEN)}` : '';
+
+      const fileObj = {
+        filepath: filepath,
+        name: filename,
+        is_video: isVideo,
+        stream_url: `/api/stream?path=${encodedFp}${tokenParam}`,
+        thumbnail_url: `/api/thumbnail?path=${encodedFp}${tokenParam}`
+      };
+
+      // Ensure library files are loaded, find matching file and play
+      await loadDownloadsList();
+      const matchIdx = libraryFiles.findIndex(f => (f.filepath || '').replace(/\\/g, '/').toLowerCase() === filepath.replace(/\\/g, '/').toLowerCase());
+      if (matchIdx !== -1) {
+        libraryCurrentPage = Math.floor(matchIdx / libraryPageSize) + 1;
+        selectFileForPreview(libraryFiles[matchIdx], true);
+      } else {
+        selectFileForPreview(fileObj, true);
+      }
+    }
+
+    function renderJobCard(j, isCompletedView) {
+      const isSelected = selectedDownloadJobIds.has(j.id);
+      const progress = Math.min(100, Math.max(0, Math.round(j.progress || 0)));
+      const title = j.title || j.url || 'Media Download';
+      
+      // Determine quality badge text: 4K, 1080p, 720p, MP3
+      let qualityBadge = (j.quality_label || j.quality || 'HD').toUpperCase();
+      if (qualityBadge.includes('2160') || qualityBadge.includes('4K') || qualityBadge === 'BEST') qualityBadge = '4K';
+      else if (qualityBadge.includes('1080')) qualityBadge = '1080p';
+      else if (qualityBadge.includes('720')) qualityBadge = '720p';
+      else if (qualityBadge.includes('AUDIO') || qualityBadge.includes('MP3') || qualityBadge.includes('320') || qualityBadge.includes('128')) qualityBadge = 'MP3';
+
+      const duration = j.duration || '';
+      const speed = j.speed ? j.speed.replace('/s', '/s') : (j.status === 'downloading' ? 'Calculating...' : '');
+      const downloadedStr = j.downloaded_str || '0 B';
+      const totalStr = j.total_str || 'Calculating...';
+      const sizeMeta = `${downloadedStr} / ${totalStr}`;
+
+      let etaMeta = '';
+      if (j.eta) {
+        let cleanEta = j.eta.trim();
+        if (!cleanEta.startsWith('~')) cleanEta = '~' + cleanEta;
+        if (!cleanEta.endsWith('left')) cleanEta += ' left';
+        etaMeta = cleanEta;
+      }
+
+      let formatCodec = 'MP4 (H.264)';
+      if (j.filename) {
+        const ext = j.filename.split('.').pop().toUpperCase();
+        if (ext === 'MKV') formatCodec = 'MKV (VP9)';
+        else if (ext === 'MP3') formatCodec = 'MP3 (Audio)';
+        else if (ext === 'WEBM') formatCodec = 'WEBM (Opus)';
+        else formatCodec = `${ext} (H.264)`;
+      }
+
+      const tokenParam = (typeof DIMPLE_TOKEN !== 'undefined' && DIMPLE_TOKEN) ? `&token=${encodeURIComponent(DIMPLE_TOKEN)}` : '';
+      let thumbSrc = j.thumbnail;
+      if (thumbSrc && thumbSrc.startsWith('/api/') && !thumbSrc.includes('token=') && tokenParam) {
+        thumbSrc += (thumbSrc.includes('?') ? tokenParam : '?' + tokenParam.slice(1));
+      }
+      if (!thumbSrc && j.filepath) {
+        thumbSrc = `/api/thumbnail?path=${encodeURIComponent(j.filepath)}${tokenParam}`;
+      }
+      if (!thumbSrc) {
+        thumbSrc = '/static/logo.png';
+      }
+      const isPaused = j.status === 'paused';
+      const isFailed = j.status === 'failed';
+      const isRunning = ['downloading', 'queued', 'processing'].includes(j.status);
+      const encodedFilepath = encodeURIComponent(j.filepath || '');
+
+      return `
+        <div class="p-3.5 sm:p-4 rounded-2xl border transition-all duration-200 flex items-center gap-4 group hover:border-[#3b424c]"
+             style="background: #181c20; border-color: ${isSelected ? '#ff6b00' : '#282d34'};"
+             id="job-card-${j.id}"
+        >
+          <!-- Checkbox -->
+          <input 
+            type="checkbox" 
+            ${isSelected ? 'checked' : ''}
+            onchange="toggleJobSelect('${j.id}', this.checked)"
+            class="w-4 h-4 rounded border border-[#3b424c] bg-transparent text-[#ff6b00] focus:ring-0 cursor-pointer shrink-0"
+          >
+
+          <!-- Thumbnail Container -->
+          <div class="relative w-28 sm:w-32 h-[68px] sm:h-[72px] rounded-lg overflow-hidden shrink-0 bg-[#0d1013] border border-[#282d34]">
+            <img src="${thumbSrc}" alt="Thumbnail" class="w-full h-full object-cover" onerror="if(!this.dataset.fallback && '${encodedFilepath}'){ this.dataset.fallback='1'; this.src='/api/thumbnail?path=${encodedFilepath}${tokenParam}'; } else { this.src='/static/logo.png'; }">
+            
+            <!-- Quality Badge -->
+            <span class="absolute top-1.5 left-1.5 rounded px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-white select-none shadow-md"
+                  style="background: ${qualityBadge === '4K' ? '#ff6b00' : '#ff7a00'};"
+            >
+              ${qualityBadge}
+            </span>
+
+            <!-- Duration Badge -->
+            ${duration ? `
+              <span class="absolute bottom-1.5 right-1.5 bg-black/85 text-white font-mono text-[10px] px-1.5 py-0.5 rounded font-semibold select-none shadow">
+                ${duration}
+              </span>
+            ` : ''}
+          </div>
+
+          <!-- Main Center Info Column -->
+          <div class="flex-1 min-w-0 flex flex-col gap-2">
+            <!-- Top Row: Title + Percentage -->
+            <div class="flex items-center justify-between gap-3">
+              <p class="font-bold text-xs sm:text-sm truncate select-all" style="color: #f8f9fa;" title="${title}">
+                ${title}
+              </p>
+              <span class="font-bold text-xs sm:text-sm font-mono-nums shrink-0" style="color: #ff6b00;">
+                ${isCompletedView ? '100%' : (isFailed ? 'Error' : (isPaused ? 'Paused' : `${progress}%`))}
+              </span>
+            </div>
+
+            <!-- Middle Row: Progress Bar -->
+            <div class="w-full h-1.5 rounded-full overflow-hidden" style="background: #282d33;">
+              <div class="h-full rounded-full transition-all duration-300"
+                   style="width: ${isCompletedView ? 100 : progress}%; background: ${isFailed ? '#ef4444' : (isPaused ? '#6c757d' : 'linear-gradient(90deg, #ff7a00, #ff5500)')};"
+              ></div>
+            </div>
+
+            <!-- Bottom Row: Meta Info Strip -->
+            <div class="flex items-center gap-2 text-[11px] font-semibold flex-wrap font-mono-nums" style="color: #8b949e;">
+              ${!isCompletedView && speed ? `
+                <span class="flex items-center gap-1 font-bold text-white">
+                  <span style="color: #ff6b00;">↓</span> ${speed}
+                </span>
+                <span class="opacity-40">•</span>
+              ` : ''}
+
+              <span class="text-[#ced4da]">${isCompletedView ? (j.total_str || j.downloaded_str || 'File saved') : sizeMeta}</span>
+
+              ${!isCompletedView && etaMeta ? `
+                <span class="opacity-40">•</span>
+                <span class="font-bold" style="color: #ff6b00;">${etaMeta}</span>
+              ` : ''}
+
+              <span class="opacity-40">•</span>
+              <span class="text-[#8b949e] font-medium">${formatCodec}</span>
+
+              ${isFailed && j.error ? `
+                <span class="opacity-40">•</span>
+                <span class="text-rose-400 font-normal truncate max-w-xs" title="${j.error}">${j.error}</span>
+              ` : ''}
+            </div>
+          </div>
+
+          <!-- Action Buttons Column -->
+          <div class="flex items-center gap-2 shrink-0">
+            ${isCompletedView ? `
+              <!-- Play in Player -->
+              <button 
+                type="button" 
+                onclick="playCompletedJobInPlayer('${encodeURIComponent(j.filepath || '')}')" 
+                class="p-2 rounded-lg border border-[#2e343c] bg-[#1d2126] hover:bg-[#252a31] text-[#adb5bd] hover:text-white transition cursor-pointer"
+                title="Play in Media Player"
+              >
+                <span class="material-symbols-outlined text-base">play_arrow</span>
+              </button>
+              
+              <!-- Reveal in Explorer -->
+              <button 
+                type="button" 
+                onclick="revealFile('${encodeURIComponent(j.filepath || '')}')" 
+                class="p-2 rounded-lg border border-[#2e343c] bg-[#1d2126] hover:bg-[#252a31] text-[#adb5bd] hover:text-white transition cursor-pointer"
+                title="Show in File Explorer"
+              >
+                <span class="material-symbols-outlined text-base">folder_open</span>
+              </button>
+
+              <!-- Delete / Remove -->
+              <button 
+                type="button" 
+                onclick="removeJobById('${j.id}')" 
+                class="p-2 rounded-lg border border-[#2e343c] bg-[#1d2126] hover:bg-[#252a31] text-[#adb5bd] hover:text-rose-400 transition cursor-pointer"
+                title="Remove from history"
+              >
+                <span class="material-symbols-outlined text-base">close</span>
+              </button>
+            ` : `
+              <!-- Pause / Resume -->
+              <button 
+                type="button" 
+                onclick="togglePauseJob('${j.id}')" 
+                class="p-2 rounded-lg border border-[#2e343c] bg-[#1d2126] hover:bg-[#252a31] text-[#adb5bd] hover:text-white transition cursor-pointer"
+                title="${isPaused ? 'Resume' : 'Pause'}"
+              >
+                <span class="material-symbols-outlined text-base">${isPaused ? 'play_arrow' : 'pause'}</span>
+              </button>
+
+              <!-- Cancel / Delete -->
+              <button 
+                type="button" 
+                onclick="cancelOrRemoveJob('${j.id}')" 
+                class="p-2 rounded-lg border border-[#2e343c] bg-[#1d2126] hover:bg-[#252a31] text-[#adb5bd] hover:text-rose-400 transition cursor-pointer"
+                title="Cancel download"
+              >
+                <span class="material-symbols-outlined text-base">close</span>
+              </button>
+            `}
+          </div>
+
+        </div>
+      `;
+    }
+
+    function renderTransfersUI(jobsData) {
+      let jobList = [];
+      if (Array.isArray(jobsData)) {
+        jobList = jobsData;
+      } else if (jobsData && typeof jobsData === 'object') {
+        jobList = Object.values(jobsData);
+      }
+      cachedJobsList = jobList;
+
+      const activeJobs = jobList.filter(j => ['queued', 'downloading', 'processing', 'cancelling', 'paused'].includes(j.status));
+      const completedJobs = jobList.filter(j => j.status === 'completed');
+
+      // Update Top Switcher Badges
+      const activeBadge = document.getElementById('transfersActiveCountBadge');
+      if (activeBadge) activeBadge.textContent = activeJobs.length;
+
+      const completedBadge = document.getElementById('transfersCompletedCountBadge');
+      if (completedBadge) completedBadge.textContent = completedJobs.length;
+
+      // Update Sidebar Nav Badge
+      const sbBadge = document.getElementById('transfersCountBadge');
+      if (sbBadge) {
+        if (activeJobs.length > 0) {
+          sbBadge.textContent = activeJobs.length;
+          sbBadge.classList.remove('hidden');
+        } else {
+          sbBadge.classList.add('hidden');
+        }
+      }
+
+      const container = document.getElementById('transfersListContainer');
+      if (!container) return;
+
+      const isCompletedView = currentDownloadsSubTab === 'completed';
+      const displayJobs = isCompletedView ? completedJobs : activeJobs;
+
+      if (displayJobs.length === 0) {
+        container.innerHTML = `
+          <div class="flex-1 flex flex-col items-center justify-center p-8 text-center text-xs gap-3 select-none my-auto" style="color: #8b949e;">
+            <div class="w-16 h-16 rounded-2xl flex items-center justify-center border border-[#2b3036] bg-[#181c20] text-[#ff6b00] shadow-lg">
+              <span class="material-symbols-outlined text-3xl">${isCompletedView ? 'task_alt' : 'downloading'}</span>
+            </div>
+            <div>
+              <h4 class="text-sm font-bold text-white">${isCompletedView ? 'No Completed Downloads Yet' : 'No Active Downloads'}</h4>
+              <p class="text-[11px] mt-1 text-[#8b949e] max-w-xs">
+                ${isCompletedView ? 'Finished streams and downloads will appear here.' : 'Paste any video or audio URL on the Home tab to start high-speed streaming.'}
+              </p>
+            </div>
+            ${!isCompletedView ? `
+              <button onclick="switchTab('downloader')" class="mt-2 px-4 py-2 rounded-xl text-xs font-bold text-white transition shadow cursor-pointer hover:opacity-90" style="background: linear-gradient(135deg, #ff7a00, #ff5500);">
+                Go to Downloader
+              </button>
+            ` : ''}
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = displayJobs.map(j => renderJobCard(j, isCompletedView)).join('');
+    }
+
+    // ======================================================================
+    // MEDIA LIBRARY CONTROLLER (Exact Image Design & Interactive Features)
+    // ======================================================================
+    async function loadDownloadsList() {
+      try {
+        const query = librarySearchQuery || '';
+        const type = libraryTypeFilter || 'all';
+        const targetDir = activeDestination || '';
+        const res = await fetch(`/api/downloads-list?dir=${encodeURIComponent(targetDir)}&q=${encodeURIComponent(query)}&type=${encodeURIComponent(type)}`);
+        const data = await res.json();
+        if (data.success) {
+          libraryFiles = data.files || [];
+          const countBadge = document.getElementById('downloadsCountBadge');
+          if (countBadge) countBadge.textContent = `${libraryFiles.length}`;
+          sortLibraryFiles();
+
+          if (activePlayingFile) {
+            const currentNorm = (activePlayingFile.filepath || '').replace(/\\/g, '/').toLowerCase();
+            const activeIdx = libraryFiles.findIndex(f => (f.filepath || '').replace(/\\/g, '/').toLowerCase() === currentNorm);
+            if (activeIdx !== -1) {
+              libraryCurrentPage = Math.floor(activeIdx / libraryPageSize) + 1;
+            }
+          } else {
+            libraryCurrentPage = 1;
+          }
+
+          // Auto-select first media item if available and none currently loaded
+          if (libraryFiles.length > 0 && !activePlayingFile) {
+            selectFileForPreview(libraryFiles[0], false);
+          }
+          renderLibraryFiles();
+        }
+      } catch (e) {
+        console.error('Failed to load library', e);
+      }
+    }
+
+    function setLibraryViewMode(mode) {
+      libraryViewMode = mode;
+      localStorage.setItem('dimple-library-view', mode);
+
+      const listBtn = document.getElementById('viewModeListBtn');
+      const gridBtn = document.getElementById('viewModeGridBtn');
+      if (mode === 'grid') {
+        gridBtn.className = 'w-9 h-8 rounded-xl flex items-center justify-center transition bg-[#ff6400] text-white shadow-sm';
+        listBtn.className = 'w-9 h-8 rounded-xl flex items-center justify-center transition text-[#949ba4] hover:text-white';
+      } else {
+        listBtn.className = 'w-9 h-8 rounded-xl flex items-center justify-center transition bg-[#ff6400] text-white shadow-sm';
+        gridBtn.className = 'w-9 h-8 rounded-xl flex items-center justify-center transition text-[#949ba4] hover:text-white';
+      }
+      renderLibraryFiles();
+    }
+
+    function toggleLibraryMediaType(type) {
+      if (libraryTypeFilter === type) {
+        libraryTypeFilter = 'all';
+      } else {
+        libraryTypeFilter = type;
+      }
+
+      const vBtn = document.getElementById('libFilterVideosBtn');
+      const aBtn = document.getElementById('libFilterAudioBtn');
+
+      if (vBtn && aBtn) {
+        if (libraryTypeFilter === 'video') {
+          vBtn.className = 'lib-filter-pill active text-xs px-3.5 py-1 rounded-full font-bold transition';
+          aBtn.className = 'lib-filter-pill text-xs px-3.5 py-1 rounded-full font-bold transition';
+        } else if (libraryTypeFilter === 'audio') {
+          aBtn.className = 'lib-filter-pill active text-xs px-3.5 py-1 rounded-full font-bold transition';
+          vBtn.className = 'lib-filter-pill text-xs px-3.5 py-1 rounded-full font-bold transition';
+        } else {
+          vBtn.className = 'lib-filter-pill active text-xs px-3.5 py-1 rounded-full font-bold transition';
+          aBtn.className = 'lib-filter-pill text-xs px-3.5 py-1 rounded-full font-bold transition';
+        }
+      }
+
+      loadDownloadsList();
+    }
+
+    function handleLibrarySearch() {
+      const q = document.getElementById('librarySearchInput').value.trim();
+      librarySearchQuery = q;
+      const clearBtn = document.getElementById('libClearSearchBtn');
+      if (q) clearBtn.classList.remove('hidden');
+      else clearBtn.classList.add('hidden');
+
+      if (librarySearchTimer) clearTimeout(librarySearchTimer);
+      librarySearchTimer = setTimeout(() => loadDownloadsList(), 250);
+    }
+
+    function clearLibrarySearch() {
+      document.getElementById('librarySearchInput').value = '';
+      librarySearchQuery = '';
+      document.getElementById('libClearSearchBtn').classList.add('hidden');
+      loadDownloadsList();
+    }
+
+    function toggleSortDropdown(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('libSortDropdown');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    function setSortOrder(order) {
+      librarySortOrder = order;
+      document.querySelectorAll('.sort-option-btn').forEach(btn => {
+        const check = btn.querySelector('.sort-check');
+        if (btn.getAttribute('data-sort') === order) {
+          btn.classList.add('text-white', 'bg-[#ff6400]/20');
+          btn.classList.remove('text-[#949ba4]');
+          if (check) check.classList.remove('hidden');
+        } else {
+          btn.classList.remove('text-white', 'bg-[#ff6400]/20');
+          btn.classList.add('text-[#949ba4]');
+          if (check) check.classList.add('hidden');
+        }
+      });
+      const menu = document.getElementById('libSortDropdown');
+      if (menu) menu.classList.add('hidden');
+      sortLibraryFiles();
+      renderLibraryFiles();
+    }
+
+    function sortLibraryFiles() {
+      if (librarySortOrder === 'date-desc') {
+        libraryFiles.sort((a, b) => (b.raw_mtime || b.timestamp || 0) - (a.raw_mtime || a.timestamp || 0));
+      } else if (librarySortOrder === 'date-asc') {
+        libraryFiles.sort((a, b) => (a.raw_mtime || a.timestamp || 0) - (b.raw_mtime || b.timestamp || 0));
+      } else if (librarySortOrder === 'name-asc') {
+        libraryFiles.sort((a, b) => a.name.localeCompare(b.name));
+      } else if (librarySortOrder === 'name-desc') {
+        libraryFiles.sort((a, b) => b.name.localeCompare(a.name));
+      } else if (librarySortOrder === 'size-desc') {
+        libraryFiles.sort((a, b) => (b.bytes || b.raw_size || 0) - (a.bytes || a.raw_size || 0));
+      } else if (librarySortOrder === 'size-asc') {
+        libraryFiles.sort((a, b) => (a.bytes || a.raw_size || 0) - (b.bytes || b.raw_size || 0));
+      }
+    }
+
+    function updatePaginationUI() {
+      const totalPages = Math.max(1, Math.ceil(libraryFiles.length / libraryPageSize));
+      if (libraryCurrentPage > totalPages) libraryCurrentPage = totalPages;
+      if (libraryCurrentPage < 1) libraryCurrentPage = 1;
+
+      const countLabel = document.getElementById('libItemCountLabel');
+      if (countLabel) {
+        if (libraryFiles.length === 0) {
+          countLabel.textContent = 'Showing 0 items';
+        } else {
+          const start = (libraryCurrentPage - 1) * libraryPageSize + 1;
+          const end = Math.min(libraryFiles.length, libraryCurrentPage * libraryPageSize);
+          countLabel.textContent = `Showing ${start}-${end} of ${libraryFiles.length} items`;
+        }
+      }
+
+      const prevBtn = document.getElementById('prevPageBtn');
+      const nextPageBtn = document.getElementById('nextPageBtn');
+      if (prevBtn) prevBtn.disabled = (libraryCurrentPage <= 1);
+      if (nextPageBtn) nextPageBtn.disabled = (libraryCurrentPage >= totalPages);
+
+      const numContainer = document.getElementById('paginationNumbersContainer');
+      if (numContainer) {
+        let html = '';
+        for (let p = 1; p <= totalPages; p++) {
+          if (p === libraryCurrentPage) {
+            html += `<span class="px-2.5 py-0.5 rounded-lg border border-[#ff6400] text-[#ff6400] font-bold text-xs select-none">${p}</span>`;
+          } else {
+            html += `<button onclick="goToPage(${p})" class="px-2.5 py-0.5 rounded-lg text-[#949ba4] hover:text-white font-bold text-xs transition cursor-pointer">${p}</button>`;
+          }
+        }
+        numContainer.innerHTML = html;
+      }
+    }
+
+    function changePage(delta) {
+      const totalPages = Math.max(1, Math.ceil(libraryFiles.length / libraryPageSize));
+      const newPage = libraryCurrentPage + delta;
+      if (newPage >= 1 && newPage <= totalPages) {
+        libraryCurrentPage = newPage;
+        renderLibraryFiles();
+      }
+    }
+
+    function goToPage(page) {
+      libraryCurrentPage = page;
+      renderLibraryFiles();
+    }
+
+    function renderLibraryFiles() {
+      const container = document.getElementById('downloadsListContainer');
+      if (!container) return;
+
+      updatePaginationUI();
+
+      if (libraryFiles.length === 0) {
+        container.className = 'flex flex-col gap-2 flex-1 overflow-y-auto my-2 pr-1.5 custom-scroll min-h-0 justify-center';
+        container.innerHTML = `
+          <div class="p-8 text-center text-xs flex flex-col items-center justify-center my-auto gap-2.5 border border-[#272a33] rounded-2xl bg-[#111216] text-[#949ba4]">
+            <span class="material-symbols-outlined text-4xl text-[#ff6400]">video_library</span>
+            <p class="font-bold text-white text-sm">Your Library is Empty</p>
+            <p class="text-[11px] max-w-xs">Download videos or audio from the Home tab to build your offline showcase.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const startIndex = (libraryCurrentPage - 1) * libraryPageSize;
+      const paginatedItems = libraryFiles.slice(startIndex, startIndex + libraryPageSize);
+
+      if (libraryViewMode === 'grid') {
+        container.className = 'grid grid-cols-2 gap-3 flex-1 overflow-y-auto my-2 pr-1.5 custom-scroll min-h-0 content-start auto-rows-max';
+        container.innerHTML = paginatedItems.map(f => {
+          const isActive = activePlayingFile && (activePlayingFile.filepath || '').replace(/\\/g, '/').toLowerCase() === (f.filepath || '').replace(/\\/g, '/').toLowerCase();
+          return `
+            <div 
+              onclick="selectFileForPreview('${encodeURIComponent(JSON.stringify(f))}', false)"
+              class="group relative p-2.5 rounded-xl flex flex-col gap-2 transition cursor-pointer select-none border ${isActive ? 'border-[#ff6400] bg-[#ff6400]/10 ring-1 ring-[#ff6400]/40' : 'border-transparent bg-[#111216] hover:bg-[#1a1d23]'}"
+            >
+              <div class="w-full aspect-video rounded-lg overflow-hidden bg-black border border-[#272a33] relative flex items-center justify-center">
+                ${f.is_video ? `
+                  <img src="${f.thumbnail_url}" alt="" class="w-full h-full object-cover group-hover:scale-105 transition duration-200" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                  <div class="hidden absolute inset-0 flex items-center justify-center bg-black">
+                    <span class="material-symbols-outlined text-xl text-[#949ba4]">movie</span>
+                  </div>
+                ` : `
+                  <div class="w-full h-full flex items-center justify-center bg-black">
+                    <span class="material-symbols-outlined text-2xl text-[#ff6400]">audiotrack</span>
+                  </div>
+                `}
+                <div class="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition flex items-center justify-center opacity-0 group-hover:opacity-100">
+                  <div class="w-9 h-9 rounded-full bg-[#ff6400] text-white flex items-center justify-center shadow-lg">
+                    <span class="material-symbols-outlined text-lg">play_arrow</span>
+                  </div>
+                </div>
+                <span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded text-[9px] font-mono-nums font-bold text-white bg-black/75 backdrop-blur">${f.size}</span>
+              </div>
+              <div class="flex items-center justify-between gap-2 min-w-0">
+                <p class="font-bold text-xs truncate text-white min-w-0" title="${f.name}">${f.name}</p>
+                <button onclick="openItemDropdown(event, '${encodeURIComponent(JSON.stringify(f))}')" class="text-[#949ba4] hover:text-white p-1 rounded transition shrink-0 cursor-pointer" title="Options">
+                  <span class="material-symbols-outlined text-sm">more_vert</span>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        // List View Mode (Matching Reference Image Exactly)
+        container.className = 'flex flex-col gap-2 flex-1 overflow-y-auto my-2 pr-1.5 custom-scroll min-h-0';
+        container.innerHTML = paginatedItems.map(f => {
+          const isActive = activePlayingFile && (activePlayingFile.filepath || '').replace(/\\/g, '/').toLowerCase() === (f.filepath || '').replace(/\\/g, '/').toLowerCase();
+          return `
+            <div 
+              onclick="selectFileForPreview('${encodeURIComponent(JSON.stringify(f))}', false)"
+              class="group relative p-2 rounded-xl flex items-center justify-between gap-3 transition cursor-pointer select-none border ${isActive ? 'border-[#ff6400] bg-[#ff6400]/10 ring-1 ring-[#ff6400]/40' : 'border-transparent bg-[#111216] hover:bg-[#1a1d23]'}"
+            >
+              <div class="flex items-center gap-3 overflow-hidden min-w-0">
+                <div class="w-18 h-11 sm:w-20 sm:h-12 rounded-lg overflow-hidden shrink-0 bg-black border border-[#272a33] relative flex items-center justify-center">
+                  ${f.is_video ? `
+                    <img src="${f.thumbnail_url}" alt="" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                    <div class="hidden absolute inset-0 flex items-center justify-center bg-black">
+                      <span class="material-symbols-outlined text-base text-[#949ba4]">movie</span>
+                    </div>
+                  ` : `
+                    <div class="w-full h-full flex items-center justify-center bg-black">
+                      <span class="material-symbols-outlined text-base text-[#ff6400]">audiotrack</span>
+                    </div>
+                  `}
+                </div>
+                <div class="min-w-0">
+                  <p class="font-bold text-xs sm:text-[13px] truncate text-white leading-tight" title="${f.name}">${f.name}</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-1 bg-[#1c1f26] border border-[#272a33] rounded-full p-1 shrink-0" onclick="event.stopPropagation()">
+                <button onclick="playItemDirectly(event, '${encodeURIComponent(JSON.stringify(f))}')" class="w-7 h-7 rounded-full flex items-center justify-center text-[#949ba4] hover:text-white hover:bg-[#ff6400] transition cursor-pointer" title="Play">
+                  <span class="material-symbols-outlined text-base">play_arrow</span>
+                </button>
+                <button onclick="openItemDropdown(event, '${encodeURIComponent(JSON.stringify(f))}')" class="w-7 h-7 rounded-full flex items-center justify-center text-[#949ba4] hover:text-white hover:bg-[#272a33] transition cursor-pointer" title="Options">
+                  <span class="material-symbols-outlined text-base">more_vert</span>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    function selectFileForPreview(encodedOrObj, autoPlay = false) {
+      let f = encodedOrObj;
+      if (typeof f === 'string') {
+        try {
+          f = JSON.parse(decodeURIComponent(f));
+        } catch (e) {
+          console.error('Error parsing file JSON', e);
+          return;
+        }
+      }
+      if (!f || !f.filepath) return;
+
+      const tokenParam = (typeof DIMPLE_TOKEN !== 'undefined' && DIMPLE_TOKEN) ? `&token=${encodeURIComponent(DIMPLE_TOKEN)}` : '';
+      const encodedFp = encodeURIComponent(f.filepath);
+      if (!f.stream_url) {
+        f.stream_url = `/api/stream?path=${encodedFp}${tokenParam}`;
+      } else if (!f.stream_url.includes('token=') && tokenParam) {
+        f.stream_url += (f.stream_url.includes('?') ? tokenParam : '?' + tokenParam.slice(1));
+      }
+      if (!f.thumbnail_url) {
+        f.thumbnail_url = `/api/thumbnail?path=${encodedFp}${tokenParam}`;
+      } else if (!f.thumbnail_url.includes('token=') && tokenParam) {
+        f.thumbnail_url += (f.thumbnail_url.includes('?') ? tokenParam : '?' + tokenParam.slice(1));
+      }
+
+      activePlayingFile = f;
+
+      const titleEl = document.getElementById('playerActiveTitle');
+      if (titleEl) {
+        titleEl.textContent = f.name;
+        titleEl.title = f.name;
+      }
+
+      const player = document.getElementById('libraryVideoPlayer');
+      if (player) {
+        try {
+          player.pause();
+        } catch (_) {}
+        player.src = f.stream_url;
+        player.poster = f.thumbnail_url || '';
+        player.preload = 'metadata';
+        player.load();
+        if (autoPlay) {
+          const playPromise = player.play();
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              showPlayerFeedback('play_arrow', 'Playing');
+            }).catch(e => {
+              console.warn('Autoplay prevented or interrupted', e);
+            });
+          }
+        }
+      }
+
+      renderLibraryFiles();
+    }
+
+    function playItemDirectly(e, encodedJson) {
+      if (e) e.stopPropagation();
+      selectFileForPreview(encodedJson, true);
+    }
+
+    function openItemDropdown(e, encodedJson) {
+      if (e) e.stopPropagation();
+      try {
+        activeContextFile = (typeof encodedJson === 'string') ? JSON.parse(decodeURIComponent(encodedJson)) : encodedJson;
+      } catch (err) {
+        console.error(err);
+        return;
+      }
+
+      const menu = document.getElementById('libContextMenu');
+      if (!menu) return;
+
+      const rect = e.currentTarget.getBoundingClientRect();
+      const menuWidth = 210;
+      let left = rect.left - menuWidth + 30;
+      if (left < 10) left = rect.left;
+      let top = rect.bottom + 6;
+      if (top + 220 > window.innerHeight) {
+        top = rect.top - 210;
+      }
+
+      menu.style.left = `${left}px`;
+      menu.style.top = `${top}px`;
+      menu.classList.remove('hidden');
+    }
+
+    // Dismiss contextual dropdowns on outside click
+    document.addEventListener('click', (e) => {
+      const ctxMenu = document.getElementById('libContextMenu');
+      if (ctxMenu && !ctxMenu.contains(e.target)) {
+        ctxMenu.classList.add('hidden');
+      }
+      const sortMenu = document.getElementById('libSortDropdown');
+      if (sortMenu && !sortMenu.contains(e.target) && !document.getElementById('libSortBtn')?.contains(e.target)) {
+        sortMenu.classList.add('hidden');
+      }
+      const speedMenu = document.getElementById('playerSpeedMenu');
+      if (speedMenu && !speedMenu.contains(e.target) && !document.getElementById('playerSpeedBtn')?.contains(e.target)) {
+        speedMenu.classList.add('hidden');
+      }
+    });
+
+    function contextActionPlay() {
+      if (activeContextFile) {
+        selectFileForPreview(activeContextFile, true);
+      }
+      document.getElementById('libContextMenu')?.classList.add('hidden');
+    }
+
+    async function contextActionOpenFile() {
+      if (!activeContextFile) return;
+      try {
+        await fetch('/api/open-file', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filepath: activeContextFile.filepath })
+        });
+      } catch (e) {
+        console.error('Failed to open file externally', e);
+      }
+      document.getElementById('libContextMenu')?.classList.add('hidden');
+    }
+
+    async function contextActionReveal() {
+      if (!activeContextFile) return;
+      revealFile(encodeURIComponent(activeContextFile.filepath));
+      document.getElementById('libContextMenu')?.classList.add('hidden');
+    }
+
+    async function contextActionCopyPath() {
+      if (!activeContextFile) return;
+      let copied = false;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(activeContextFile.filepath);
+          copied = true;
+        }
+      } catch (e) {}
+
+      if (!copied) {
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = activeContextFile.filepath;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          copied = document.execCommand('copy');
+          document.body.removeChild(ta);
+        } catch (e) {}
+      }
+
+      if (copied) {
+        showToast('File path copied to clipboard');
+      } else {
+        showToast('Path: ' + activeContextFile.filepath);
+      }
+      document.getElementById('libContextMenu')?.classList.add('hidden');
+    }
+
+    async function contextActionDelete() {
+      if (!activeContextFile) return;
+      const fileToDelete = activeContextFile;
+      document.getElementById('libContextMenu')?.classList.add('hidden');
+
+      if (confirm(`Are you sure you want to delete "${fileToDelete.name}"?`)) {
+        try {
+          const res = await fetch(`/api/delete?filepath=${encodeURIComponent(fileToDelete.filepath)}`, { method: 'DELETE' });
+          const data = await res.json();
+          if (data.success) {
+            showToast('File deleted successfully');
+            if (activePlayingFile && activePlayingFile.filepath === fileToDelete.filepath) {
+              const player = document.getElementById('libraryVideoPlayer');
+              if (player) { player.pause(); player.src = ''; }
+              activePlayingFile = null;
+            }
+            loadDownloadsList();
+          } else {
+            showError(data.error || 'Failed to delete file');
+          }
+        } catch (e) {
+          showError('Delete failed: ' + e.message);
+        }
+      }
+    }
+
+    // Interactive Media Player Controller & Event Wiring
+    function initMediaLibraryPlayer() {
+      const player = document.getElementById('libraryVideoPlayer');
+      if (!player) return;
+
+      player.addEventListener('timeupdate', () => {
+        if (isScrubbing) return;
+        const cur = player.currentTime || 0;
+        const dur = player.duration || 0;
+        const pct = dur > 0 ? (cur / dur) * 100 : 0;
+
+        const fill = document.getElementById('playerScrubberFill');
+        const thumb = document.getElementById('playerScrubberThumb');
+        if (fill) fill.style.width = `${pct}%`;
+        if (thumb) thumb.style.left = `${pct}%`;
+
+        const curLabel = document.getElementById('playerCurrentTime');
+        if (curLabel) curLabel.textContent = formatMediaTime(cur);
+      });
+
+      player.addEventListener('loadedmetadata', () => {
+        const dur = player.duration || 0;
+        const durLabel = document.getElementById('playerDuration');
+        if (durLabel) durLabel.textContent = formatMediaTime(dur);
+      });
+
+      player.addEventListener('play', () => {
+        updatePlayPauseUI(true);
+      });
+
+      player.addEventListener('pause', () => {
+        updatePlayPauseUI(false);
+      });
+
+      player.addEventListener('ended', () => {
+        updatePlayPauseUI(false);
+        playAdjacentItem(1);
+      });
+
+      player.addEventListener('volumechange', () => {
+        const volSlider = document.getElementById('playerVolumeSlider');
+        const volIcon = document.getElementById('playerVolumeIcon');
+        if (volSlider) volSlider.value = player.muted ? 0 : player.volume;
+        if (volIcon) {
+          volIcon.textContent = (player.muted || player.volume === 0) ? 'volume_off' : (player.volume < 0.5 ? 'volume_down' : 'volume_up');
+        }
+      });
+
+      player.addEventListener('enterpictureinpicture', () => {
+        const pipIcon = document.getElementById('playerPiPIcon');
+        if (pipIcon) pipIcon.textContent = 'featured_video';
+        const pipBtn = document.getElementById('playerPiPBtn');
+        if (pipBtn) pipBtn.classList.add('text-[#ff6400]');
+      });
+
+      player.addEventListener('leavepictureinpicture', () => {
+        const pipIcon = document.getElementById('playerPiPIcon');
+        if (pipIcon) pipIcon.textContent = 'picture_in_picture_alt';
+        const pipBtn = document.getElementById('playerPiPBtn');
+        if (pipBtn) pipBtn.classList.remove('text-[#ff6400]');
+      });
+    }
+
+    function formatMediaTime(seconds) {
+      if (isNaN(seconds) || seconds < 0) return '00:00';
+      const s = Math.floor(seconds);
+      const m = Math.floor(s / 60);
+      const sec = s % 60;
+      if (m >= 60) {
+        const h = Math.floor(m / 60);
+        const remM = m % 60;
+        return `${h}:${remM.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+      }
+      return `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+    }
+
+    function updatePlayPauseUI(isPlaying) {
+      const icon = document.getElementById('playerCenterPlayIcon');
+      const overlayIcon = document.getElementById('playerOverlayPlayIcon');
+      if (icon) icon.textContent = isPlaying ? 'pause' : 'play_arrow';
+      if (overlayIcon) overlayIcon.textContent = isPlaying ? 'pause' : 'play_arrow';
+    }
+
+    function togglePlayPause() {
+      const player = document.getElementById('libraryVideoPlayer');
+      if (!player) return;
+      if (player.paused) {
+        player.play().catch(e => console.error('Play error', e));
+        showPlayerFeedback('play_arrow', 'Playing');
+      } else {
+        player.pause();
+        showPlayerFeedback('pause', 'Paused');
+      }
+    }
+
+    function seekRelative(seconds) {
+      const player = document.getElementById('libraryVideoPlayer');
+      if (!player) return;
+      player.currentTime = Math.max(0, Math.min(player.duration || 0, player.currentTime + seconds));
+      showPlayerFeedback(seconds > 0 ? 'forward_10' : 'replay_10', (seconds > 0 ? `+${seconds}s` : `${seconds}s`));
+    }
+
+    function playAdjacentItem(delta) {
+      if (!libraryFiles || libraryFiles.length === 0) return;
+      let currentIndex = -1;
+      if (activePlayingFile) {
+        currentIndex = libraryFiles.findIndex(f => f.filepath === activePlayingFile.filepath);
+      }
+      let nextIndex = currentIndex + delta;
+      if (nextIndex < 0) nextIndex = libraryFiles.length - 1;
+      if (nextIndex >= libraryFiles.length) nextIndex = 0;
+
+      const nextFile = libraryFiles[nextIndex];
+      if (nextFile) {
+        const targetPage = Math.floor(nextIndex / libraryPageSize) + 1;
+        if (targetPage !== libraryCurrentPage) {
+          libraryCurrentPage = targetPage;
+        }
+        selectFileForPreview(nextFile, true);
+      }
+    }
+
+    // Scrubber Dragging & Seeking Handlers
+    function startScrubbing(e) {
+      isScrubbing = true;
+      updateScrubPosition(e);
+
+      function onMouseMove(ev) {
+        if (isScrubbing) {
+          updateScrubPosition(ev);
+        }
+      }
+
+      function onMouseUp() {
+        isScrubbing = false;
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mouseup', onMouseUp);
+      }
+
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+    }
+
+    function updateScrubPosition(e) {
+      const player = document.getElementById('libraryVideoPlayer');
+      const container = document.getElementById('playerScrubberContainer');
+      if (!player || !container || !player.duration) return;
+
+      const rect = container.getBoundingClientRect();
+      const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      player.currentTime = pct * player.duration;
+
+      const fill = document.getElementById('playerScrubberFill');
+      const thumb = document.getElementById('playerScrubberThumb');
+      if (fill) fill.style.width = `${pct * 100}%`;
+      if (thumb) thumb.style.left = `${pct * 100}%`;
+    }
+
+    function updateScrubberHover(e) {
+      const player = document.getElementById('libraryVideoPlayer');
+      const container = document.getElementById('playerScrubberContainer');
+      const tip = document.getElementById('playerScrubberTooltip');
+      if (!player || !container || !tip || !player.duration) return;
+
+      const rect = container.getBoundingClientRect();
+      const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const hoverTime = pct * player.duration;
+      tip.textContent = formatMediaTime(hoverTime);
+      tip.style.left = `${e.clientX - rect.left}px`;
+      tip.classList.remove('hidden');
+    }
+
+    function hideScrubberTooltip() {
+      const tip = document.getElementById('playerScrubberTooltip');
+      if (tip) tip.classList.add('hidden');
+    }
+
+    function setPlayerVolume(val) {
+      const player = document.getElementById('libraryVideoPlayer');
+      if (!player) return;
+      player.volume = parseFloat(val);
+      player.muted = false;
+    }
+
+    function togglePlayerMute() {
+      const player = document.getElementById('libraryVideoPlayer');
+      if (!player) return;
+      player.muted = !player.muted;
+      showPlayerFeedback(player.muted ? 'volume_off' : 'volume_up', player.muted ? 'Muted' : 'Unmuted');
+    }
+
+    function toggleSpeedDropdown(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('playerSpeedMenu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    function setPlayerSpeed(speed) {
+      const player = document.getElementById('libraryVideoPlayer');
+      if (player) player.playbackRate = speed;
+      const label = document.getElementById('playerSpeedLabel');
+      if (label) label.textContent = `${speed}x`;
+
+      document.querySelectorAll('.speed-opt-btn').forEach(btn => {
+        if (btn.textContent.trim() === `${speed}x`) {
+          btn.className = 'speed-opt-btn px-2.5 py-1.5 text-left rounded-lg text-white bg-[#ff6400] transition';
+        } else {
+          btn.className = 'speed-opt-btn px-2.5 py-1.5 text-left rounded-lg text-[#949ba4] hover:bg-[#ff6400] hover:text-white transition';
+        }
+      });
+
+      const menu = document.getElementById('playerSpeedMenu');
+      if (menu) menu.classList.add('hidden');
+      showPlayerFeedback('speed', `${speed}x`);
+    }
+
+    function togglePlayerFullscreen() {
+      const player = document.getElementById('libraryVideoPlayer');
+      if (!player) return;
+      if (!document.fullscreenElement) {
+        player.requestFullscreen?.().catch(() => {});
+      } else {
+        document.exitFullscreen?.().catch(() => {});
+      }
+    }
+
+    async function togglePlayerPiP() {
+      const player = document.getElementById('libraryVideoPlayer');
+      if (!player) return;
+      try {
+        if (document.pictureInPictureElement) {
+          await document.exitPictureInPicture();
+          showPlayerFeedback('picture_in_picture_alt', 'Exited PiP');
+        } else if (document.pictureInPictureEnabled || player.requestPictureInPicture) {
+          if (!player.src || player.src.endsWith('/undefined') || player.readyState === 0) {
+            showToast('Select a video from the library to play in Picture-in-Picture');
+            return;
+          }
+          await player.requestPictureInPicture();
+          showPlayerFeedback('picture_in_picture_alt', 'Picture in Picture');
+        } else {
+          showToast('Picture-in-Picture is not supported in this environment');
+        }
+      } catch (err) {
+        console.warn('PiP error:', err);
+        showToast('PiP error: ' + (err.message || err));
+      }
+    }
+
+    function toggleShortcutsGuide() {
+      const modal = document.getElementById('libShortcutsModal');
+      if (modal) modal.classList.toggle('hidden');
+    }
+
+    function showPlayerFeedback(iconName, text) {
+      const hud = document.getElementById('playerHudFeedback');
+      const icon = document.getElementById('playerHudIcon');
+      const label = document.getElementById('playerHudText');
+      if (!hud || !icon || !label) return;
+
+      icon.textContent = iconName;
+      label.textContent = text;
+      hud.classList.remove('hidden');
+      hud.style.opacity = '1';
+
+      if (window._hudTimeout) clearTimeout(window._hudTimeout);
+      window._hudTimeout = setTimeout(() => {
+        hud.style.opacity = '0';
+        setTimeout(() => hud.classList.add('hidden'), 200);
+      }, 700);
+    }
+
+    // Global YouTube-style Keyboard Shortcuts for Media Player & App Shortcuts
+    document.addEventListener('keydown', (e) => {
+      // Global Ctrl+V to paste into downloader URL input when not focused on another input
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'V')) {
+        if (!['input', 'textarea', 'select'].includes(e.target.tagName.toLowerCase())) {
+          if (currentTab === 'downloader') {
+            e.preventDefault();
+            pasteClipboard();
+            return;
+          }
+        }
+      }
+
+      if (['input', 'textarea', 'select'].includes(e.target.tagName.toLowerCase())) {
+        return;
+      }
+
+      if (currentTab !== 'downloads') {
+        return;
+      }
+
+      const player = document.getElementById('libraryVideoPlayer');
+      if (!player) return;
+
+      const key = e.key.toLowerCase();
+
+      if (e.code === 'Space' || key === 'k') {
+        e.preventDefault();
+        togglePlayPause();
+      } else if (key === 'j') {
+        e.preventDefault();
+        seekRelative(-10);
+      } else if (key === 'l') {
+        e.preventDefault();
+        seekRelative(10);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        seekRelative(-5);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        seekRelative(5);
+      } else if (key === 'm') {
+        e.preventDefault();
+        togglePlayerMute();
+      } else if (key === 'f') {
+        e.preventDefault();
+        togglePlayerFullscreen();
+      } else if (key === 'p') {
+        e.preventDefault();
+        togglePlayerPiP();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        player.volume = Math.min(1, Math.round((player.volume + 0.05) * 100) / 100);
+        showPlayerFeedback('volume_up', `${Math.round(player.volume * 100)}%`);
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        player.volume = Math.max(0, Math.round((player.volume - 0.05) * 100) / 100);
+        showPlayerFeedback('volume_down', `${Math.round(player.volume * 100)}%`);
+      } else if (e.key === '[') {
+        e.preventDefault();
+        playAdjacentItem(-1);
+      } else if (e.key === ']') {
+        e.preventDefault();
+        playAdjacentItem(1);
+      } else if (e.key === '<') {
+        e.preventDefault();
+        const currentSpeed = player.playbackRate || 1;
+        const speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
+        const idx = speeds.indexOf(currentSpeed);
+        if (idx > 0) setPlayerSpeed(speeds[idx - 1]);
+      } else if (e.key === '>') {
+        e.preventDefault();
+        const currentSpeed = player.playbackRate || 1;
+        const speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
+        const idx = speeds.indexOf(currentSpeed);
+        if (idx !== -1 && idx < speeds.length - 1) setPlayerSpeed(speeds[idx + 1]);
+      } else if (e.key >= '0' && e.key <= '9') {
+        e.preventDefault();
+        const pct = parseInt(e.key, 10) * 0.1;
+        if (player.duration) {
+          player.currentTime = player.duration * pct;
+          showPlayerFeedback('fast_forward', `${e.key}0%`);
+        }
+      } else if (e.key === 'Escape') {
+        const modal = document.getElementById('libShortcutsModal');
+        if (modal && !modal.classList.contains('hidden')) {
+          modal.classList.add('hidden');
+        }
+        document.getElementById('libContextMenu')?.classList.add('hidden');
+        document.getElementById('libSortDropdown')?.classList.add('hidden');
+        document.getElementById('playerSpeedMenu')?.classList.add('hidden');
+      }
+    });
+
+    // Native Explorer Folder Opening
+    async function openActiveFolder(customPath) {
+      let targetPath = customPath;
+      if (!targetPath) {
+        targetPath = document.getElementById('downloaderPathInput')?.value?.trim() || 
+                     document.getElementById('settingsDownloadDirInput')?.value?.trim() || 
+                     activeDestination;
+      }
+      try {
+        const res = await fetch('/api/open-downloads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path: targetPath })
+        });
+        const data = await res.json();
+        if (!data.success) {
+          alert('Could not open folder: ' + (data.error || 'Folder not found'));
+        }
+      } catch (err) {
+        console.error('Failed to open folder:', err);
+      }
+    }
+
+    async function revealFile(filepath) {
+      try {
+        await fetch('/api/reveal-file', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filepath: decodeURIComponent(filepath) })
+        });
+      } catch (err) {
+        console.error('Failed to reveal file:', err);
+      }
+    }
+
+    async function deleteFile(filepath) {
+      const decoded = decodeURIComponent(filepath);
+      const filename = decoded.split(/[\\/]/).pop();
+      if (!confirm(`Are you sure you want to delete "${filename}"?`)) return;
+
+      try {
+        const res = await fetch('/api/delete-file', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filepath: decoded })
+        });
+        const data = await res.json();
+        if (data.success) {
+          if (activePlayingFile && activePlayingFile.filepath === decoded) {
+            closePreviewPlayer();
+          }
+          loadDownloadsList();
+          showToast('File deleted: ' + filename);
+        } else {
+          alert('Failed to delete: ' + (data.error || 'File not found'));
+        }
+      } catch (e) {
+        console.error('Delete error', e);
+      }
+    }
+
+    // License Activation Controller
+    async function checkLicenseStatus() {
+      try {
+        const res = await fetch('/api/license');
+        const data = await res.json();
+        if (data.success && data.data) {
+          appLicenseData = data.data;
+          updateLicenseUI(appLicenseData);
+          if (!appLicenseData.activated) {
+            showLicenseModal(true);
+          }
+        }
+      } catch (e) {
+        console.error('License check error:', e);
+      }
+    }
+
+    function updateLicenseUI(lic) {
+      const badge = document.getElementById('settingsLicenseBadge');
+      const keyDisplay = document.getElementById('settingsLicenseKeyDisplay');
+      const statusDesc = document.getElementById('settingsLicenseDesc');
+
+      if (lic && lic.activated) {
+        if (badge) {
+          badge.textContent = lic.type || 'Lifetime Pro';
+          badge.style.color = '#ffffff';
+          badge.style.borderColor = 'var(--accent-crimson)';
+        }
+        if (keyDisplay) keyDisplay.textContent = lic.key;
+        if (statusDesc) statusDesc.textContent = `Activated for ${lic.customer || 'Personal Use'} (Offline Validated)`;
+      } else {
+        if (badge) {
+          badge.textContent = 'Unlicensed';
+          badge.style.color = '#f87171';
+        }
+        if (keyDisplay) keyDisplay.textContent = 'Not Activated';
+        if (statusDesc) statusDesc.textContent = 'Activation key required for unlimited downloads.';
+      }
+    }
+
+    function showLicenseModal(isRequired = false) {
+      const modal = document.getElementById('licenseModal');
+      const cancelBtn = document.getElementById('licenseModalCancelBtn');
+      if (cancelBtn) {
+        cancelBtn.style.display = isRequired ? 'none' : 'inline-flex';
+      }
+      document.getElementById('licenseModalError').classList.add('hidden');
+      document.getElementById('licenseModalSuccess').classList.add('hidden');
+      modal.classList.remove('hidden');
+    }
+
+    function closeLicenseModal() {
+      if (appLicenseData && !appLicenseData.activated) {
+        return;
+      }
+      document.getElementById('licenseModal').classList.add('hidden');
+    }
+
+    async function pasteLicenseKey() {
+      const text = await getClipboardText();
+      if (text) {
+        document.getElementById('licenseKeyInput').value = text.trim();
+        showToast('License key pasted');
+      } else {
+        document.getElementById('licenseKeyInput').focus();
+        showToast('Clipboard is empty');
+      }
+    }
+
+    async function submitLicenseActivation() {
+      const input = document.getElementById('licenseKeyInput');
+      const key = (input.value || '').trim().toUpperCase();
+      const errEl = document.getElementById('licenseModalError');
+      const succEl = document.getElementById('licenseModalSuccess');
+      const btn = document.getElementById('licenseModalActivateBtn');
+
+      errEl.classList.add('hidden');
+      succEl.classList.add('hidden');
+
+      if (!key) {
+        errEl.textContent = 'Please enter a valid license key.';
+        errEl.classList.remove('hidden');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-symbols-outlined text-xs animate-spin">progress_activity</span> <span>Verifying...</span>';
+
+      try {
+        const res = await fetch('/api/license/activate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key: key })
+        });
+        const d = await res.json();
+        if (d.success) {
+          succEl.textContent = 'License activated successfully! Welcome to Dimple Pro.';
+          succEl.classList.remove('hidden');
+          appLicenseData = d.data;
+          updateLicenseUI(appLicenseData);
+          setTimeout(() => {
+            document.getElementById('licenseModal').classList.add('hidden');
+            showToast('Dimple Pro Lifetime License Activated!');
+          }, 1200);
+        } else {
+          errEl.textContent = d.error || 'Invalid license key. Generate genuine keys with Dimple_Keygen.exe';
+          errEl.classList.remove('hidden');
+        }
+      } catch (e) {
+        errEl.textContent = 'Activation request failed: ' + e;
+        errEl.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="material-symbols-outlined text-xs">verified</span> <span>Activate License</span>';
+      }
+    }
+
+    // Legal Modal
+    function openLegalModal(type) {
+      const modal = document.getElementById('legalModal');
+      const title = document.getElementById('legalModalTitle');
+      const icon = document.getElementById('legalModalIcon');
+      const body = document.getElementById('legalModalBody');
+
+      if (type === 'privacy') {
+        title.textContent = 'Privacy Policy';
+        icon.textContent = 'policy';
+        body.innerHTML = `
+          <div class="p-3.5 rounded-lg border flex flex-col gap-1" style="background: var(--bg-surface-elevated); border-color: var(--border-hairline);">
+            <p class="font-bold text-xs" style="color: var(--text-primary);">Dimple Privacy Assurance</p>
+            <p class="text-[11px]" style="color: var(--text-muted);">Dimple operates strictly on your personal machine. We do not harvest your personal information, track your downloads, or sell user telemetry.</p>
+          </div>
+          <div class="flex flex-col gap-1 mt-1">
+            <h4 class="font-bold text-xs" style="color: var(--text-primary);">1. Local Processing</h4>
+            <p style="color: var(--text-secondary);">All media parsing, URL queries, and downloads run strictly between your local IP address and the targeted public media servers. No intermediate proxies or telemetry servers intercept your content.</p>
+          </div>
+          <div class="flex flex-col gap-1">
+            <h4 class="font-bold text-xs" style="color: var(--text-primary);">2. Credentials & Cookies</h4>
+            <p style="color: var(--text-secondary);">API tokens and browser cookie files configured in Settings remain on your local disk inside your local application directory. They are never sent to external servers.</p>
+          </div>
+        `;
+      } else {
+        title.textContent = 'Terms & Conditions';
+        icon.textContent = 'gavel';
+        body.innerHTML = `
+          <div class="p-3.5 rounded-lg border flex flex-col gap-1" style="background: var(--bg-surface-elevated); border-color: var(--border-hairline);">
+            <p class="font-bold text-xs" style="color: var(--text-primary);">Authorized Personal Use</p>
+            <p class="text-[11px]" style="color: var(--text-muted);">Dimple is provided as an open tool for personal archiving, research, and offline viewing of media you are authorized to access.</p>
+          </div>
+          <div class="flex flex-col gap-1 mt-1">
+            <h4 class="font-bold text-xs" style="color: var(--text-primary);">1. User Responsibility</h4>
+            <p style="color: var(--text-secondary);">Users must comply with all applicable local copyright laws and third-party terms of service. You agree not to distribute or commercialize copyrighted materials without permission.</p>
+          </div>
+        `;
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeLegalModal() {
+      document.getElementById('legalModal').classList.add('hidden');
+    }
+
+    // Settings
+    async function loadSettings() {
+      try {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        if (data.success) {
+          const cfg = data.data;
+          document.getElementById('settingsDownloadDirInput').value = cfg.download_dir || '';
+          document.getElementById('settingsYtdlpVer').textContent = `yt-dlp v${cfg.ytdlp_version}`;
+          document.getElementById('settingsFfmpeg').textContent = cfg.ffmpeg.includes('ffmpeg') ? 'Bundled FFmpeg (Ready)' : 'Bundled FFmpeg';
+
+          const browserSel = document.getElementById('settingsCookiesBrowser');
+          if (browserSel && cfg.cookies_browser) {
+            browserSel.value = cfg.cookies_browser;
+          }
+
+          if (cfg.license) {
+            updateLicenseUI(cfg.license);
+          }
+        }
+      } catch (e) {
+        console.error('Failed to load settings:', e);
+      }
+    }
+
+    async function saveSettingsDirectory() {
+      const dir = document.getElementById('settingsDownloadDirInput').value.trim();
+      if (!dir) return;
+      try {
+        const res = await fetch('/api/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ download_dir: dir })
+        });
+        const d = await res.json();
+        if (d.success) {
+          saveDownloaderPath(dir);
+          const notice = document.getElementById('pathSaveNotice');
+          notice.classList.remove('hidden');
+          setTimeout(() => notice.classList.add('hidden'), 2500);
+        }
+      } catch (e) {
+        console.error('Failed to save dir', e);
+      }
+    }
+
+    async function saveSettingsCookies() {
+      const browser = document.getElementById('settingsCookiesBrowser').value;
+      try {
+        await fetch('/api/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cookies_browser: browser })
+        });
+        showToast('Browser cookie source updated');
+      } catch (e) {
+        console.error('Failed to save cookies', e);
+      }
+    }
+  </script>
+</body>
+</html>
