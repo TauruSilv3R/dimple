@@ -161,14 +161,14 @@ Dimple is structured with clear separation between native window lifecycle, loca
 
 ```mermaid
 flowchart TD
-    subgraph Native Desktop Shell [PySide6 / Qt6 Native Layer]
+    subgraph Desktop_Shell["Native Desktop Shell (PySide6 / Qt6)"]
         A["Dimple.vbs / run.bat"] --> B["desktop_app.py (DimpleMainWindow)"]
         B --> C["QWebEngineView"]
         B --> D["Win32 Native Menu (File, Options)"]
         B --> E["Port Allocator &amp; Session Token Guard"]
     end
 
-    subgraph Backend Microservice [Flask Local Server (127.0.0.1)]
+    subgraph Backend_Server["Backend Microservice (Flask Local Server 127.0.0.1)"]
         F["app.py (Flask Engine)"]
         E -.->|Token Guard| F
         F --> G["Multi-Threaded Job Manager (RLock)"]
@@ -177,7 +177,7 @@ flowchart TD
         F --> J["FFmpeg Local Frame Thumbnailer"]
     end
 
-    subgraph Client UI [Modern Studio Interface]
+    subgraph Client_UI["Client UI (Modern Studio Interface)"]
         C --> K["templates/index.html"]
         K --> L["Home Cockpit (Two-Pane Studio)"]
         K --> M["Transfers Queue (Active / Completed)"]
@@ -188,7 +188,7 @@ flowchart TD
     G -->|File Streaming| O
     J -->|Cache JPEGs| N
     J -->|Cache JPEGs| M
-    H -->|Save Video/Audio| P[("Downloads Folder")]
+    H -->|Save Video / Audio| P[("Downloads Folder")]
 ```
 
 ---
