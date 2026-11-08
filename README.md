@@ -81,6 +81,13 @@
 
 ## ✨ Key Features
 
+### 🌐 In-App YouTube Browser & 1-Click Video Sender
+- **Embedded Web Engine**: Browse YouTube directly inside Dimple without leaving the desktop workspace.
+- **YouTube-Only Sandboxing**: Restricted browsing engine dedicated exclusively to YouTube streams, searches, shorts, and channels.
+- **⚡ Direct Video Sender**: Watch any video and click "Send to Downloader" (from the compact command bar or the on-player floating button) to automatically load and analyze formats in Downloader Studio.
+- **Ultra-Compact Command Deck**: Streamlined edge-to-edge address & search bar, Back/Forward/Reload/Home controls, and external fallback without container borders or gaps.
+- **Collapsible Minimalist Sidebar**: Sleek sidebar collapsed by default (68px) for an unobstructed media canvas, expanding smoothly when clicking the menu button.
+
 ### 📥 High-Speed Multi-Threaded Engine
 - **Simultaneous Job Processing**: Queue multiple videos or playlists concurrently without thread locking or UI freezing.
 - **Smart Queue Telemetry**: Live progress bars (`0–100%`), real-time transfer speeds (`MB/s`), byte gauges (`GB/MB downloaded`), and countdown ETA clocks.
@@ -130,6 +137,11 @@ Dimple provides full YouTube-standard keyboard hotkeys for an intuitive, hands-o
 | <kbd>]</kbd> | Next media item | Media Library |
 | <kbd>&lt;</kbd> / <kbd>&gt;</kbd> | Decrease / Increase playback speed | Media Theater |
 | <kbd>0</kbd> – <kbd>9</kbd> | Seek to 0% – 90% duration of video | Media Theater |
+| <kbd>Ctrl</kbd> + <kbd>1</kbd> | Switch to Home (Downloader Studio) | Global |
+| <kbd>Ctrl</kbd> + <kbd>2</kbd> | Switch to In-App YouTube Browser | Global |
+| <kbd>Ctrl</kbd> + <kbd>3</kbd> | Switch to Active Transfers | Global |
+| <kbd>Ctrl</kbd> + <kbd>4</kbd> | Switch to Media Library | Global |
+| <kbd>Ctrl</kbd> + <kbd>,</kbd> | Switch to Settings | Global |
 | <kbd>Ctrl</kbd> + <kbd>V</kbd> | Paste URL &amp; auto-analyze from clipboard | Home Tab |
 | <kbd>Esc</kbd> | Close shortcuts guide &amp; modal dialogs | Global |
 

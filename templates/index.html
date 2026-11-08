@@ -300,18 +300,35 @@
     .sidebar-collapsed .nav-badge,
     .sidebar-collapsed .footer-meta,
     .sidebar-collapsed .sidebar-legal-links,
-    .sidebar-collapsed #sidebarCollapseBtn {
+    .sidebar-collapsed .brand-wrap {
       display: none !important;
     }
     .sidebar-collapsed .sidebar-header {
-      padding: 0 !important;
+      padding: 0 12px !important;
       justify-content: center !important;
     }
-    .sidebar-collapsed .brand-wrap {
-      width: 100% !important;
+    .sidebar-collapsed #sidebarCollapseBtn {
+      display: flex !important;
+      width: 44px !important;
+      height: 44px !important;
+      align-items: center !important;
       justify-content: center !important;
-      margin: 0 !important;
-      padding: 0 !important;
+      margin: 0 auto !important;
+      border-radius: 12px !important;
+      background: #181c20 !important;
+      border: 1px solid #2b3036 !important;
+      color: #ffffff !important;
+      cursor: pointer !important;
+    }
+    .sidebar-collapsed #sidebarCollapseBtn:hover {
+      background: #22262c !important;
+      border-color: #ff7a00 !important;
+      color: #ff7a00 !important;
+      box-shadow: 0 0 12px rgba(255, 107, 0, 0.35) !important;
+    }
+    .sidebar-collapsed #sidebarCollapseBtn .material-symbols-outlined {
+      font-size: 20px !important;
+      color: inherit !important;
     }
     .sidebar-collapsed nav {
       padding: 12px 0 !important;
@@ -372,7 +389,7 @@
   <!-- ==========================================================================
        SIDEBAR NAVIGATION (Home, Downloads, Media Library, Settings)
        ========================================================================== -->
-  <aside id="sidebar" class="w-64 flex flex-col justify-between shrink-0 transition-all duration-200 z-20" style="background-color: var(--bg-sidebar); border-right: 1px solid var(--border-hairline);">
+  <aside id="sidebar" class="w-64 sidebar-collapsed flex flex-col justify-between shrink-0 transition-all duration-200 z-20" style="background-color: var(--bg-sidebar); border-right: 1px solid var(--border-hairline);">
     <div>
       <!-- Brand Header -->
       <div class="h-16 flex items-center justify-between px-4 border-b sidebar-header" style="border-color: var(--border-hairline);">
@@ -389,12 +406,12 @@
             <p class="text-[11px] mt-1 font-medium tracking-normal" style="color: #8b949e;">Media Downloader</p>
           </div>
         </div>
-        <button id="sidebarCollapseBtn" onclick="toggleSidebar()" class="p-1.5 rounded-lg hover:bg-white/5 transition" style="color: #8b949e;" title="Collapse Sidebar">
+        <button id="sidebarCollapseBtn" onclick="toggleSidebar()" class="p-1.5 rounded-lg hover:bg-white/5 transition flex items-center justify-center cursor-pointer" style="color: #8b949e;" title="Expand Sidebar">
           <span class="material-symbols-outlined text-base">menu</span>
         </button>
       </div>
 
-      <!-- Navigation Tabs (Home, Downloads, Media Library, Settings) -->
+      <!-- Navigation Tabs (Home, Browser, Downloads, Media Library, Settings) -->
       <nav class="p-3 flex flex-col gap-1.5">
         <!-- Tab 1: Home -->
         <button onclick="switchTab('downloader')" id="tab-btn-downloader" class="nav-item-btn active" title="Home">
@@ -402,21 +419,28 @@
           <span class="nav-label flex-1 text-left font-semibold">Home</span>
         </button>
 
-        <!-- Tab 2: Downloads (Active Queue) -->
+        <!-- Tab 2: Browser (YouTube Web Engine) -->
+        <button onclick="switchTab('browser')" id="tab-btn-browser" class="nav-item-btn" title="YouTube Browser">
+          <span class="material-symbols-outlined text-lg shrink-0">travel_explore</span>
+          <span class="nav-label flex-1 text-left font-semibold">Browser</span>
+          <span class="nav-badge font-mono-nums text-[9px] px-1.5 py-0.5 rounded-full font-bold shrink-0" style="background: rgba(255, 68, 68, 0.2); color: #ff5252; border: 1px solid rgba(255, 82, 82, 0.3);">YT</span>
+        </button>
+
+        <!-- Tab 3: Downloads (Active Queue) -->
         <button onclick="switchTab('transfers')" id="tab-btn-transfers" class="nav-item-btn" title="Downloads">
           <span class="material-symbols-outlined text-lg shrink-0">download</span>
           <span class="nav-label flex-1 text-left">Downloads</span>
           <span id="transfersCountBadge" class="hidden nav-badge font-mono-nums text-[10px] px-2 py-0.5 rounded-full font-bold shrink-0">0</span>
         </button>
 
-        <!-- Tab 3: Media Library -->
+        <!-- Tab 4: Media Library -->
         <button onclick="switchTab('downloads')" id="tab-btn-downloads" class="nav-item-btn" title="Media Library">
           <span class="material-symbols-outlined text-lg shrink-0">video_library</span>
           <span class="nav-label flex-1 text-left">Media Library</span>
           <span id="downloadsCountBadge" class="nav-badge font-mono-nums text-[10px] px-2 py-0.5 rounded-full font-semibold shrink-0">0</span>
         </button>
 
-        <!-- Tab 4: Settings -->
+        <!-- Tab 5: Settings -->
         <button onclick="switchTab('settings')" id="tab-btn-settings" class="nav-item-btn" title="Settings">
           <span class="material-symbols-outlined text-lg shrink-0">settings</span>
           <span class="nav-label flex-1 text-left">Settings</span>
@@ -740,6 +764,141 @@
         </div>
 
       </div>
+
+    </section>
+
+    <!-- ======================================================================
+         VIEW: IN-APP BROWSER (Compact Top Bar, Full-Bleed Edge-to-Edge Viewport)
+         ====================================================================== -->
+    <section id="view-browser" class="tab-view hidden flex-1 flex flex-col h-full min-h-0 -m-4 sm:-m-5 lg:-m-6 overflow-hidden">
+      
+      <!-- Compact Top Browser Bar (Single row, no explore options, no green dot) -->
+      <div id="browserTopBar" class="flex items-center justify-between gap-2.5 px-3 py-1.5 shrink-0 border-b shadow-sm" 
+           style="background: #14171b; border-color: #22262c; min-height: 44px;">
+        
+        <!-- Navigation Button Cluster (Back, Forward, Reload, Home) -->
+        <div class="flex items-center gap-1 shrink-0">
+          <button id="browserBackBtn" onclick="browserNavBack()" 
+                  class="w-7 h-7 rounded-lg border transition flex items-center justify-center hover:bg-white/5 active:scale-95 disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+                  style="background: #181c20; border-color: #2b3036; color: #ffffff;" title="Back (Alt+Left)">
+            <span class="material-symbols-outlined text-[15px]">arrow_back</span>
+          </button>
+          <button id="browserForwardBtn" onclick="browserNavForward()" 
+                  class="w-7 h-7 rounded-lg border transition flex items-center justify-center hover:bg-white/5 active:scale-95 disabled:opacity-30 disabled:pointer-events-none cursor-pointer"
+                  style="background: #181c20; border-color: #2b3036; color: #ffffff;" title="Forward (Alt+Right)">
+            <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+          </button>
+          <button id="browserReloadBtn" onclick="browserNavReload()" 
+                  class="w-7 h-7 rounded-lg border transition flex items-center justify-center hover:bg-white/5 active:scale-95 cursor-pointer"
+                  style="background: #181c20; border-color: #2b3036; color: #ffffff;" title="Reload (Ctrl+R)">
+            <span class="material-symbols-outlined text-[15px]">refresh</span>
+          </button>
+          <button id="browserHomeBtn" onclick="browserNavHome()" 
+                  class="w-7 h-7 rounded-lg border transition flex items-center justify-center hover:bg-white/5 active:scale-95 text-red-500 cursor-pointer"
+                  style="background: #181c20; border-color: #2b3036;" title="YouTube Home">
+            <span class="material-symbols-outlined text-[15px]">home</span>
+          </button>
+        </div>
+
+        <!-- Compact Omni Address & Search Bar -->
+        <div class="flex-1 min-w-[200px] max-w-3xl relative flex items-center">
+          <div class="w-full flex items-center rounded-lg border px-2.5 py-1 gap-2 transition focus-within:border-[#ff7a00] focus-within:ring-1 focus-within:ring-[#ff7a00]/30"
+               style="background: #0e1013; border-color: #282d34; height: 32px;">
+            <!-- YouTube Security Badge -->
+            <div class="flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold shrink-0 shadow-sm"
+                 style="background: rgba(255, 68, 68, 0.12); border: 1px solid rgba(255, 68, 68, 0.25); color: #ff5252;">
+              <span class="material-symbols-outlined text-[11px]">lock</span>
+              <span>YouTube</span>
+            </div>
+            <input id="browserAddressInput" type="text" 
+                   placeholder="Search YouTube or paste URL..."
+                   value="https://www.youtube.com"
+                   onkeydown="if(event.key==='Enter') browserNavigate()"
+                   class="flex-1 bg-transparent border-0 outline-none text-[11px] text-white placeholder-zinc-500 font-sans font-medium min-w-0" />
+            <button onclick="browserNavigate()" 
+                    class="px-2 py-0.5 rounded text-[10px] font-bold transition flex items-center gap-0.5 hover:brightness-110 active:scale-95 cursor-pointer shrink-0"
+                    style="background: #ff6400; color: #ffffff;" title="Navigate / Search">
+              <span class="material-symbols-outlined text-[12px]">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Action Cluster: DIRECT VIDEO SENDER & Utilities -->
+        <div class="flex items-center gap-1.5 shrink-0">
+          <!-- ⚡ DIRECT SEND TO DOWNLOADER BUTTON (COMPACT) -->
+          <button id="browserSendToDownloaderBtn" onclick="sendCurrentBrowserVideoToDownloader()" 
+                  class="h-8 px-3 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer shadow-md active:scale-95"
+                  style="background: linear-gradient(135deg, #ff7a00, #ff4500); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.2);"
+                  title="Send current YouTube video directly into Downloader Studio">
+            <span class="material-symbols-outlined text-[14px]">bolt</span>
+            <span id="browserSendBtnLabel">Send to Downloader</span>
+          </button>
+
+          <!-- Copy Link Button -->
+          <button onclick="copyBrowserUrl()" 
+                  class="w-7 h-7 rounded-lg border transition flex items-center justify-center hover:bg-white/5 active:scale-95 cursor-pointer"
+                  style="background: #181c20; border-color: #2b3036; color: #ced4da;" title="Copy Video Link">
+            <span class="material-symbols-outlined text-[14px]">content_copy</span>
+          </button>
+
+          <!-- External Browser Fallback -->
+          <button onclick="openBrowserExternal()" 
+                  class="w-7 h-7 rounded-lg border transition flex items-center justify-center hover:bg-white/5 active:scale-95 cursor-pointer"
+                  style="background: #181c20; border-color: #2b3036; color: #ced4da;" title="Open in System Browser">
+            <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Browser Viewport (NO container box, NO outer gap, NO outline border) -->
+      <div id="browser-viewport" class="flex-1 w-full h-full relative flex flex-col bg-[#0e1013] overflow-hidden">
+        
+        <!-- Web Mode Fallback View (Visible when running pure web Flask without PySide6) -->
+        <div id="browserWebFallback" class="hidden flex-1 flex flex-col p-4 overflow-y-auto gap-4">
+          <div class="flex items-center justify-between gap-3 flex-wrap">
+            <div>
+              <h3 class="text-xs font-bold text-white flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-red-500 text-sm">smart_display</span>
+                <span>YouTube Discovery Engine</span>
+              </h3>
+            </div>
+            <div class="flex items-center gap-2">
+              <input id="webFallbackSearchInput" type="text" placeholder="Search YouTube..." 
+                     onkeydown="if(event.key==='Enter') runWebFallbackSearch()" 
+                     class="px-2.5 py-1 rounded-lg border text-xs bg-[#181c20] text-white border-[#2b3036] outline-none focus:border-[#ff7a00]" />
+              <button onclick="runWebFallbackSearch()" class="px-2.5 py-1 rounded-lg text-xs font-bold text-white cursor-pointer" style="background:#ff6400;">Search</button>
+            </div>
+          </div>
+
+          <!-- YouTube Active Player Embed (Web Fallback) -->
+          <div id="webFallbackPlayerContainer" class="hidden rounded-lg overflow-hidden border border-[#2b3036] bg-black aspect-video max-h-[380px] w-full relative">
+            <iframe id="webFallbackIframe" src="" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            <button onclick="sendCurrentBrowserVideoToDownloader()" 
+                    class="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-lg text-xs font-bold text-white shadow-xl flex items-center gap-1 active:scale-95 z-10 cursor-pointer"
+                    style="background: linear-gradient(135deg, #ff7a00, #ff4500); border: 1px solid rgba(255,255,255,0.3);">
+              <span class="material-symbols-outlined text-xs">bolt</span>
+              <span>Send to Downloader</span>
+            </button>
+          </div>
+
+          <!-- Search Results Grid (Web Fallback) -->
+          <div id="webFallbackGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 flex-1">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Standby Loading Screen for Native Desktop Engine -->
+        <div id="browserDesktopStandby" class="flex-1 flex flex-col items-center justify-center p-6 text-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-red-600/10 border border-red-600/30 text-red-500 shadow-lg">
+            <span class="material-symbols-outlined text-xl animate-pulse">travel_explore</span>
+          </div>
+          <p class="text-xs text-zinc-400">Loading YouTube Web Engine...</p>
+        </div>
+
+      </div>
+
+    </section>
 
     </section>
 
@@ -1506,6 +1665,7 @@
 
     // Tab Switching
     function switchTab(tabId) {
+      const prevTab = currentTab;
       currentTab = tabId;
       document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
       document.querySelectorAll('.nav-item-btn').forEach(el => {
@@ -1521,17 +1681,18 @@
         activeBtn.classList.add('active');
       }
 
+      if (tabId === 'browser') {
+        console.log('DIMPLE_BROWSER_SHOW');
+        setTimeout(syncBrowserGeometry, 40);
+        setTimeout(syncBrowserGeometry, 180);
+        setTimeout(syncBrowserGeometry, 360);
+        initWebFallbackIfNeeded();
+      } else if (prevTab === 'browser') {
+        console.log('DIMPLE_BROWSER_HIDE');
+      }
+
       if (tabId === 'downloads') {
-        const sidebar = document.getElementById('sidebar');
-        if (sidebar && !sidebar.classList.contains('sidebar-collapsed')) {
-          sidebar.classList.add('sidebar-collapsed');
-        }
         loadDownloadsList();
-      } else if (tabId === 'downloader') {
-        const sidebar = document.getElementById('sidebar');
-        if (sidebar && sidebar.classList.contains('sidebar-collapsed')) {
-          sidebar.classList.remove('sidebar-collapsed');
-        }
       } else if (tabId === 'transfers') {
         fetchAndRenderJobs();
       }
@@ -1540,7 +1701,279 @@
     // Sidebar Collapsing
     function toggleSidebar() {
       const sidebar = document.getElementById('sidebar');
+      if (!sidebar) return;
       sidebar.classList.toggle('sidebar-collapsed');
+      const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
+      const btn = document.getElementById('sidebarCollapseBtn');
+      if (btn) {
+        btn.setAttribute('title', isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar');
+      }
+      if (currentTab === 'browser') {
+        setTimeout(syncBrowserGeometry, 40);
+        setTimeout(syncBrowserGeometry, 220);
+      }
+    }
+
+    // =========================================================================
+    // IN-APP BROWSER (YOUTUBE RESTRICTED ENGINE & DIRECT SENDER)
+    // =========================================================================
+    let currentBrowserUrl = 'https://www.youtube.com';
+    let currentBrowserVideoUrl = '';
+    let isBrowserVideoDetected = false;
+
+    function syncBrowserGeometry() {
+      if (currentTab !== 'browser') return;
+      const vp = document.getElementById('browser-viewport');
+      if (!vp) return;
+      const r = vp.getBoundingClientRect();
+      if (r.width > 0 && r.height > 0) {
+        console.log('DIMPLE_BROWSER_GEO:' + JSON.stringify({
+          x: Math.round(r.left),
+          y: Math.round(r.top),
+          width: Math.round(r.width),
+          height: Math.round(r.height)
+        }));
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      if (currentTab === 'browser') syncBrowserGeometry();
+    });
+
+    try {
+      const browserObserver = new ResizeObserver(() => {
+        if (currentTab === 'browser') {
+          syncBrowserGeometry();
+        }
+      });
+      const bVp = document.getElementById('browser-viewport');
+      if (bVp) browserObserver.observe(bVp);
+    } catch (e) {}
+
+    // Navigation Controls
+    function browserNavBack() {
+      console.log('DIMPLE_BROWSER_BACK');
+    }
+
+    function browserNavForward() {
+      console.log('DIMPLE_BROWSER_FORWARD');
+    }
+
+    function browserNavReload() {
+      console.log('DIMPLE_BROWSER_RELOAD');
+    }
+
+    function browserNavHome() {
+      browserNavigateTo('https://www.youtube.com');
+    }
+
+    function browserNavigateTo(targetUrl) {
+      const addr = document.getElementById('browserAddressInput');
+      if (addr) addr.value = targetUrl;
+      browserNavigate();
+    }
+
+    function browserNavigate() {
+      const addr = document.getElementById('browserAddressInput');
+      let val = addr ? addr.value.trim() : '';
+      if (!val) return;
+
+      // Handle raw search query or URLs
+      if (!val.startsWith('http://') && !val.startsWith('https://')) {
+        if (val.includes('.') && !val.includes(' ')) {
+          val = 'https://' + val;
+        } else {
+          val = `https://www.youtube.com/results?search_query=${encodeURIComponent(val)}`;
+        }
+      }
+
+      // Enforce: only YouTube will be accessed for now
+      try {
+        const u = new URL(val);
+        const host = u.hostname.toLowerCase();
+        const isYt = host === 'youtube.com' || host.endsWith('.youtube.com') || host === 'youtu.be';
+        if (!isYt) {
+          showToast(`Browsing is restricted to YouTube only (redirecting query to YouTube).`);
+          val = `https://www.youtube.com/results?search_query=${encodeURIComponent(u.hostname + u.pathname)}`;
+        }
+      } catch (e) {
+        val = `https://www.youtube.com/results?search_query=${encodeURIComponent(val)}`;
+      }
+
+      if (addr) addr.value = val;
+      currentBrowserUrl = val;
+
+      console.log('DIMPLE_BROWSER_NAV:' + val);
+
+      // Web fallback search if in web mode
+      const isDesktop = window.isDimpleDesktop || (typeof DIMPLE_TOKEN !== 'undefined' && DIMPLE_TOKEN);
+      if (!isDesktop) {
+        if (val.includes('/watch') || val.includes('/shorts/') || val.includes('youtu.be/')) {
+          loadWebFallbackEmbed(val);
+        } else {
+          runWebFallbackSearch(val);
+        }
+      }
+    }
+
+    // Called by Python desktop engine when in-app browser URL changes
+    function onBrowserUrlChanged(url, isVideo, videoId, canBack, canForward) {
+      currentBrowserUrl = url;
+      currentBrowserVideoUrl = isVideo ? url : '';
+      isBrowserVideoDetected = isVideo;
+
+      const addr = document.getElementById('browserAddressInput');
+      if (addr && document.activeElement !== addr) {
+        addr.value = url;
+      }
+
+      const backBtn = document.getElementById('browserBackBtn');
+      if (backBtn && typeof canBack === 'boolean') {
+        backBtn.disabled = !canBack;
+      }
+      const fwdBtn = document.getElementById('browserForwardBtn');
+      if (fwdBtn && typeof canForward === 'boolean') {
+        fwdBtn.disabled = !canForward;
+      }
+
+      const sendBtn = document.getElementById('browserSendToDownloaderBtn');
+      const sendLabel = document.getElementById('browserSendBtnLabel');
+
+      if (isVideo) {
+        if (sendBtn) {
+          sendBtn.style.background = 'linear-gradient(135deg, #ff7a00, #ff2200)';
+          sendBtn.style.boxShadow = '0 0 16px rgba(255, 100, 0, 0.6)';
+          sendBtn.classList.add('animate-pulse');
+        }
+        if (sendLabel) sendLabel.textContent = '⚡ Send Video to Downloader';
+      } else {
+        if (sendBtn) {
+          sendBtn.style.background = 'linear-gradient(135deg, #ff7a00, #ff4500)';
+          sendBtn.style.boxShadow = 'none';
+          sendBtn.classList.remove('animate-pulse');
+        }
+        if (sendLabel) sendLabel.textContent = 'Send to Downloader';
+      }
+    }
+
+    // Direct Video Link Sender
+    function sendCurrentBrowserVideoToDownloader(overrideUrl) {
+      let urlToSend = overrideUrl || currentBrowserVideoUrl || currentBrowserUrl || '';
+      if (!urlToSend) {
+        const addr = document.getElementById('browserAddressInput');
+        urlToSend = addr ? addr.value.trim() : '';
+      }
+
+      if (!urlToSend || urlToSend === 'https://www.youtube.com' || urlToSend === 'https://www.youtube.com/') {
+        showToast('Please browse to a YouTube video or search result to send.');
+        return;
+      }
+
+      // Switch to Downloader Studio (Home)
+      switchTab('downloader');
+
+      const urlInput = document.getElementById('urlInput');
+      if (urlInput) {
+        urlInput.value = urlToSend;
+        updateInputButtons(urlToSend);
+        autoAnalyze(urlToSend);
+      }
+
+      showToast('⚡ Video link sent directly to Downloader Studio!');
+    }
+
+    function copyBrowserUrl() {
+      const url = currentBrowserVideoUrl || currentBrowserUrl || document.getElementById('browserAddressInput')?.value || '';
+      if (url) {
+        navigator.clipboard.writeText(url).then(() => {
+          showToast('YouTube link copied to clipboard!');
+        }).catch(() => {
+          showToast('Copied: ' + url);
+        });
+      }
+    }
+
+    function openBrowserExternal() {
+      const url = currentBrowserVideoUrl || currentBrowserUrl || 'https://www.youtube.com';
+      window.open(url, '_blank');
+    }
+
+    // Web fallback functions (used when not running under PySide6 desktop app)
+    let webFallbackInitialized = false;
+    function initWebFallbackIfNeeded() {
+      const isDesktop = window.isDimpleDesktop || (typeof DIMPLE_TOKEN !== 'undefined' && DIMPLE_TOKEN);
+      if (!isDesktop) {
+        document.getElementById('browserDesktopStandby')?.classList.add('hidden');
+        document.getElementById('browserWebFallback')?.classList.remove('hidden');
+        if (!webFallbackInitialized) {
+          webFallbackInitialized = true;
+          runWebFallbackSearch('trending');
+        }
+      }
+    }
+
+    async function runWebFallbackSearch(queryOverride) {
+      const q = queryOverride || document.getElementById('webFallbackSearchInput')?.value?.trim() || document.getElementById('browserAddressInput')?.value?.trim() || 'trending';
+      const grid = document.getElementById('webFallbackGrid');
+      if (!grid) return;
+      grid.innerHTML = '<div class="col-span-full py-12 text-center text-zinc-500 flex items-center justify-center gap-2"><span class="material-symbols-outlined animate-spin">progress_activity</span> Loading YouTube videos...</div>';
+      try {
+        const res = await fetch(`/api/browser/search?q=${encodeURIComponent(q)}`);
+        const data = await res.json();
+        if (data.success && data.results && data.results.length > 0) {
+          grid.innerHTML = data.results.map(v => `
+            <div class="rounded-xl border border-[#272a33] bg-[#14171b] overflow-hidden flex flex-col group hover:border-[#ff6400] transition shadow-md">
+              <div class="relative aspect-video bg-black cursor-pointer overflow-hidden" onclick="loadWebFallbackEmbed('${v.url}')">
+                <img src="${v.thumbnail}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" />
+                <span class="absolute bottom-2 right-2 px-1.5 py-0.5 rounded bg-black/80 text-[10px] text-white font-mono font-bold">${v.duration || 'Video'}</span>
+                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                  <span class="material-symbols-outlined text-4xl text-white drop-shadow">play_circle</span>
+                </div>
+              </div>
+              <div class="p-3 flex flex-col justify-between flex-1 gap-2">
+                <div>
+                  <h4 class="text-xs font-bold text-white line-clamp-2 leading-snug cursor-pointer hover:text-[#ff7a00]" onclick="loadWebFallbackEmbed('${v.url}')">${v.title}</h4>
+                  <p class="text-[10px] text-zinc-400 mt-1">${v.channel}</p>
+                </div>
+                <div class="flex items-center gap-2 pt-1 border-t border-[#22262c]">
+                  <button onclick="loadWebFallbackEmbed('${v.url}')" class="flex-1 py-1.5 rounded-lg text-[11px] font-bold bg-[#1e2228] text-white hover:bg-white/10 transition cursor-pointer">Watch</button>
+                  <button onclick="sendCurrentBrowserVideoToDownloader('${v.url}')" class="px-2.5 py-1.5 rounded-lg text-[11px] font-bold text-white flex items-center gap-1 active:scale-95 cursor-pointer" style="background:#ff6400;" title="Send to Downloader">
+                    <span class="material-symbols-outlined text-xs">bolt</span>
+                    <span>Download</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          grid.innerHTML = '<div class="col-span-full py-12 text-center text-zinc-500">No videos found. Try a different search query.</div>';
+        }
+      } catch (e) {
+        grid.innerHTML = '<div class="col-span-full py-12 text-center text-red-400">Failed to load YouTube streams.</div>';
+      }
+    }
+
+    function loadWebFallbackEmbed(videoUrl) {
+      let vidId = '';
+      if (videoUrl.includes('v=')) {
+        vidId = videoUrl.split('v=')[1].split('&')[0];
+      } else if (videoUrl.includes('youtu.be/')) {
+        vidId = videoUrl.split('youtu.be/')[1].split('?')[0];
+      } else if (videoUrl.includes('/shorts/')) {
+        vidId = videoUrl.split('/shorts/')[1].split('?')[0];
+      }
+      if (!vidId) return;
+
+      currentBrowserVideoUrl = `https://www.youtube.com/watch?v=${vidId}`;
+      onBrowserUrlChanged(currentBrowserVideoUrl, true, vidId, true, false);
+
+      const cont = document.getElementById('webFallbackPlayerContainer');
+      const iframe = document.getElementById('webFallbackIframe');
+      if (cont && iframe) {
+        iframe.src = `https://www.youtube-nocookie.com/embed/${vidId}?autoplay=1`;
+        cont.classList.remove('hidden');
+        cont.scrollIntoView({ behavior: 'smooth' });
+      }
     }
 
     // System Presets

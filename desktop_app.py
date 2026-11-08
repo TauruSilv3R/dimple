@@ -85,6 +85,43 @@ def start_backend(port):
     t.start()
     return wait_for_server(port)
 
+class DimpleYouTubeBrowserPage(QWebEnginePage):
+    """Restricted web page enforcing YouTube-only browsing and catching video link triggers."""
+    def __init__(self, main_window, parent=None):
+        super().__init__(parent)
+        self.main_window = main_window
+
+    def javaScriptConsoleMessage(self, level, msg, line, src):
+        if msg.startswith('DIMPLE_SEND_CURRENT_VIDEO:'):
+            url = msg.split('DIMPLE_SEND_CURRENT_VIDEO:')[1].strip()
+            self.main_window.send_video_to_downloader(url)
+            return
+
+    def acceptNavigationRequest(self, url, nav_type, is_main_frame):
+        if url.scheme() in ('about', 'data', 'blob', 'javascript'):
+            return True
+        host = url.host().lower()
+        allowed = (
+            'youtube.com', 'www.youtube.com', 'm.youtube.com', 'music.youtube.com',
+            'consent.youtube.com', 'youtu.be', 'accounts.google.com', 'myaccount.google.com'
+        )
+        if host in allowed or host.endswith('.youtube.com') or host.endswith('.googlevideo.com') or host.endswith('.ytimg.com') or host.endswith('.google.com') or host.endswith('.gstatic.com'):
+            return True
+        if is_main_frame:
+            self.main_window.notify_restriction(host)
+            return False
+        return False
+
+class DimpleAppWebEnginePage(QWebEnginePage):
+    """Main application WebEnginePage that intercepts browser UI commands from index.html."""
+    def __init__(self, main_window, parent=None):
+        super().__init__(parent)
+        self.main_window = main_window
+
+    def javaScriptConsoleMessage(self, level, msg, line, src):
+        if self.main_window and self.main_window.handle_js_command(msg):
+            return
+
 class DimpleWebEngineView(QWebEngineView):
     """Custom WebEngineView with clean, native dark context menu replacing generic browser menus."""
     def __init__(self, parent=None):
@@ -149,6 +186,9 @@ class DimpleWebEngineView(QWebEngineView):
         menu.addSeparator()
 
         if self.main_window:
+            act_browser = menu.addAction("Go to In-App Browser")
+            act_browser.triggered.connect(lambda: self.main_window.switch_view_tab('browser'))
+
             act_open_dir = menu.addAction("Open Downloads Folder")
             act_open_dir.triggered.connect(self.main_window.action_open_downloads_folder)
 
@@ -182,6 +222,9 @@ class DimpleMainWindow(QMainWindow):
         self.browser = DimpleWebEngineView(self)
         self.browser.setStyleSheet("background-color: #0e1013;")
         
+        self.app_page = DimpleAppWebEnginePage(self)
+        self.browser.setPage(self.app_page)
+
         profile = self.browser.page().profile()
         profile.setHttpCacheType(QWebEngineProfile.HttpCacheType.NoCache)
         self.browser.page().setBackgroundColor(QColor(14, 16, 19))
@@ -199,6 +242,11 @@ class DimpleMainWindow(QMainWindow):
 
         self.setCentralWidget(self.browser)
         self.app_url = f"http://127.0.0.1:{self.port}/?token={self.token}"
+
+        # In-App YouTube Browser Widget
+        self.browser_tab_active = False
+        self.current_browser_video_url = ""
+        self.init_inapp_browser()
 
         # Build native Windows Menu Bar (File and Options)
         self.setup_menus()
@@ -318,15 +366,20 @@ class DimpleMainWindow(QMainWindow):
         act_tab_downloader.triggered.connect(lambda: self.switch_view_tab('downloader'))
         opt_menu.addAction(act_tab_downloader)
 
-        act_tab_media = QAction("Media Library", self)
-        act_tab_media.setShortcut(QKeySequence("Ctrl+2"))
-        act_tab_media.triggered.connect(lambda: self.switch_view_tab('downloads'))
-        opt_menu.addAction(act_tab_media)
+        act_tab_browser = QAction("YouTube Browser", self)
+        act_tab_browser.setShortcut(QKeySequence("Ctrl+2"))
+        act_tab_browser.triggered.connect(lambda: self.switch_view_tab('browser'))
+        opt_menu.addAction(act_tab_browser)
 
         act_tab_transfers = QAction("Active Transfers", self)
         act_tab_transfers.setShortcut(QKeySequence("Ctrl+3"))
         act_tab_transfers.triggered.connect(lambda: self.switch_view_tab('transfers'))
         opt_menu.addAction(act_tab_transfers)
+
+        act_tab_media = QAction("Media Library", self)
+        act_tab_media.setShortcut(QKeySequence("Ctrl+4"))
+        act_tab_media.triggered.connect(lambda: self.switch_view_tab('downloads'))
+        opt_menu.addAction(act_tab_media)
 
         act_tab_settings = QAction("Settings", self)
         act_tab_settings.setShortcut(QKeySequence("Ctrl+,"))
@@ -388,12 +441,200 @@ class DimpleMainWindow(QMainWindow):
         else:
             self.showFullScreen()
 
+    def init_inapp_browser(self):
+        self.inapp_page = DimpleYouTubeBrowserPage(self)
+        self.inapp_browser = DimpleWebEngineView(self.browser)
+        self.inapp_browser.setPage(self.inapp_page)
+        self.inapp_browser.setStyleSheet("background-color: #0e1013; border: none; border-radius: 0px;")
+
+        settings = self.inapp_browser.settings()
+        settings.setAttribute(QWebEngineSettings.WebAttribute.JavascriptEnabled, True)
+        settings.setAttribute(QWebEngineSettings.WebAttribute.PlaybackRequiresUserGesture, False)
+        settings.setAttribute(QWebEngineSettings.WebAttribute.FullScreenSupportEnabled, True)
+        settings.setAttribute(QWebEngineSettings.WebAttribute.ScrollAnimatorEnabled, True)
+        settings.setAttribute(QWebEngineSettings.WebAttribute.WebGLEnabled, True)
+        settings.setAttribute(QWebEngineSettings.WebAttribute.Accelerated2dCanvasEnabled, True)
+        settings.setAttribute(QWebEngineSettings.WebAttribute.AutoLoadImages, True)
+        settings.setAttribute(QWebEngineSettings.WebAttribute.JavascriptCanAccessClipboard, True)
+
+        self.inapp_browser.page().fullScreenRequested.connect(lambda req: req.accept())
+        self.inapp_browser.urlChanged.connect(self.on_inapp_browser_url_changed)
+        self.inapp_browser.loadFinished.connect(self.on_inapp_browser_load_finished)
+
+        self.inapp_browser.setUrl(QUrl("https://www.youtube.com"))
+        self.inapp_browser.hide()
+
+    def inject_youtube_downloader_button(self):
+        script = """
+        (function() {
+            if (window._dimpleInjected) return;
+            window._dimpleInjected = true;
+            function checkAndInject() {
+                var isWatch = location.pathname.includes('/watch') || location.pathname.includes('/shorts/');
+                var existing = document.getElementById('dimple-floating-sender');
+                if (!isWatch) {
+                    if (existing) existing.remove();
+                    return;
+                }
+                if (existing) return;
+                var btn = document.createElement('div');
+                btn.id = 'dimple-floating-sender';
+                btn.setAttribute('title', 'Send to Dimple Downloader Studio');
+                btn.style.cssText = 'position:fixed; bottom:28px; right:28px; z-index:2147483647; display:flex; align-items:center; gap:8px; background:linear-gradient(135deg, #ff7a00, #ff4500); color:#ffffff; font-family:Arial Black, Gadget, sans-serif; font-size:12px; font-weight:bold; padding:10px 18px; border-radius:9999px; box-shadow:0 8px 24px rgba(255,100,0,0.65), 0 0 0 1px rgba(255,255,255,0.25); cursor:pointer; transition:all 0.2s ease; user-select:none;';
+                btn.innerHTML = '<span style="font-size:16px;">⚡</span><span>Send to Downloader</span>';
+                btn.onmouseenter = function() { btn.style.transform = 'scale(1.06)'; btn.style.boxShadow = '0 10px 28px rgba(255,100,0,0.85), 0 0 0 2px #ffffff'; };
+                btn.onmouseleave = function() { btn.style.transform = 'scale(1)'; btn.style.boxShadow = '0 8px 24px rgba(255,100,0,0.65), 0 0 0 1px rgba(255,255,255,0.25)'; };
+                btn.onclick = function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    console.log('DIMPLE_SEND_CURRENT_VIDEO:' + window.location.href);
+                };
+                document.body.appendChild(btn);
+            }
+            setInterval(checkAndInject, 1000);
+            checkAndInject();
+        })();
+        """
+        if hasattr(self, 'inapp_browser') and self.inapp_browser:
+            self.inapp_browser.page().runJavaScript(script)
+
+    def on_inapp_browser_url_changed(self, qurl):
+        import json, urllib.parse
+        url_str = qurl.toString()
+        self.current_browser_video_url = url_str
+        is_video = False
+        video_id = ""
+
+        if "youtube.com/watch" in url_str:
+            is_video = True
+            try:
+                parsed = urllib.parse.urlparse(url_str)
+                qs = urllib.parse.parse_qs(parsed.query)
+                video_id = qs.get("v", [""])[0]
+            except Exception:
+                pass
+        elif "youtube.com/shorts/" in url_str:
+            is_video = True
+            parts = url_str.split("/shorts/")
+            if len(parts) > 1:
+                video_id = parts[1].split("?")[0].split("/")[0]
+        elif "youtu.be/" in url_str:
+            is_video = True
+            parts = url_str.split("youtu.be/")
+            if len(parts) > 1:
+                video_id = parts[1].split("?")[0].split("/")[0]
+
+        can_back = self.inapp_browser.history().canGoBack()
+        can_forward = self.inapp_browser.history().canGoForward()
+
+        js = f"if (typeof onBrowserUrlChanged === 'function') onBrowserUrlChanged({json.dumps(url_str)}, {json.dumps(is_video)}, {json.dumps(video_id)}, {json.dumps(can_back)}, {json.dumps(can_forward)});"
+        self.browser.page().runJavaScript(js)
+
+        if is_video:
+            self.inject_youtube_downloader_button()
+
+    def on_inapp_browser_load_finished(self, ok):
+        if ok:
+            self.inject_youtube_downloader_button()
+
+    def handle_js_command(self, msg):
+        import json
+        if not isinstance(msg, str):
+            return False
+        if msg.startswith('DIMPLE_BROWSER_GEO:'):
+            try:
+                geo = json.loads(msg[len('DIMPLE_BROWSER_GEO:'):])
+                self.update_browser_geometry(geo.get('x', 0), geo.get('y', 0), geo.get('width', 0), geo.get('height', 0))
+            except Exception as e:
+                pass
+            return True
+        elif msg == 'DIMPLE_BROWSER_SHOW':
+            self.browser_tab_active = True
+            if hasattr(self, 'inapp_browser') and self.inapp_browser:
+                self.inapp_browser.show()
+                self.inapp_browser.raise_()
+            return True
+        elif msg == 'DIMPLE_BROWSER_HIDE':
+            self.browser_tab_active = False
+            if hasattr(self, 'inapp_browser') and self.inapp_browser:
+                self.inapp_browser.hide()
+            return True
+        elif msg.startswith('DIMPLE_BROWSER_NAV:'):
+            nav_url = msg[len('DIMPLE_BROWSER_NAV:'):].strip()
+            self.inapp_browser_navigate(nav_url)
+            return True
+        elif msg == 'DIMPLE_BROWSER_BACK':
+            if hasattr(self, 'inapp_browser') and self.inapp_browser:
+                self.inapp_browser.back()
+            return True
+        elif msg == 'DIMPLE_BROWSER_FORWARD':
+            if hasattr(self, 'inapp_browser') and self.inapp_browser:
+                self.inapp_browser.forward()
+            return True
+        elif msg == 'DIMPLE_BROWSER_RELOAD':
+            if hasattr(self, 'inapp_browser') and self.inapp_browser:
+                self.inapp_browser.reload()
+            return True
+        elif msg == 'DIMPLE_BROWSER_HOME':
+            if hasattr(self, 'inapp_browser') and self.inapp_browser:
+                self.inapp_browser.setUrl(QUrl("https://www.youtube.com"))
+            return True
+        elif msg.startswith('DIMPLE_SEND_TO_DOWNLOADER:'):
+            url = msg[len('DIMPLE_SEND_TO_DOWNLOADER:'):].strip()
+            self.send_video_to_downloader(url)
+            return True
+        return False
+
+    def update_browser_geometry(self, x, y, w, h):
+        if hasattr(self, 'inapp_browser') and self.inapp_browser:
+            self.inapp_browser.setGeometry(int(x), int(y), int(w), int(h))
+            if self.browser_tab_active:
+                self.inapp_browser.show()
+                self.inapp_browser.raise_()
+
+    def inapp_browser_navigate(self, url):
+        import urllib.parse
+        if not hasattr(self, 'inapp_browser') or not self.inapp_browser or not url:
+            return
+        if not url.startswith('http://') and not url.startswith('https://'):
+            if '.' in url and ' ' not in url:
+                url = 'https://' + url
+            else:
+                url = f"https://www.youtube.com/results?search_query={urllib.parse.quote_plus(url)}"
+
+        parsed = urllib.parse.urlparse(url)
+        host = parsed.netloc.lower()
+        allowed = (
+            'youtube.com', 'www.youtube.com', 'm.youtube.com', 'music.youtube.com',
+            'consent.youtube.com', 'youtu.be', 'accounts.google.com', 'myaccount.google.com'
+        )
+        if not (host in allowed or host.endswith('.youtube.com') or host.endswith('.googlevideo.com') or host.endswith('.ytimg.com')):
+            self.notify_restriction(host)
+            search_query = parsed.netloc + parsed.path
+            url = f"https://www.youtube.com/results?search_query={urllib.parse.quote_plus(search_query)}"
+
+        self.inapp_browser.setUrl(QUrl(url))
+
+    def send_video_to_downloader(self, url):
+        import json
+        self.browser.page().runJavaScript(f"sendCurrentBrowserVideoToDownloader({json.dumps(url)});")
+
+    def notify_restriction(self, host):
+        import json
+        self.browser.page().runJavaScript(f"showToast('Only YouTube is accessible in Dimple Browser for now (blocked {json.dumps(host)}).');")
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        if hasattr(self, 'browser') and self.browser:
+            self.browser.page().runJavaScript("if (typeof syncBrowserGeometry === 'function') syncBrowserGeometry();")
+
     def start_navigation(self):
         self.browser.load(QUrl(self.app_url))
 
     def on_load_finished(self, ok):
         print(f"DEBUG: on_load_finished ok={ok}, url={self.browser.url().toString()}", flush=True)
         if ok:
+            self.browser.page().runJavaScript("window.isDimpleDesktop = true;")
             self.browser.update()
             self.browser.repaint()
         else:

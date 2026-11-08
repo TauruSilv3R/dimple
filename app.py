@@ -1099,6 +1099,40 @@ def open_file_externally():
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 
+@app.route('/api/browser/search', methods=['GET'])
+def browser_search():
+    query = request.args.get('q', '').strip()
+    if not query:
+        query = 'trending'
+    try:
+        import yt_dlp
+        ydl_opts = {
+            'extract_flat': True,
+            'quiet': True,
+            'skip_download': True,
+            'playlist_items': '1-16'
+        }
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            search_str = f"ytsearch16:{query}" if not query.startswith('http') else query
+            info = ydl.extract_info(search_str, download=False)
+            entries = info.get('entries', []) if info else []
+            results = []
+            for e in entries:
+                if not e:
+                    continue
+                vid_id = e.get('id') or ''
+                results.append({
+                    'id': vid_id,
+                    'title': e.get('title') or 'YouTube Video',
+                    'url': e.get('url') or (f"https://www.youtube.com/watch?v={vid_id}" if vid_id else ''),
+                    'thumbnail': (e.get('thumbnails') or [{}])[-1].get('url', '') if e.get('thumbnails') else (f"https://i.ytimg.com/vi/{vid_id}/hqdefault.jpg" if vid_id else ''),
+                    'duration': e.get('duration_string') or (str(int(e.get('duration') or 0)) + 's' if e.get('duration') else ''),
+                    'channel': e.get('uploader') or e.get('channel') or 'YouTube'
+                })
+            return jsonify({'success': True, 'results': results})
+    except Exception as err:
+        return jsonify({'success': False, 'error': str(err)}), 500
+
 @app.route('/api/settings', methods=['GET', 'POST'])
 def manage_settings():
     config = load_config()
