@@ -1232,26 +1232,28 @@
          ====================================================================== -->
     <section id="view-settings" class="tab-view hidden flex flex-col gap-6 max-w-4xl">
 
-      <!-- Section 1: Product License & Activation (Open View) -->
+      <!-- Section 1: Open Source Software License -->
       <div class="pb-6 border-b flex flex-col gap-3" style="border-color: var(--border-hairline);">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2.5">
-            <span class="material-symbols-outlined text-lg" style="color: var(--accent-neon);">verified_user</span>
+            <span class="material-symbols-outlined text-lg" style="color: #22c55e;">verified</span>
             <div>
-              <h3 class="text-sm font-bold" style="color: var(--text-primary);">Product License</h3>
+              <h3 class="text-sm font-bold" style="color: var(--text-primary);">Open Source License</h3>
+              <p class="text-[11px] font-medium" style="color: var(--text-muted);">Permanently unlocked for everyone • No keys or registration required</p>
             </div>
           </div>
-          <span id="settingsLicenseBadge" class="font-mono-nums text-[10px] px-2.5 py-0.5 rounded-full border font-bold shadow-sm" style="background: var(--tab-active-bg); border-color: var(--accent-crimson); color: #ffffff;">Lifetime Pro</span>
+          <span id="settingsLicenseBadge" class="font-mono-nums text-[10px] px-2.5 py-0.5 rounded-full border font-bold shadow-sm" style="background: rgba(34, 197, 94, 0.15); border-color: rgba(34, 197, 94, 0.4); color: #4ade80;">MIT License • Free &amp; Open Source</span>
         </div>
 
         <div class="flex items-center justify-between gap-3 pt-2">
           <div>
-            <span class="text-[10px] uppercase font-bold tracking-wider block" style="color: var(--text-muted);">Product Key</span>
-            <p id="settingsLicenseKeyDisplay" class="font-mono-nums text-xs font-bold mt-0.5" style="color: var(--text-primary);">DIMPLE-****-****-****</p>
+            <span class="text-[10px] uppercase font-bold tracking-wider block" style="color: var(--text-muted);">Edition</span>
+            <p id="settingsLicenseKeyDisplay" class="font-mono-nums text-xs font-bold mt-0.5" style="color: var(--text-primary);">Community Edition (100% Unlocked)</p>
           </div>
-          <button type="button" onclick="showLicenseModal(false)" class="btn-ghost-crimson text-xs px-3 py-1.5 rounded-md font-semibold">
-            Change Key
-          </button>
+          <a href="https://github.com/TauruSilv3R/dimple" target="_blank" class="btn-ghost-crimson text-xs px-3 py-1.5 rounded-md font-semibold flex items-center gap-1.5 hover:text-white" style="color: #ff7a00; border-color: #2b3036;">
+            <span class="material-symbols-outlined text-xs">code</span>
+            <span>GitHub Repository</span>
+          </a>
         </div>
       </div>
 
@@ -1411,77 +1413,7 @@
     </div>
   </div>
 
-  <!-- ==========================================================================
-       LICENSE ACTIVATION MODAL (Offline Mathematical Key Verification)
-       ========================================================================== -->
-  <div id="licenseModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-    <div class="rounded-lg max-w-md w-full p-6 flex flex-col gap-5 border shadow-2xl" style="border-color: var(--border-active); background: var(--bg-surface);">
-      <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-lg flex items-center justify-center border shrink-0" style="background: var(--bg-surface-elevated); border-color: var(--border-hairline);">
-          <img src="/static/logo.png" alt="Dimple" class="w-8 h-8 object-contain">
-        </div>
-        <div>
-          <h3 class="text-sm font-bold tracking-tight" style="color: var(--text-primary);">Dimple Pro Activation</h3>
-          <p class="text-[11px] mt-0.5" style="color: var(--text-muted);">Enter your product license key to unlock</p>
-        </div>
-      </div>
 
-      <!-- Key Input Area -->
-      <div class="flex flex-col gap-2">
-        <label class="text-[11px] font-semibold" style="color: var(--text-secondary);">License Key</label>
-        <div class="relative">
-          <input 
-            type="text" 
-            id="licenseKeyInput" 
-            placeholder="DIMPLE-XXXX-XXXX-XXXX-XXXX" 
-            class="w-full py-2.5 pl-3 pr-20 rounded-md text-xs font-mono-nums font-bold tracking-wider uppercase border focus:outline-none"
-            style="background-color: var(--bg-input); border-color: var(--border-hairline); color: var(--text-primary);"
-            autocomplete="off"
-            spellcheck="false"
-          >
-          <button 
-            type="button" 
-            onclick="pasteLicenseKey()"
-            class="btn-ghost-crimson absolute right-1.5 top-1/2 -translate-y-1/2 text-[10px] font-semibold px-2 py-1 rounded"
-          >
-            Paste
-          </button>
-        </div>
-        <p id="licenseModalError" class="text-[11px] hidden text-rose-500 font-medium"></p>
-        <p id="licenseModalSuccess" class="text-[11px] hidden text-emerald-400 font-medium"></p>
-      </div>
-
-      <!-- Keygen Helper Info -->
-      <div class="p-3 rounded-md border text-[11px] flex flex-col gap-1" style="background: var(--bg-surface-elevated); border-color: var(--border-hairline); color: var(--text-muted);">
-        <div class="flex items-center gap-1.5 font-bold" style="color: var(--text-primary);">
-          <span class="material-symbols-outlined text-xs" style="color: var(--accent-neon);">vpn_key</span>
-          <span>Personal Offline Keygen Available</span>
-        </div>
-        <p>Run <code class="font-mono-nums text-[10px] px-1.5 py-0.5 rounded bg-neutral-100 border border-neutral-300 font-semibold" style="color: var(--accent-crimson);">Dimple_Keygen.exe</code> in your installation folder to generate authentic Pro keys.</p>
-      </div>
-
-      <!-- Buttons -->
-      <div class="flex items-center justify-end gap-2 pt-2 border-t" style="border-color: var(--border-hairline);">
-        <button 
-          type="button" 
-          id="licenseModalCancelBtn"
-          onclick="closeLicenseModal()" 
-          class="btn-ghost-crimson text-xs font-medium px-3 py-2 rounded-md"
-        >
-          Cancel
-        </button>
-        <button 
-          type="button" 
-          id="licenseModalActivateBtn"
-          onclick="submitLicenseActivation()" 
-          class="btn-crimson-solid text-xs font-bold px-4 py-2 rounded-md flex items-center gap-1.5"
-        >
-          <span class="material-symbols-outlined text-xs">verified</span>
-          <span>Activate License</span>
-        </button>
-      </div>
-    </div>
-  </div>
 
   <!-- ==========================================================================
        LEGAL MODAL POPUP (Privacy Policy & Terms of Conditions)
@@ -3782,7 +3714,7 @@
       }
     }
 
-    // License Activation Controller
+    // Open Source License Controller (100% Free & Open Source)
     async function checkLicenseStatus() {
       try {
         const res = await fetch('/api/license');
@@ -3790,112 +3722,23 @@
         if (data.success && data.data) {
           appLicenseData = data.data;
           updateLicenseUI(appLicenseData);
-          if (!appLicenseData.activated) {
-            showLicenseModal(true);
-          }
         }
       } catch (e) {
-        console.error('License check error:', e);
+        updateLicenseUI({ activated: true, type: 'MIT License • Free & Open Source', key: 'Community Edition (100% Unlocked)' });
       }
     }
 
     function updateLicenseUI(lic) {
       const badge = document.getElementById('settingsLicenseBadge');
       const keyDisplay = document.getElementById('settingsLicenseKeyDisplay');
-      const statusDesc = document.getElementById('settingsLicenseDesc');
-
-      if (lic && lic.activated) {
-        if (badge) {
-          badge.textContent = lic.type || 'Lifetime Pro';
-          badge.style.color = '#ffffff';
-          badge.style.borderColor = 'var(--accent-crimson)';
-        }
-        if (keyDisplay) keyDisplay.textContent = lic.key;
-        if (statusDesc) statusDesc.textContent = `Activated for ${lic.customer || 'Personal Use'} (Offline Validated)`;
-      } else {
-        if (badge) {
-          badge.textContent = 'Unlicensed';
-          badge.style.color = '#f87171';
-        }
-        if (keyDisplay) keyDisplay.textContent = 'Not Activated';
-        if (statusDesc) statusDesc.textContent = 'Activation key required for unlimited downloads.';
+      if (badge) {
+        badge.textContent = 'MIT License • Free & Open Source';
+        badge.style.background = 'rgba(34, 197, 94, 0.15)';
+        badge.style.borderColor = 'rgba(34, 197, 94, 0.4)';
+        badge.style.color = '#4ade80';
       }
-    }
-
-    function showLicenseModal(isRequired = false) {
-      const modal = document.getElementById('licenseModal');
-      const cancelBtn = document.getElementById('licenseModalCancelBtn');
-      if (cancelBtn) {
-        cancelBtn.style.display = isRequired ? 'none' : 'inline-flex';
-      }
-      document.getElementById('licenseModalError').classList.add('hidden');
-      document.getElementById('licenseModalSuccess').classList.add('hidden');
-      modal.classList.remove('hidden');
-    }
-
-    function closeLicenseModal() {
-      if (appLicenseData && !appLicenseData.activated) {
-        return;
-      }
-      document.getElementById('licenseModal').classList.add('hidden');
-    }
-
-    async function pasteLicenseKey() {
-      const text = await getClipboardText();
-      if (text) {
-        document.getElementById('licenseKeyInput').value = text.trim();
-        showToast('License key pasted');
-      } else {
-        document.getElementById('licenseKeyInput').focus();
-        showToast('Clipboard is empty');
-      }
-    }
-
-    async function submitLicenseActivation() {
-      const input = document.getElementById('licenseKeyInput');
-      const key = (input.value || '').trim().toUpperCase();
-      const errEl = document.getElementById('licenseModalError');
-      const succEl = document.getElementById('licenseModalSuccess');
-      const btn = document.getElementById('licenseModalActivateBtn');
-
-      errEl.classList.add('hidden');
-      succEl.classList.add('hidden');
-
-      if (!key) {
-        errEl.textContent = 'Please enter a valid license key.';
-        errEl.classList.remove('hidden');
-        return;
-      }
-
-      btn.disabled = true;
-      btn.innerHTML = '<span class="material-symbols-outlined text-xs animate-spin">progress_activity</span> <span>Verifying...</span>';
-
-      try {
-        const res = await fetch('/api/license/activate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ key: key })
-        });
-        const d = await res.json();
-        if (d.success) {
-          succEl.textContent = 'License activated successfully! Welcome to Dimple Pro.';
-          succEl.classList.remove('hidden');
-          appLicenseData = d.data;
-          updateLicenseUI(appLicenseData);
-          setTimeout(() => {
-            document.getElementById('licenseModal').classList.add('hidden');
-            showToast('Dimple Pro Lifetime License Activated!');
-          }, 1200);
-        } else {
-          errEl.textContent = d.error || 'Invalid license key. Generate genuine keys with Dimple_Keygen.exe';
-          errEl.classList.remove('hidden');
-        }
-      } catch (e) {
-        errEl.textContent = 'Activation request failed: ' + e;
-        errEl.classList.remove('hidden');
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<span class="material-symbols-outlined text-xs">verified</span> <span>Activate License</span>';
+      if (keyDisplay) {
+        keyDisplay.textContent = 'Community Edition (100% Unlocked)';
       }
     }
 

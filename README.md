@@ -3,39 +3,43 @@
 </p>
 
 <p align="center">
-  <a href="#-key-features"><img src="https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-ff6400?style=for-the-badge&logo=windows&logoColor=white" alt="Windows Native" /></a>
-  <a href="#-tech-stack"><img src="https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12-3776ab?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+" /></a>
+  <a href="#-open-source-license"><img src="https://img.shields.io/badge/License-MIT%20Open%20Source-22c55e?style=for-the-badge&logo=opensourceinitiative&logoColor=white" alt="MIT License" /></a>
+  <a href="#-open-source-license"><img src="https://img.shields.io/badge/Access-100%25%20Free%20Forever-ff6400?style=for-the-badge&logo=lock-open&logoColor=white" alt="100% Free Forever" /></a>
+  <a href="#-open-source-license"><img src="https://img.shields.io/badge/Keys-Zero%20Keys%20Needed-00c853?style=for-the-badge&logo=checkmarx&logoColor=white" alt="Zero Keys Needed" /></a>
+  <a href="#-key-features"><img src="https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-0078d4?style=for-the-badge&logo=windows&logoColor=white" alt="Windows Native" /></a>
+  <a href="#-tech-stack"><img src="https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-3776ab?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+" /></a>
   <a href="#-tech-stack"><img src="https://img.shields.io/badge/GUI-PySide6%20(Qt6)-41cd52?style=for-the-badge&logo=qt&logoColor=white" alt="PySide6 Qt6" /></a>
   <a href="#-tech-stack"><img src="https://img.shields.io/badge/Engine-yt--dlp%20%2B%20FFmpeg-ff4500?style=for-the-badge&logo=youtube&logoColor=white" alt="yt-dlp Core" /></a>
-  <a href="#-keyboard-shortcuts"><img src="https://img.shields.io/badge/Player-PiP%20%2B%20Hotkeys-ff7a00?style=for-the-badge&logo=googleplay&logoColor=white" alt="Theater Player" /></a>
-  <a href="#-supported-platforms"><img src="https://img.shields.io/badge/Websites-1%2C700%2B%20Supported-00c853?style=for-the-badge" alt="Supported Sites" /></a>
+  <a href="#-supported-platforms"><img src="https://img.shields.io/badge/Websites-1%2C700%2B%20Supported-8a2be2?style=for-the-badge" alt="Supported Sites" /></a>
 </p>
 
 <p align="center">
-  <strong>Next-Generation Desktop Media Downloader &amp; Dedicated Theater Workstation</strong><br>
-  Engineered with high-concurrency downloads, seamless offline library management, instant Picture-in-Picture playback, and studio-grade audio extraction.
+  <strong>Next-Generation Desktop Media Downloader, In-App YouTube Browser &amp; Dedicated Theater Workstation</strong><br>
+  100% Free, Fully Unlocked &amp; Open Source under the MIT License. High-concurrency downloads, seamless in-app streaming, instant Picture-in-Picture playback, and zero license keys required.
 </p>
 
 <p align="center">
   <a href="#-visual-interface-showcase">Screenshots</a> •
-  <a href="#-key-features">Features</a> •
+  <a href="#-key-features">Key Features</a> •
+  <a href="#-in-app-youtube-browser">In-App Browser</a> •
   <a href="#-quick-start--installation">Quick Start</a> •
   <a href="#-keyboard-shortcuts">Shortcuts</a> •
   <a href="#-architecture">Architecture</a> •
-  <a href="#-git-configuration--privacy">Git &amp; Privacy</a> •
-  <a href="#-cli-power-mode">CLI Mode</a>
+  <a href="#-cli-power-mode">CLI Mode</a> •
+  <a href="#-open-source-license">License</a>
 </p>
 
 ---
 
 ## ⚡ Overview
 
-**Dimple** is an ultra-fast, production-grade media downloader and local theater suite built natively for Windows. Combining the flexibility of **PySide6 (Qt6)** with a hardened local **Flask micro-engine**, **`yt-dlp`**, and bundled **FFmpeg**, Dimple delivers:
+**Dimple** is an ultra-fast, production-grade media downloader, in-app YouTube browser, and local theater suite built natively for Windows. Combining the hardware-accelerated speed of **PySide6 (Qt6 WebEngine)** with a hardened local **Flask micro-engine**, **`yt-dlp`**, and bundled **FFmpeg**, Dimple delivers:
 
-- 🚀 **Zero-latency concurrent downloads** with live speed, byte progress, and dynamic ETA telemetry.
-- 🎬 **Dedicated Theater Preview Player** with Picture-in-Picture (PiP), speed stepping (0.5x–2x), frame scrubbing, and full YouTube hotkey controls.
-- 📂 **Dual-View Offline Showcase** (Responsive Grid & List views) with instant search, sorting, and multi-threaded thumbnail generation.
-- 🔒 **Sandboxed security architecture** isolated by desktop session tokens and restricted loopback communication.
+- 🌐 **Embedded In-App YouTube Browser**: Browse, watch, and search YouTube directly inside the app with a compact, container-free toolbar and 1-click video dispatching.
+- 🚀 **Zero-latency concurrent downloads**: Multi-threaded queue engine with live transfer speeds, byte progress gauges, and real-time countdown ETA clocks.
+- 🎬 **Dedicated Theater Preview Player**: Picture-in-Picture (PiP), multi-speed stepping (`0.5x`–`2x`), interactive timestamp scrubber, and YouTube hotkey integration.
+- 📂 **Dual-View Offline Showcase**: Responsive 2-column Grid & compact List views with real-time filtering, multi-criteria sorting, and frame-accurate local thumbnail caching.
+- 🔓 **100% Free & Open Source**: Fully unlocked forever under the permissive MIT License. Zero activation keys, zero paywalls, zero ads, and zero telemetry.
 
 ---
 
@@ -44,54 +48,57 @@
 <table width="100%">
   <tr>
     <td width="50%" align="center">
-      <img src="assets/screenshots/home_studio.png" alt="Home Studio Cockpit" width="100%" /><br>
-      <b>Home Studio Cockpit</b><br>
-      <i>Automatic clipboard link analysis, custom save paths, and resolution selection.</i>
+      <img src="assets/screenshots/inapp_browser.png" alt="In-App YouTube Browser" width="100%" /><br>
+      <b>🌐 In-App YouTube Browser &amp; 1-Click Video Sender</b><br>
+      <i>Sandboxed Chromium engine, ultra-compact single-row command deck, on-player floating button, and edge-to-edge canvas.</i>
     </td>
     <td width="50%" align="center">
-      <img src="assets/screenshots/downloads_queue.png" alt="Downloads &amp; Transfers Queue" width="100%" /><br>
-      <b>Active &amp; Completed Transfers Queue</b><br>
-      <i>Multi-threaded progress bars, speed gauges, format badges, and 1-click playback.</i>
+      <img src="assets/screenshots/home_studio.png" alt="Home Studio Cockpit" width="100%" /><br>
+      <b>🏠 Home Studio Cockpit</b><br>
+      <i>Automatic clipboard link analysis, real-time resolution discovery, directory presets, and batch dispatching.</i>
     </td>
   </tr>
   <tr>
     <td width="50%" align="center">
-      <img src="assets/screenshots/media_theater.png" alt="Dedicated Theater Player" width="100%" /><br>
-      <b>Dedicated Preview Theater</b><br>
-      <i>Full viewport preview, Picture-in-Picture (PiP), volume sliders, and hotkeys.</i>
+      <img src="assets/screenshots/downloads_queue.png" alt="Downloads &amp; Transfers Queue" width="100%" /><br>
+      <b>📥 Active &amp; Completed Transfers Queue</b><br>
+      <i>Multi-threaded progress gauges, live speeds, format badges, pause/resume, and native Explorer reveal.</i>
     </td>
     <td width="50%" align="center">
+      <img src="assets/screenshots/media_theater.png" alt="Dedicated Theater Player" width="100%" /><br>
+      <b>🎬 Dedicated Preview Theater</b><br>
+      <i>Full viewport player, Picture-in-Picture (PiP), volume sliders, frame-accurate scrubbing, and hotkeys.</i>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
       <img src="assets/screenshots/grid_library.png" alt="Media Library Grid View" width="100%" /><br>
-      <b>Media Library (Grid Showcase)</b><br>
-      <i>2-column responsive grid with smooth custom scrolling, file sizes, and context menus.</i>
+      <b>🖼️ Offline Media Library (Responsive Grid View)</b><br>
+      <i>2-column responsive layout, frame-accurate FFmpeg thumbnails, instant search, and multi-criteria sorting.</i>
+    </td>
+    <td width="50%" align="center">
+      <img src="assets/screenshots/settings.png" alt="Settings &amp; Preferences" width="100%" /><br>
+      <b>⚙️ Settings &amp; Preferences Hub</b><br>
+      <i>Configurable download presets, browser cookie integration, engine diagnostics, and open-source license status.</i>
     </td>
   </tr>
 </table>
-
-<details>
-  <summary><b>🔧 Click to expand Settings &amp; Preferences screen</b></summary>
-  <br>
-  <p align="center">
-    <img src="assets/screenshots/settings.png" alt="Settings &amp; Preferences" width="85%" /><br>
-    <i>Configurable storage presets, offline mathematical license validation, and engine health diagnostics.</i>
-  </p>
-</details>
 
 ---
 
 ## ✨ Key Features
 
 ### 🌐 In-App YouTube Browser & 1-Click Video Sender
-- **Embedded Web Engine**: Browse YouTube directly inside Dimple without leaving the desktop workspace.
-- **YouTube-Only Sandboxing**: Restricted browsing engine dedicated exclusively to YouTube streams, searches, shorts, and channels.
-- **⚡ Direct Video Sender**: Watch any video and click "Send to Downloader" (from the compact command bar or the on-player floating button) to automatically load and analyze formats in Downloader Studio.
-- **Ultra-Compact Command Deck**: Streamlined edge-to-edge address & search bar, Back/Forward/Reload/Home controls, and external fallback without container borders or gaps.
-- **Collapsible Minimalist Sidebar**: Sleek sidebar collapsed by default (68px) for an unobstructed media canvas, expanding smoothly when clicking the menu button.
+- **Embedded Chromium Web Engine**: Native QtWebEngine browser directly embedded into the application workspace.
+- **YouTube Sandboxing**: Dedicated secure browsing restricted to YouTube channels, searches, and shorts.
+- **⚡ 1-Click Direct Video Sender**: When watching any YouTube video, click **"Send to Downloader"** on the top command deck or the floating on-player button to automatically send the video to Downloader Studio and start format discovery.
+- **Ultra-Compact Single-Row Bar**: Streamlined toolbar with <kbd>Back</kbd>, <kbd>Forward</kbd>, <kbd>Reload</kbd>, <kbd>Home</kbd>, clean omni-address bar, and external browser fallback.
+- **Collapsible Minimalist Sidebar**: Sidebar starts collapsed (`68px`) by default for an unobstructed media canvas, expanding smoothly when clicking the menu button.
 
 ### 📥 High-Speed Multi-Threaded Engine
 - **Simultaneous Job Processing**: Queue multiple videos or playlists concurrently without thread locking or UI freezing.
 - **Smart Queue Telemetry**: Live progress bars (`0–100%`), real-time transfer speeds (`MB/s`), byte gauges (`GB/MB downloaded`), and countdown ETA clocks.
-- **Job Lifecycle Controls**: 1-click Pause, Resume, Cancel, Remove, and Batch Clear completed jobs.
+- **Job Lifecycle Controls**: 1-click Pause, Resume, Retry, Cancel, Remove, and Batch Clear completed jobs.
 - **Native File Explorer Integration**: Click the folder icon on any download card to instantly reveal and select the downloaded file in Windows Explorer.
 
 ### 🎬 Dedicated Preview Player Theater
@@ -106,9 +113,10 @@
 - **Instant Search & Sort**: Real-time substring filter and multi-criteria sorting (Newest, Oldest, Name A–Z, Name Z–A, Size Largest, Size Smallest).
 - **Frame-Accurate Local Thumbnails**: Automated FFmpeg extractor grabs crisp 480p preview posters directly from media files with multi-seek fallback.
 
-### 📋 Zero-Click URL Analysis
-- **Direct Win32 Clipboard Access**: Built-in native ctypes clipboard bridge pastes copied media links instantly without intrusive browser permission popups.
-- **Auto-Detection**: Pasting or typing any supported media link initiates background format discovery and metadata extraction immediately.
+### 🔓 100% Free & Open Source (No Keys Needed)
+- **Zero Activation Keys**: No license keygen, no serial numbers, no activation dialogs, and no registration.
+- **All Features Unlocked**: Unlimited concurrent downloads, 4K resolution, 320 kbps MP3 conversion, and unrestricted bandwidth.
+- **Permissive MIT License**: Free for personal, educational, and commercial use.
 
 ### 🎵 Universal Format & Resolution Suite
 - **Video Qualities**: `Best Available`, `4K 60fps (2160p)`, `1440p (2K)`, `1080p (Full HD)`, `720p (HD)`, `480p`, and `360p`.
@@ -123,6 +131,12 @@ Dimple provides full YouTube-standard keyboard hotkeys for an intuitive, hands-o
 
 | Key | Action | Context |
 | :---: | :--- | :--- |
+| <kbd>Ctrl</kbd> + <kbd>1</kbd> | Switch to Home (Downloader Studio) | Global |
+| <kbd>Ctrl</kbd> + <kbd>2</kbd> | Switch to In-App YouTube Browser | Global |
+| <kbd>Ctrl</kbd> + <kbd>3</kbd> | Switch to Active Transfers Queue | Global |
+| <kbd>Ctrl</kbd> + <kbd>4</kbd> | Switch to Media Library Showcase | Global |
+| <kbd>Ctrl</kbd> + <kbd>,</kbd> | Switch to Settings &amp; Preferences | Global |
+| <kbd>Ctrl</kbd> + <kbd>V</kbd> | Paste URL &amp; auto-analyze from clipboard | Home Tab |
 | <kbd>Space</kbd> or <kbd>K</kbd> | Play / Pause video toggle | Media Theater |
 | <kbd>J</kbd> | Rewind 10 seconds | Media Theater |
 | <kbd>L</kbd> | Fast-forward 10 seconds | Media Theater |
@@ -137,13 +151,7 @@ Dimple provides full YouTube-standard keyboard hotkeys for an intuitive, hands-o
 | <kbd>]</kbd> | Next media item | Media Library |
 | <kbd>&lt;</kbd> / <kbd>&gt;</kbd> | Decrease / Increase playback speed | Media Theater |
 | <kbd>0</kbd> – <kbd>9</kbd> | Seek to 0% – 90% duration of video | Media Theater |
-| <kbd>Ctrl</kbd> + <kbd>1</kbd> | Switch to Home (Downloader Studio) | Global |
-| <kbd>Ctrl</kbd> + <kbd>2</kbd> | Switch to In-App YouTube Browser | Global |
-| <kbd>Ctrl</kbd> + <kbd>3</kbd> | Switch to Active Transfers | Global |
-| <kbd>Ctrl</kbd> + <kbd>4</kbd> | Switch to Media Library | Global |
-| <kbd>Ctrl</kbd> + <kbd>,</kbd> | Switch to Settings | Global |
-| <kbd>Ctrl</kbd> + <kbd>V</kbd> | Paste URL &amp; auto-analyze from clipboard | Home Tab |
-| <kbd>Esc</kbd> | Close shortcuts guide &amp; modal dialogs | Global |
+| <kbd>Esc</kbd> | Close shortcuts guide &amp; modals | Global |
 
 ---
 
@@ -175,7 +183,8 @@ Dimple is structured with clear separation between native window lifecycle, loca
 flowchart TD
     subgraph Desktop_Shell["Native Desktop Shell (PySide6 / Qt6)"]
         A["Dimple.vbs / run.bat"] --> B["desktop_app.py (DimpleMainWindow)"]
-        B --> C["QWebEngineView"]
+        B --> C["Central QWebEngineView"]
+        B --> INAPP["In-App YouTube Browser (DimpleYouTubeBrowserPage)"]
         B --> D["Win32 Native Menu (File, Options)"]
         B --> E["Port Allocator &amp; Session Token Guard"]
     end
@@ -192,11 +201,13 @@ flowchart TD
     subgraph Client_UI["Client UI (Modern Studio Interface)"]
         C --> K["templates/index.html"]
         K --> L["Home Cockpit (Two-Pane Studio)"]
+        K --> BROWSER_UI["In-App Browser Deck (1-Click Video Sender)"]
         K --> M["Transfers Queue (Active / Completed)"]
         K --> N["Media Library (Grid / List Modes)"]
         K --> O["Preview Theater Player (PiP + Hotkeys)"]
     end
 
+    INAPP -.->|⚡ 1-Click Send| L
     G -->|File Streaming| O
     J -->|Cache JPEGs| N
     J -->|Cache JPEGs| M
@@ -258,15 +269,14 @@ python app.py "https://www.youtube.com/watch?v=VIDEO_ID" --quality audio_320
 
 ## 🛡️ Git Configuration & Privacy
 
-Dimple is configured with a comprehensive, production-ready [`.gitignore`](file:///.gitignore) that ensures your personal media files, tokens, and build artifacts remain safe, clean, and private:
+Dimple is configured with a comprehensive, production-ready [`.gitignore`](file:///.gitignore) that ensures your personal media files, cache, and build artifacts remain safe, clean, and private:
 
 ```gitignore
 # Excluded from Version Control:
-downloads/                 # User downloaded videos and audio (prevents gigabyte bloat)
+downloads/                 # User downloaded videos and audio (prevents repository bloat)
 *.mp4, *.mkv, *.webm, ...  # Raw media files
 .thumbnails/               # Dynamically generated JPEG cache
 jobs.json, config.json     # Local task queues and saved directories
-license.json               # Personal activation keys
 cookies.txt, *.cookies     # Private browser session cookies
 dist/, build/              # Binary compiler outputs
 .venv/, venv/              # Python virtual environment binaries
@@ -285,13 +295,29 @@ dist/, build/              # Binary compiler outputs
 
 ---
 
-## 📄 License & Disclaimer
+## 📄 Open Source License
 
-This software is released under the **MIT License**.
+This project is licensed under the **[MIT License](LICENSE)**:
+
+```text
+MIT License
+
+Copyright (c) 2026 Dimple Open Source Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+```
 
 > [!NOTE]  
 > Dimple is designed for downloading publicly available personal media, creative commons content, and educational archives. Please respect the terms of service of each platform and copyright laws in your jurisdiction.
 
 <p align="center">
-  <b>Dimple Media Workstation</b> • Crafted for Performance &amp; Simplicity
+  <b>Dimple Media Workstation</b> • Crafted for Performance, Freedom &amp; Simplicity
 </p>

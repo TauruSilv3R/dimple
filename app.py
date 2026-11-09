@@ -50,40 +50,19 @@ DOWNLOAD_DIR = os.path.join(DATA_DIR, "downloads")
 CONFIG_PATH = os.path.join(DATA_DIR, "config.json")
 JOBS_PATH = os.path.join(DATA_DIR, "jobs.json")
 LICENSE_FILE = os.path.join(DATA_DIR, "license.json")
-LICENSE_SECRET = "DIMPLE_PRO_OFFLINE_SECRET_2026_MASTER_SIGNATURE"
 THUMBNAIL_CACHE_DIR = os.path.join(DATA_DIR, ".thumbnails")
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 os.makedirs(THUMBNAIL_CACHE_DIR, exist_ok=True)
 
-def verify_license_key(key_str):
-    if not key_str or not isinstance(key_str, str):
-        return False
-    parts = key_str.strip().upper().split('-')
-    if len(parts) != 5 or parts[0] != 'DIMPLE':
-        return False
-    b1, b2, b3, b4 = parts[1], parts[2], parts[3], parts[4]
-    expected = hashlib.sha256((LICENSE_SECRET + b1 + b2).encode('utf-8')).hexdigest().upper()
-    return b3 == expected[:4] and b4 == expected[4:8]
-
 def get_license_status():
-    candidates = [LICENSE_FILE, os.path.join(BUNDLE_DIR, "license.json")]
-    for candidate in candidates:
-        if os.path.exists(candidate):
-            try:
-                with open(candidate, 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-                    key = data.get('key', '')
-                    if verify_license_key(key):
-                        return {
-                            "activated": True,
-                            "key": key[:11] + "-****-****",
-                            "full_key": key,
-                            "type": "Lifetime Pro License",
-                            "customer": data.get("customer", "Authorized User")
-                        }
-            except Exception:
-                pass
-    return {"activated": False, "key": "", "full_key": "", "type": "Activation Required", "customer": ""}
+    return {
+        "activated": True,
+        "key": "OPEN-SOURCE-MIT",
+        "full_key": "OPEN-SOURCE-MIT",
+        "type": "Open Source Community Edition (MIT)",
+        "customer": "Community Edition",
+        "unlocked": True
+    }
 
 def get_or_create_thumbnail(video_path):
     if not video_path or not os.path.exists(video_path):
@@ -930,31 +909,11 @@ def get_license():
 
 @app.route('/api/license/activate', methods=['POST'])
 def activate_license():
-    data = request.get_json() or {}
-    key = (data.get('key') or '').strip().upper()
-    customer = (data.get('customer') or 'Authorized User').strip()
-    
-    if verify_license_key(key):
-        try:
-            with open(LICENSE_FILE, 'w', encoding='utf-8') as f:
-                json.dump({
-                    "key": key,
-                    "customer": customer,
-                    "activated_at": time.time(),
-                    "status": "active"
-                }, f, indent=2)
-            return jsonify({
-                "success": True, 
-                "message": "Dimple Studio Pro successfully activated!",
-                "data": get_license_status()
-            })
-        except Exception as e:
-            return jsonify({"success": False, "error": f"Failed to save license: {e}"}), 500
-    else:
-        return jsonify({
-            "success": False, 
-            "error": "Invalid license key format or signature. Please generate a valid key using Dimple_Keygen.exe."
-        }), 400
+    return jsonify({
+        "success": True,
+        "message": "Dimple is 100% free & open-source software under the MIT License. All features are permanently unlocked.",
+        "data": get_license_status()
+    })
 
 @app.route('/api/delete', methods=['DELETE'])
 def delete_file():
